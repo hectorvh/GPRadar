@@ -1,0 +1,9 @@
+tag,freq_hz,eps_r,sigma_s_m,depth_m,pipe_y_m,merged
+f0.9_e6_s0_d5,900000000.0,6,0.0,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f0.9_e6_s0_d5/pipe_merged.h5
+f1.5_e6_s0_d5,1500000000.0,6,0.0,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e6_s0_d5/pipe_merged.h5
+f2.1_e6_s0_d5,2100000000.0,6,0.0,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f2.1_e6_s0_d5/pipe_merged.h5
+f1.5_e4_s0_d5,1500000000.0,4,0.0,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e4_s0_d5/pipe_merged.h5
+f1.5_e12_s0_d5,1500000000.0,12,0.0,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e12_s0_d5/pipe_merged.h5
+f1.5_e6_s05_d5,1500000000.0,6,0.05,0.05,0.120,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e6_s05_d5/pipe_merged.h5
+f1.5_e6_s0_d9,1500000000.0,6,0.0,0.09,0.080,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e6_s0_d9/pipe_merged.h5
+f1.5_e12_s05_d9,1500000000.0,12,0.05,0.09,0.080,/home/hector/Code/2026/GPRadar/data/sim/pipe_study/f1.5_e12_s05_d9/pipe_merged.h5

@@ -1,0 +1,16 @@
+#title: Pipe B-scan 1.5 GHz, eps_r=4, sigma=0, depth=0.05 m
+#domain_mode: TM
+#domain: 0.240 0.210 inf
+#dx_dy_dz: 0.002 0.002 0.002
+#time_window: 5e-9
+
+#material: 4 0 1 0 half_space
+
+#waveform: ricker 1 1.5e+09 my_ricker
+#hertzian_dipole: z 0.040 0.170 inf my_ricker
+#rx: 0.080 0.170 inf
+#src_steps: 0.002 0 0
+#rx_steps: 0.002 0 0
+
+#box: 0 0 0 0.240 0.170 inf half_space
+#cylinder: 0.120 0.120 0 0.120 0.120 inf 0.010 pec
