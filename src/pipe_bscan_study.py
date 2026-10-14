@@ -7,6 +7,7 @@ slow/lossy case. Each level of every factor appears at least once.
 """
 
 import csv
+import json
 import re
 import subprocess
 import sys
@@ -109,16 +110,68 @@ def render(template, case, surface_y):
     return "\n".join(lines) + "\n", pipe_y
 
 
+def ground_truth_from_model(text):
+    """Target centre and soil permittivity from a gprMax input file.
+
+    Depth is the cylinder centre below the top of the half-space.
+    """
+
+    eps_r = None
+    surface_y = None
+    target_x = None
+    target_y = None
+    radius = None
+    for line in text.splitlines():
+        parts = _tokens(line)
+        if line.startswith("#material:"):
+            eps_r = float(parts[1])
+        elif line.startswith("#box:"):
+            surface_y = float(parts[5])
+        elif line.startswith("#cylinder:"):
+            target_x = float(parts[1])
+            target_y = float(parts[2])
+            if abs(float(parts[5]) - target_y) > 1e-9:
+                raise ValueError("cylinder is not horizontal")
+            radius = float(parts[7])
+    missing = [
+        name
+        for name, value in (
+            ("eps_r", eps_r),
+            ("surface", surface_y),
+            ("target_x", target_x),
+            ("target_y", target_y),
+            ("radius", radius),
+        )
+        if value is None
+    ]
+    if missing:
+        raise ValueError("model is missing " + ", ".join(missing))
+    return {
+        "eps_r": eps_r,
+        "target_x_m": round(target_x, 6),
+        "target_depth_m": round(surface_y - target_y, 6),
+        "target_y_m": round(target_y, 6),
+        "target_radius_m": round(radius, 6),
+    }
+
+
+def write_ground_truth(model_dir, text):
+    truth = ground_truth_from_model(text)
+    (model_dir / "ground_truth.json").write_text(json.dumps(truth, indent=2) + "\n")
+    return truth
+
+
 def run_case(case, template, geometry):
     model_dir = RUN_ROOT / case["tag"]
     model_dir.mkdir(parents=True, exist_ok=True)
     text, pipe_y = render(template, case, geometry["surface_y"])
     infile = model_dir / "pipe.in"
     infile.write_text(text)
+    truth = write_ground_truth(model_dir, text)
     merged = model_dir / "pipe_merged.h5"
     if merged.exists():
         print(f"skip {case['tag']}: {merged.name} already exists", flush=True)
-        return merged, pipe_y
+        return merged, pipe_y, truth
 
     base = model_dir / "pipe"
     command = [
@@ -146,7 +199,7 @@ def run_case(case, template, geometry):
     )
     if not merged.exists():
         raise FileNotFoundError(merged)
-    return merged, pipe_y
+    return merged, pipe_y, truth
 
 
 def load_bscan(path):
@@ -162,7 +215,7 @@ def plot_cases(results, geometry):
     position = mid0 + step * np.arange(N_TRACES)
 
     fig, axes = plt.subplots(2, 4, figsize=(14, 7), sharex=True, sharey=True, constrained_layout=True)
-    for ax, (case, path, _pipe_y) in zip(axes.ravel(), results):
+    for ax, (case, path, _pipe_y, _truth) in zip(axes.ravel(), results):
         data, dt = load_bscan(path)
         if data.shape[1] != N_TRACES:
             raise ValueError(f"{path} has {data.shape[1]} traces, expected {N_TRACES}")
@@ -202,18 +255,30 @@ def write_index(results):
     with index.open("w", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=["tag", "freq_hz", "eps_r", "sigma_s_m", "depth_m", "pipe_y_m", "merged"],
+            fieldnames=[
+            "tag",
+            "freq_hz",
+            "eps_r",
+            "sigma_s_m",
+            "depth_m",
+            "pipe_y_m",
+            "target_x_m",
+            "target_radius_m",
+            "merged",
+        ],
         )
         writer.writeheader()
-        for case, path, pipe_y in results:
+        for case, path, pipe_y, truth in results:
             writer.writerow(
                 {
                     "tag": case["tag"],
                     "freq_hz": case["freq"],
-                    "eps_r": case["eps"],
+                    "eps_r": truth["eps_r"],
                     "sigma_s_m": case["sigma"],
-                    "depth_m": case["depth"],
+                    "depth_m": truth["target_depth_m"],
                     "pipe_y_m": f"{pipe_y:.3f}",
+                    "target_x_m": f"{truth['target_x_m']:.3f}",
+                    "target_radius_m": f"{truth['target_radius_m']:.3f}",
                     "merged": path,
                 }
             )
@@ -228,8 +293,8 @@ def main():
         raise ValueError(f"expected src step {DX}, found {geometry['step']}")
     results = []
     for case in CASES:
-        merged, pipe_y = run_case(case, template, geometry)
-        results.append((case, merged, pipe_y))
+        merged, pipe_y, truth = run_case(case, template, geometry)
+        results.append((case, merged, pipe_y, truth))
     write_index(results)
     plot_cases(results, geometry)
 

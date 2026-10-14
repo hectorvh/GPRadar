@@ -1,0 +1,7 @@
+{
+  "eps_r": 12.0,
+  "target_x_m": 0.12,
+  "target_depth_m": 0.09,
+  "target_y_m": 0.08,
+  "target_radius_m": 0.01
+}

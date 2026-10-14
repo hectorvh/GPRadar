@@ -1,0 +1,10 @@
+scan,output,eps_r,target_x_m,target_depth_m,target_y_m,target_radius_m
+cylinder_Ascan_2D,data/sim/cylinder_Ascan_2D.h5,6.0,0.12,0.09,0.08,0.01
+f0.9_e6_s0_d5,data/sim/pipe_study/f0.9_e6_s0_d5/pipe_merged.h5,6.0,0.12,0.05,0.12,0.01
+f1.5_e12_s05_d9,data/sim/pipe_study/f1.5_e12_s05_d9/pipe_merged.h5,12.0,0.12,0.09,0.08,0.01
+f1.5_e12_s0_d5,data/sim/pipe_study/f1.5_e12_s0_d5/pipe_merged.h5,12.0,0.12,0.05,0.12,0.01
+f1.5_e4_s0_d5,data/sim/pipe_study/f1.5_e4_s0_d5/pipe_merged.h5,4.0,0.12,0.05,0.12,0.01
+f1.5_e6_s05_d5,data/sim/pipe_study/f1.5_e6_s05_d5/pipe_merged.h5,6.0,0.12,0.05,0.12,0.01
+f1.5_e6_s0_d5,data/sim/pipe_study/f1.5_e6_s0_d5/pipe_merged.h5,6.0,0.12,0.05,0.12,0.01
+f1.5_e6_s0_d9,data/sim/pipe_study/f1.5_e6_s0_d9/pipe_merged.h5,6.0,0.12,0.09,0.08,0.01
+f2.1_e6_s0_d5,data/sim/pipe_study/f2.1_e6_s0_d5/pipe_merged.h5,6.0,0.12,0.05,0.12,0.01

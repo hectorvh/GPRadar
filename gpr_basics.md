@@ -49,10 +49,64 @@ Note: a buried pipe is a point in 2D (cross-section). Crossing the pipe at 90° 
 
 C-scans are usually shown as **time (depth) slices**: plan-view maps at a fixed time. Good for following a pipe across the site.
 
-## 5. Things to remember
+## 5. Three material properties
+
+A GPR wave is an electromagnetic field. Three properties decide what the ground does with it.
+
+**Electrical conductivity σ.** Some charges are free to move: ions in pore water, or electrons in metals and some minerals. The radar’s electric field makes them drift, and the collisions turn wave energy into heat. That energy is gone. Unit: S/m, usually quoted as mS/m. High σ: clay, saline water, salty or fertilized soil, metal. Low σ: dry sand, ice, granite, fresh dry concrete.
+
+**Dielectric permittivity ε.** Other charges are bound. The field can only shift electrons or rotate water molecules, so the material polarizes, then springs back when the field reverses. The energy is stored and returned, like a capacitor. That storage is the lag that slows the wave, so ε sets velocity (v = c / √εr) and reflections (contrasts in εr).
+
+**Magnetic permeability μ.** μ describes how magnetic moments align with the wave’s magnetic field. For almost all soils, rocks, water and concrete, μr ≈ 1, the same as air, which is why the velocity formula drops μ. Iron oxides (magnetite, some volcanic soils) are the exception: extra loss and a slower wave.
+
+| Property | Charges | Energy | Main effect on GPR |
+| --- | --- | --- | --- |
+| σ | Free charges flow | Dissipated as heat | Attenuation, depth limit |
+| ε | Bound charges displaced | Stored and returned | Velocity, reflections |
+| μ | Magnetic moments align | Stored, and some lost | Usually negligible |
+
+### Absorption
+
+Absorption is the gradual loss of signal strength with depth, because the ground turns wave energy into heat. Conductivity is the main source. In a low-loss material:
+
+**α ≈ 1.64 · σ / √εr** (α in dB/m, σ in mS/m)
+
+- Dry sand (σ ≈ 0.1 mS/m, εr ≈ 4): α ≈ 0.08 dB/m. The signal travels tens of metres.
+- Wet clay (σ ≈ 50 mS/m, εr ≈ 10): α ≈ 26 dB/m. The signal is gone within a metre or two.
+
+This is the main practical limit. GPR works in sand, ice and concrete, and fails in clay or salt-affected soil.
+
+Two further losses add to conduction:
+
+- **Dielectric relaxation.** Rotating water molecules lag a high-frequency field, so the restoring “spring” also damps. These losses grow with frequency.
+- **Geometric spreading and scattering.** The wave spreads over a larger area, and rough or heterogeneous ground sends energy away from the receiver. The signal weakens without becoming heat.
+
+The loss tangent, **tan δ = σ / (ωε)**, compares conduction with storage. When tan δ ≪ 1, storage dominates and the wave propagates. When tan δ ≳ 1, conduction dominates, the field diffuses, and GPR stops working. Higher frequencies penetrate less: more relaxation loss, more scattering, and a shorter wavelength that is used up over fewer metres.
+
+### Polarity
+
+The transmitted pulse has a fixed shape, the wavelet (a Ricker is a positive–negative–positive wiggle). Each reflection is a copy of that wavelet scaled by
+
+**R = (√ε₁ − √ε₂) / (√ε₁ + √ε₂)**
+
+- **R negative**, into a slower material (higher εr): the wavelet flips. Dry sand over wet sand, the water table, a water-filled pipe, and metal (R ≈ −1).
+- **R positive**, into a faster material (lower εr): the wavelet keeps its shape. An air void in concrete, an empty plastic pipe, an air-filled cavity or tunnel.
+
+Take the reference polarity from a known event, such as the direct ground wave or a metal plate, and compare other reflections with it. An empty pipe and a water-filled pipe can make equally strong hyperbolas; the flip tells them apart.
+
+Together:
+
+- ε decides how fast the wave travels and where it reflects.
+- σ decides how far it travels before it dies.
+- μ can usually be ignored.
+- Polarity tells which way the ε contrast goes at each reflector.
+
+## 6. Things to remember
 
 - Time → depth needs v. Wrong v = wrong depth.
-- Wet ground: slower, more attenuation, less penetration.
+- ε sets velocity and reflections. σ sets how deep you can see. μr ≈ 1 for ordinary ground.
+- Wet ground: slower, more attenuation, less penetration. Clay and salt kill the signal within a metre or two.
+- Polarity tells an empty void from a wet or metal target when both make strong hyperbolas.
 - Raw hyperbolas are "smeared" targets. Migration collapses them back to a point, but it needs the right velocity.
 - Small targets look bigger than they are in unmigrated data.
 
