@@ -279,7 +279,7 @@ def write_index(results):
                     "pipe_y_m": f"{pipe_y:.3f}",
                     "target_x_m": f"{truth['target_x_m']:.3f}",
                     "target_radius_m": f"{truth['target_radius_m']:.3f}",
-                    "merged": path,
+                    "merged": Path(path).resolve().relative_to(ROOT).as_posix(),
                 }
             )
 
