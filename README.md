@@ -9,6 +9,9 @@ Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds t
 | `src/pipe.in` | Buried metal pipe. 2D model, 2 mm cells, 1.5 GHz Ricker, 60-trace B-scan. |
 | `src/pipe_bscan_study.py` | Eight variants of that model, then one comparison figure. |
 | `src/gprmax_loader.py` | Reads a gprMax HDF5 output into one scan. |
+| `src/preprocessing.py` | Time zero, dewow, background removal, band-pass and gain. |
+| `src/plot_preprocessing.py` | Figures of those steps and of the amplitude spectrum. |
+| `test/test_preprocessing.py` | Tests for the processing steps. |
 | `data/sim/` | Cylinder A-scan and the pipe-study B-scans. |
 | `figures/` | Plots of those runs, plus one GPRPy example profile. |
 | `test/` | Loader tests. |
@@ -84,3 +87,21 @@ A single A-scan has no trace spacing. A merged B-scan does not keep the waveform
 conda activate gprMax-v4
 python -m pytest test/test_gprmax_loader.py
 ```
+
+## Preprocessing
+
+The steps in `src/preprocessing.py` run in this order:
+
+1. **Time zero** — shift each trace so the first break is at the start of the record.
+2. **Dewow** — subtract a running mean and remove the low-frequency bias from antenna coupling.
+3. **Background removal** — subtract the mean trace and remove the horizontal direct wave.
+4. **Band-pass** — keep about half to twice the antenna frequency, without shifting the pulse.
+5. **Gain** — divide by a running RMS so a weaker late reflection remains visible.
+
+```bash
+conda activate gprMax-v4
+python -m pytest test/test_preprocessing.py
+MPLBACKEND=Agg python src/plot_preprocessing.py
+```
+
+On this 12 cm profile the hyperbola covers most traces, so mean-trace removal leaves artefacts near the apex. Longer profiles, or subtracting a no-target simulation, avoid this.
