@@ -11,6 +11,7 @@ Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds t
 | `src/gprmax_loader.py` | Reads a gprMax HDF5 output into one scan. |
 | `src/preprocessing.py` | Time zero, dewow, background removal, band-pass and gain. |
 | `src/plot_preprocessing.py` | Figures of those steps and of the amplitude spectrum. |
+| `notebooks/gpr_preprocessing.ipynb` | Loads one pipe B-scan and shows each processing step. |
 | `test/test_preprocessing.py` | Tests for the processing steps. |
 | `data/sim/` | Cylinder A-scan and the pipe-study B-scans. |
 | `figures/` | Plots of those runs, plus one GPRPy example profile. |
@@ -102,6 +103,13 @@ The steps in `src/preprocessing.py` run in this order:
 conda activate gprMax-v4
 python -m pytest test/test_preprocessing.py
 MPLBACKEND=Agg python src/plot_preprocessing.py
+```
+
+`notebooks/gpr_preprocessing.ipynb` loads the 1.5 GHz pipe scan and shows each step with its image. From the repository root:
+
+```bash
+conda activate gprMax-v4
+jupyter notebook notebooks/gpr_preprocessing.ipynb
 ```
 
 On this 12 cm profile the hyperbola covers most traces, so mean-trace removal leaves artefacts near the apex. Longer profiles, or subtracting a no-target simulation, avoid this.

@@ -1,0 +1,355 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Alex R. Fiore</origin>
+        <pubdate>20180315</pubdate>
+        <title>Raw ground-penetrating radar data, Edwin B. Forsythe National Wildlife Refuge, New Jersey, 2014-15</title>
+        <geoform>digital tabular</geoform>
+        <pubinfo>
+          <pubplace>Reston, Virginia</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/F7JH3KBD</onlink>
+        <lworkcit>
+          <citeinfo>
+            <origin>Alex R. Fiore</origin>
+            <origin>Lois M. Voronin</origin>
+            <origin>Christine M. Wieben</origin>
+            <pubdate>20180315</pubdate>
+            <title>Hydrogeology of, simulation of groundwater flow in, and potential effects of sea-level rise on the Kirkwood-Cohansey aquifer system in the vicinity of Edwin B. Forsythe National Wildlife Refuge, New Jersey</title>
+            <geoform>Publication</geoform>
+            <pubinfo>
+              <pubplace>Reston, Virginia</pubplace>
+              <publish>U.S. Geological Survey</publish>
+            </pubinfo>
+            <onlink>https://doi.org/10.3133/sir20175135</onlink>
+          </citeinfo>
+        </lworkcit>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This dataset contains 10 raw common-offset ground-penetrating radar (GPR) profiles collected at 7 locations in the Edwin B. Forsythe National Wildlife Refuge, Atlantic County and Ocean County, New Jersey, in October and November 2014 and January 2015. A MALA® 80 megahertz (MHz) HDR shielded antenna was used for 3 profiles named DinnerPointAve, GameFarmRd-1, and GameFarmRd-2. A MALA® 100 MHz shielded antenna was used for 7 profiles named ReedyCreek-1, ReedyCreek-2, ScottsLandingRd, SouthWildlifeDr, StaffordAve-eastwest, StaffordAve-westeast, and WescottAve. Pre- and post-processing methods such as filters, topographic corrections, wave velocity determinations, and depth conversions have not been applied to these data. Interpretations and processing details of GPR lines in this dataset are available in USGS Scientific Investigations Report 2017-5135 (https://doi.org/10.3133/sir20175135).</abstract>
+      <purpose>GPR lines were collected for hydrogeologic framework development of the unconfined Kirkwood-Cohansey aquifer system underlying the Edwin B. Forsythe National Wildlife Refuge. The framework was part of a study to assess the groundwater flow system in the refuge and the potential effects of sea-level rise on fresh groundwater discharges to wetland habitats. Results of that study are available in Scientific Investigations Report 2017-5135 (https://doi.org/10.3133/sir20175135) and Scientific Investigations Report 2017-5088 (https://doi.org/10.3133/sir20175088).</purpose>
+      <supplinf>Acquisition software MALA RAMAC GroundVision® version 1.4.6; Antenna orientation normal to direction of movement; Antennas were towed by hand behind the operator during each survey. For 100 MHz antenna: Antenna separation distance 0.499872 meters (1.64 feet); Reception time window 502.529843 nanoseconds; Trace distance (wheel encoder) 0.303838 meters (1 feet). For 80 MHz antenna: Antenna separation distance 0.48 meters (1.57 feet); Reception time window 794.531250 nanoseconds; Trace distance (wheel encoder) 0.152091 meters (0.5 feet). 
+
+Additional information regarding parameters and settings used in data collection are included in .RAD files.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <mdattim>
+          <sngdate>
+            <caldate>20141024</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>20141113</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>20141114</caldate>
+          </sngdate>
+          <sngdate>
+            <caldate>20150107</caldate>
+          </sngdate>
+        </mdattim>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>Irregular</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-74.48</westbc>
+        <eastbc>-74.06</eastbc>
+        <northbc>40.05</northbc>
+        <southbc>39.45</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>none</themekt>
+        <themekey>ground-penetrating radar</themekey>
+        <themekey>GPR</themekey>
+        <themekey>hydrogeophysics</themekey>
+        <themekey>surface geophysics</themekey>
+      </theme>
+      <theme>
+        <themekt>USGS Metadata Identifier</themekt>
+        <themekey>USGS:5a0c59bce4b09af898cd15ce</themekey>
+      </theme>
+      <place>
+        <placekt>Geographic Names Information System (GNIS)</placekt>
+        <placekey>Edwin B. Forsythe National Wildlife Refuge</placekey>
+        <placekey>Atlantic County</placekey>
+        <placekey>Ocean County</placekey>
+        <placekey>New Jersey</placekey>
+        <placekey>Barnegat Bay</placekey>
+      </place>
+    </keywords>
+    <accconst>none</accconst>
+    <useconst>none</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntperp>
+          <cntper>Alex R. Fiore</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Hydrologist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>3450 Princeton Pike, Suite 110</address>
+          <city>Lawrenceville</city>
+          <state>NJ</state>
+          <postal>08648</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>609-771-3913</cntvoice>
+        <cntemail>afiore@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>U.S. Fish and Wildlife Service, Edwin B. Forsythe National Wildlife Refuge, Galloway, New Jersey</datacred>
+    <crossref>
+      <citeinfo>
+        <origin>Alex R. Fiore</origin>
+        <origin>Lois M. Voronin</origin>
+        <origin>Christine M. Wieben</origin>
+        <pubdate>20180315</pubdate>
+        <title>Hydrogeology of, simulation of groundwater flow in, and potential effects of sea-level rise on the Kirkwood-Cohansey aquifer system in the vicinity of Edwin B. Forsythe National Wildlife Refuge, New Jersey</title>
+        <pubinfo>
+          <pubplace>Reston, Virginia</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.3133/sir20175135</onlink>
+      </citeinfo>
+    </crossref>
+    <crossref>
+      <citeinfo>
+        <origin>Alex R. Fiore</origin>
+        <origin>Lois M. Voronin</origin>
+        <pubdate>20180315</pubdate>
+        <title>MODFLOW-2005 model used to evaluate the potential effects of sea-level rise on the Kirkwood-Cohansey aquifer system in the vicinity of Edwin B. Forsythe National Wildlife Refuge, New Jersey</title>
+        <pubinfo>
+          <pubplace>Reston, Virginia</pubplace>
+          <publish>U.S. Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.5066/F76W98JB</onlink>
+      </citeinfo>
+    </crossref>
+    <crossref>
+      <citeinfo>
+        <origin>Christine M. Wieben</origin>
+        <origin>Mary M. Chepiga</origin>
+        <pubdate>20180315</pubdate>
+        <title>Hydrologic assessment of Edwin B. Forsythe National Wildlife Refuge, New Jersey</title>
+        <pubinfo>
+          <pubplace>Reston, Virginia</pubplace>
+          <publish>U.S Geological Survey</publish>
+        </pubinfo>
+        <onlink>https://doi.org/10.3133/sir20175088</onlink>
+      </citeinfo>
+    </crossref>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>No formal attribute accuracy tests were conducted</attraccr>
+    </attracc>
+    <logic>No formal logical accuracy tests were conducted</logic>
+    <complete>Data set is considered complete for the information presented, as described in the abstract. Users are advised to read the rest of the metadata record for additional details.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Horizontal coordinates were obtained with a handheld consumer-grade GPS with 10 feet resolution, but overhanging tree branches and chance clouds may have decreased accuracy.</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>No formal positional accuracy tests were conducted</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <procstep>
+        <procdesc>Data in .RD3 files were opened in MALA GroundVision® v. 1.4.6 and exported to ASCII. No additional processing was implemented.</procdesc>
+        <procdate>2017</procdate>
+      </procstep>
+    </lineage>
+    <cloud>Unknown</cloud>
+  </dataqual>
+  <spdoinfo>
+    <direct>Point</direct>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>10.0</latres>
+        <longres>10.0</longres>
+        <geogunit>Decimal degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>North American Datum of 1983</horizdn>
+        <ellips>Geodetic Reference System 80</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.2572221008827</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>DinnerPointAve.ASC; GameFarmRd-1.ASC; GameFarmRd-2.ASC; ReedyCreek-1.ASC; ReedyCreek-2.ASC; ScottsLandingRd.ASC; SouthWildlifeDr.ASC; StaffordAve-eastwest.ASC; StaffordAve-westeast.ASC; WescottAve.ASC</enttypl>
+        <enttypd>Binary data files in ASCII format that contain the raw, unprocessed GPR data. These files were exported from MALA GroundVision® software and contain equivalent data as .RD3 files.</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>not applicable</attrlabl>
+        <attrdef>Not applicable because .ASC files do not contain column header labels by default.</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>Columns are samples (first column is first sample; second column is second sample, etc.). Rows are traces (first row is first trace, second row is second trace, etc). Magnitudes of numerical data are dependent upon antenna frequency.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>markers.txt</enttypl>
+        <enttypd>distances along profile where noted surface features may influence interpretation of radar line</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>Line</attrlabl>
+        <attrdef>Name of the GPR profile line</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>DinnerPointAve; GameFarmRd-1; GameFarmRd-2; ReedyCreek-1; ReedyCreek-2; ScottsLandingRd; SouthWildlifeDr; StaffordAve-eastwest; StaffordAve-westeast; WescottAve</edomv>
+            <edomvd>Line named DinnerPointAve; Line named GameFarmRd-1; Line named GameFarmRd-2; Line named ReedyCreek-1; Line named ReedyCreek-2; Line named ScottsLandingRd; Line named SouthWildlifeDr; Line named StaffordAve-eastwest; Line named StaffordAve-westeast; Line named WescottAve</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>feet</attrlabl>
+        <attrdef>Distance along profile of given line where a surface feature exists that may interfere with radar interpretation</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>0</rdommin>
+            <rdommax>varies</rdommax>
+            <attrunit>feet</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>note</attrlabl>
+        <attrdef>textual description of surface feature that may interfere with radar interpretation of given line</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <udom>textual description of surface feature that may interfere with radar interpretation of given line</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <detailed>
+      <enttyp>
+        <enttypl>TraceCoordinates.txt</enttypl>
+        <enttypd>latitude and longitude (North American Datum of 1983) measured at specific traces along GPR profile</enttypd>
+        <enttypds>Producer defined</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>Line</attrlabl>
+        <attrdef>Name of the GPR profile line</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <edom>
+            <edomv>DinnerPointAve; GameFarmRd-1; GameFarmRd-2; ReedyCreek-1; ReedyCreek-2; ScottsLandingRd; SouthWildlifeDr; StaffordAve-eastwest; StaffordAve-westeast; WescottAve</edomv>
+            <edomvd>Line named DinnerPointAve; Line named GameFarmRd-1; Line named GameFarmRd-2; Line named ReedyCreek-1; Line named ReedyCreek-2; Line named ScottsLandingRd; Line named SouthWildlifeDr; Line named StaffordAve-eastwest; Line named StaffordAve-westeast; Line named WescottAve</edomvd>
+            <edomvds>Producer defined</edomvds>
+          </edom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Trace</attrlabl>
+        <attrdef>trace number in GPR profile line that has associated coordinates</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>1</rdommin>
+            <rdommax>varies</rdommax>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>N. Latitude</attrlabl>
+        <attrdef>north latitude of the trace number for given line</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>39.46486333</rdommin>
+            <rdommax>40.03993167</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>W.Longitude</attrlabl>
+        <attrdef>west longitude of the trace number for given line</attrdef>
+        <attrdefs>Producer defined</attrdefs>
+        <attrdomv>
+          <rdom>
+            <rdommin>-74.45110167</rdommin>
+            <rdommax>-74.079695</rdommax>
+            <attrunit>decimal degrees</attrunit>
+          </rdom>
+        </attrdomv>
+      </attr>
+    </detailed>
+    <overview>
+      <eaover>.RD3 files are 16-bit binary data files that contain the raw, unprocessed radar profiles than can be viewed as images in MALA GroundVision® software (available at http://www.guidelinegeo.com/support/resource-center/). The binary data are also provided in ASCII format and are described later in this metadata. Each GPR line has its own .RD3 file: DinnerPointAve.RD3; GameFarmRd-1.RD3; GameFarmRd-2.RD3; ReedyCreek-1.RD3; ReedyCreek-2.RD3; ScottsLandingRd.RD3; SouthWildlifeDr.RD3; StaffordAve-eastwest.RD3; StaffordAve-westeast.RD3; WescottAve.RD3.  
+.RAD files are header information files associated with data in the .RD3 files.  Users must download .RAD files for functionality of .RD3 files, and editing .RAD files may interfere with functionality and render .RD3 files unreadable. Values in the fields of the .RAD files are unique for each profile and defined prior to data collection or calculated internally by the software. See User Manual (MALA Geoscience®, 2011) for more information. Details of header fields relevant to this data collection are described elsewhere in this metadata record. Fields of .RAD files for each GPR line include: "SAMPLES"; "FREQUENCY'; "FREQUENCY STEPS"; "SIGNAL POSITION"; "RAW SIGNAL POSITION"; "DISTANCE FLAG"; "TIME FLAG"; "PROGRAM FLAG"; "EXTERNAL FLAG"; "TIME INTERVAL"; "DISTANCE INTERVAL"; "OPERATOR"; "CUSTOMER"; "SITE"; "ANTENNAS"; "ANTENNA ORIENTATION"; "ANTENNA SEPARATION"; "COMMENT"; "TIMEWINDOW"; "STACKS"; "STACK EXPONENT"; "STACKING TIME"; "LAST TRACE"; "STOP POSITION"; "SYSTEM CALIBRATION"; "START POSITION"; "SHORT FLAG"; "INTERMEDIATE FLAG"; "LONG FLAG"; "PREPROCESSING"; "HIGH"; "LOW"; "FIXED INCREMENT"; "FIXED MOVES UP"; "FIXED MOVES DOWN"; "FIXED POSITION"; "WHEEL CALIBRATION"; "POSITIVE DIRECTION". Values for these fields for each line (with blanks represented here as [null]) include: DinnerPointAve.RAD: (1017; 1280.000000; 1; 407.812500; 65013; 1; 0; 0; 0; 0.000000; 0.152091; _; _; _; HDR-80 MHz M1=1; NOT VALID FIELD; 0.480000; Wheel (30cm)=2; 794.531250; 256; 8; 0.000000; 4188; 636.805017; 0.0007812500; 0.000000; 1; 0; 0; 0; 0; 0; 0.300000; 0; 1; 0.000000; 263.000000; 1); GameFarmRd-1.RAD: (1017; 1280.000000; 1; -25.192188; 65013; 1; 0; 0; 0; 0.000000; 0.152091; _; _; _; HDR-80 MHz M1=1; NOT VALID FIELD; 0.480000; Wheel (30cm)=2; 794.531250; 256; 8; 0.000000; 2302; 350.113482; 0.0007812500; 0.000000; 1; 0; 0; 0; 0; 0; 0.300000; 0; 1; 0.000000; 263.000000; 1); GameFarmRd-2.RAD: (1017; 1280.000000; 1; 407.812500; 65013; 1; 0; 0; 0; 0.000000; 0.152091; _; _; _; HDR-80 MHz M1=1; NOT VALID FIELD; 0.480000; Wheel (30cm)=2; 794.531250; 256; 8; 0.000000; 1937; 294.448669; 0.0007812500; 0.000000; 1; 0; 0; 0; 0; 0; 0.300000; 0; 1; 0.000000; 263.000000; 1); ReedyCreek-1.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 3689; 1120.858382; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); ReedyCreek-2.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 2653; 806.082214; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); ScottsLandingRd.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 2388; 725.565144; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); SouthWildlifeDr.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 1293; 392.862534; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); StaffordAve-eastwest.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 2688; 816.716544; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); StaffordAve-westeast.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 2615; 794.536370; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1); WescottAve.RAD: (1024; 2037.689928; 22; -0.397085; 50568; 1; 0; 0; 0; 0.000000; 0.303838; [null]; [null]; [null]; 100 MHzS NJ; NOT VALID FIELD; 0.499872; [null]; 502.529843; 16; 4; 0.163840; 1573; 477.937174; 0.0000223069; 0.0000000000; 0; 1; 0; 0; 0; 0; 0.0000000000; 0; 1; 0.0000000000; 260.0065616798; 1)</eaover>
+      <eadetcit>MALA Geoscience®, 2011, GroundVision Software Operating Manual, v. 1.4, 54 p., http://www.guidelinegeo.com/wp-content/uploads/2016/07/MALA-GroundVision-v.1.4-Oct-2009.pdf</eadetcit>
+    </overview>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntperp>
+          <cntper>U.S. Geological Survey</cntper>
+          <cntorg>U.S. Geological Survey - ScienceBase</cntorg>
+        </cntperp>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Unless otherwise stated, all data, metadata and related materials are considered to satisfy the quality standards relative to the purpose for which the data were collected. Although these data and associated metadata have been reviewed for accuracy and completeness and approved for release by the U.S. Geological Survey (USGS), no warranty expressed or implied is made regarding the display or utility of the data for other purposes, nor on all computer systems, nor shall the act of distribution constitute any such warranty. Any use of trade, product, or firm names is for descriptive purposes only and does not imply endorsement by the U.S. Government.</distliab>
+    <techpreq>Opening .RD3 files to view GPR data as profile images requires MALA GroundVision® (available at http://www.guidelinegeo.com) or similar software.</techpreq>
+  </distinfo>
+  <metainfo>
+    <metd>20220810</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>GS-W-NJ DataRelease</cntper>
+          <cntorg>U.S. Geological Survey / New Jersey Water Science Center</cntorg>
+        </cntperp>
+        <cntpos>Hydrologist</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>3450 Princeton Pike, Suite 110</address>
+          <city>Lawrenceville</city>
+          <state>NJ</state>
+          <postal>08648</postal>
+          <country>United States</country>
+        </cntaddr>
+        <cntvoice>609-771-3913</cntvoice>
+        <cntemail>gs-w-nj_datarelease@usgs.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>

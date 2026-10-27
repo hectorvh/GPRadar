@@ -1,0 +1,84 @@
+Line	feet	note
+DinnerPointAve	0	survey begin along paved road in forested upland
+DinnerPointAve	35	metal gate and begin unpaved dirt road
+DinnerPointAve	630	a vehicle drove by antenna
+DinnerPointAve	1600	approximate first appearance of Phragmites
+DinnerPointAve	1870	parked vehicle
+GameFarmRd-1	0	survey along dirt road, approximate edge of salt marsh, into the forested upland
+GameFarmRd-1	1040	large tree branch in the way, had to manuver antenna over
+GameFarmRd-2	0	survey along dirt road in forested upland
+GameFarmRd-2	840	begin clearing with few trees
+ReedyCreek-1	0	survey begin in salt marsh on dirt road
+ReedyCreek-1	70	approximate first appearance of Phragmites
+ReedyCreek-1	122	nearby tree
+ReedyCreek-1	201	thicker Phragmites
+ReedyCreek-1	239	begin slightly elevated "island" in marsh with thick upland-type trees
+ReedyCreek-1	336	exit "island" and back in marsh
+ReedyCreek-1	465	begin transition to forested upland
+ReedyCreek-1	500	no more Phragmities, holly trees (Ilex opaca)
+ReedyCreek-1	557	begin small clearing with few trees
+ReedyCreek-1	609	end small clearing with few trees
+ReedyCreek-1	697	slight turn toward north
+ReedyCreek-1	895	lost about 2-3 feet in ice puddle
+ReedyCreek-1	979	lost about 2 feet in ice puddle
+ReedyCreek-1	1100	ice puddle, but no lost data
+ReedyCreek-1	1245	lost about 2 feet in ice puddle
+ReedyCreek-1	1307	ice puddle, but no lost data
+ReedyCreek-1	1347	ice puddle, but no lost data
+ReedyCreek-1	1436	ice puddle, but no lost data
+ReedyCreek-1	1523	begin large ice puddle, wheel did not spin entire duration so some data lost
+ReedyCreek-1	1742	end large ice puddle
+ReedyCreek-1	1829	begin large ice puddle, wheel did not spin entire duration so some data lost
+ReedyCreek-1	1978	end large ice puddle
+ReedyCreek-1	2256	ice puddle, but no lost data
+ReedyCreek-1	2451	GPS lost satellite
+ReedyCreek-1	2642	ponded water about 1 ft below east side of road
+ReedyCreek-1	3106	begin bumpy section of road
+ReedyCreek-1	3494	ponded water about 1 ft below east side of road
+ReedyCreek-2	0	survey begin in salt marsh on dirt road
+ReedyCreek-2	56	nearby manhole cover; these occur throughout and may indicate buried pipe interference parallel to survey line
+ReedyCreek-2	297	last appearance of Phragmites on northern side of road
+ReedyCreek-2	428	ponded water less than 1 feet below road
+ReedyCreek-2	457	nearby manhole cover
+ReedyCreek-2	712	ponded water about 1 ft below road; ice puddle, but no lost data
+ReedyCreek-2	750	ice puddle, but no lost data
+ReedyCreek-2	854	nearby manhole cover
+ReedyCreek-2	919	last appearance of Phragmites on southern side of road
+ReedyCreek-2	1132	ice puddle, but no lost data
+ReedyCreek-2	1199	ice puddle, but no lost data
+ReedyCreek-2	1288	ice puddle, but no lost data
+ReedyCreek-2	1344	nearby manhole cover
+ReedyCreek-2	1809	nearby manhole cover
+ReedyCreek-2	2153	begin ponded water about 1 ft below road
+ReedyCreek-2	2183	end ponded water about 1 ft below road
+ReedyCreek-2	2214	begin ponded water about 1 ft below road
+ReedyCreek-2	2244	end ponded water about 1 ft below road
+ReedyCreek-2	2260	nearby manhole cover
+ReedyCreek-2	2481	ponded water about 1 ft below road
+ReedyCreek-2	2623	nearby manhole cover
+ScottsLandingRd	0	survey along dirt road beginning at edge of marsh water
+ScottsLandingRd	80	approximate first appearance of Phragmites
+ScottsLandingRd	230	approximate last appearance of Phragmities
+ScottsLandingRd	980	begin curve toward south
+ScottsLandingRd	1100	end curve toward south; beginning of asphalt pavement on road
+ScottsLandingRd	1740	begin curve toward west
+ScottsLandingRd	1830	end curve toward west
+SouthWildlifeDr	0	survey along dirt road in salt marsh toward forested upland
+SouthWildlifeDr	85	metal gate
+SouthWildlifeDr	213	metal gate and approximate end of salt marsh/beginning of forested upland
+SouthWildlifeDr	400	ponded water to left of road, approximately 3-4 feet below road, ends about 500 feet distance
+StaffordAve-eastwest	0	survey along dirt shoulder next to asphalt road, in salt marsh toward forested upland
+StaffordAve-eastwest	522	approximate first appearance of deciduous trees
+StaffordAve-eastwest	1027	approximate last appearance of Phragmities
+StaffordAve-eastwest	2000	a vehicle drove by antenna
+StaffordAve-eastwest	2500	stream present next to road, approximately 4 feet below road
+StaffordAve-westeast	0	survey along dirt shoulder next to asphalt road, in forested upland toward salt marsh
+StaffordAve-westeast	1059	a vehicle drove by antenna
+StaffordAve-westeast	1442	stream present next to road, approximately 1 feet below road
+StaffordAve-westeast	1560	a vehicle drove by antenna
+StaffordAve-westeast	1760	approximate first appearance of Phragmites
+StaffordAve-westeast	1820	a vehicle drove by antenna
+StaffordAve-westeast	2248	approximate last appearance of deciduous trees; marsh water about 4 feet below road
+WescottAve	0	survey along dirt shoulder next to asphalt road, in forested upland toward salt marsh
+WescottAve	926	approximate first appearance of Phragmites
+WescottAve	1218	approximate edge of marsh
