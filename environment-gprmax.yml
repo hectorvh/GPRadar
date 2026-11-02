@@ -1,0 +1,15 @@
+# Versions match the gprMax-v4 environment used to run the tests.
+# gprMax itself is not installed by this file. gprMax 4.0.1 is built from
+# source because it needs a C compiler with OpenMP (GCC):
+# https://github.com/gprMax/gprMax
+name: gprMax-v4
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12.15
+  - numpy=2.5.4
+  - scipy=1.18.1
+  - h5py=3.16.0
+  - matplotlib=3.11.2
+  - pytest=9.1.1
+  - jupyter=1.1.1

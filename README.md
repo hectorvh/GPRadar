@@ -11,20 +11,25 @@ Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds t
 | `src/gprmax_loader.py` | Reads a gprMax HDF5 output into one scan. |
 | `src/preprocessing.py` | Time zero, dewow, background removal, band-pass and gain. |
 | `src/plot_preprocessing.py` | Figures of those steps and of the amplitude spectrum. |
+| `src/gprpy_reference.py` | Runs GPRPy dewow and AGC and saves the reference arrays. |
+| `src/compare_gprpy.py` | Compares dewow and AGC with that GPRPy reference. |
 | `notebooks/gpr_preprocessing.ipynb` | Loads one pipe B-scan and shows each processing step. |
-| `test/test_preprocessing.py` | Tests for the processing steps. |
+| `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
+| `environment-gprpy.yml` | Conda environment for the GPRPy reference script. |
 | `data/sim/` | Cylinder A-scan and the pipe-study B-scans. |
-| `figures/` | Plots of those runs, plus one GPRPy example profile. |
-| `test/` | Loader tests. |
+| `figures/` | Plots, plus `gprpy_comparison.csv` and `gprpy_comparison.png`. |
+| `test/` | Tests for the loader, the processing steps, and the GPRPy comparison. |
 
 ## Environments
 
-gprMax and GPRPy are in separate conda environments under `~/miniforge3`. Open a new terminal so `conda` is on your path.
+gprMax and GPRPy are in separate conda environments. Create them from the repository root:
 
-| Environment | What it runs | Source checkout |
-| --- | --- | --- |
-| `gprMax-v4` | gprMax 4.0.1, built with the system GCC and OpenMP | `~/Code/2026/gprMax-v4-src` |
-| `gprpy` | GPRPy 1.0.14 | `~/Code/2026/GPRPy` |
+```bash
+conda env create -f environment-gprmax.yml
+conda env create -f environment-gprpy.yml
+```
+
+`environment-gprmax.yml` installs the Python packages used to read gprMax output and run the processing. gprMax 4.0.1 itself is built from source (https://github.com/gprMax/gprMax) because it needs a C compiler with OpenMP (GCC). Install that release into the `gprMax-v4` environment after creating it.
 
 Run gprMax from this repository. The gprMax checkout contains an uncompiled package, and Python will load that instead of the installed one if it is the current directory.
 
@@ -42,11 +47,11 @@ gprpy
 
 ## Cylinder A-scan
 
-The getting-started metal cylinder is already in `data/sim/cylinder_Ascan_2D.h5`. The Ez trace is `figures/cylinder_Ascan_2D_Ez.png`. To run it again:
+The getting-started metal cylinder is already in `data/sim/cylinder_Ascan_2D.h5`. The Ez trace is `figures/cylinder_Ascan_2D_Ez.png`. To run it again, pass `examples/gpr/basic/cylinder_Ascan_2D.in` from the gprMax source tree:
 
 ```bash
 conda activate gprMax-v4
-python -m gprMax ~/Code/2026/gprMax-v4-src/examples/gpr/basic/cylinder_Ascan_2D.in \
+python -m gprMax /path/to/gprMax/examples/gpr/basic/cylinder_Ascan_2D.in \
   -o data/sim/cylinder_Ascan_2D.h5
 MPLBACKEND=Agg python -m gprMax.toolboxes.Plotting.plot_Ascan \
   data/sim/cylinder_Ascan_2D.h5 -save --outputs Ez
@@ -113,3 +118,28 @@ jupyter notebook notebooks/gpr_preprocessing.ipynb
 ```
 
 On this 12 cm profile the hyperbola covers most traces, so mean-trace removal leaves artefacts near the apex. Longer profiles, or subtracting a no-target simulation, avoid this.
+
+## Cross-check against GPRPy
+
+Dewow and AGC were compared with GPRPy 1.0.14 on the USGS Dinner Point Avenue profile (MALA, 4188 traces). GPRPy's result is `data/raw/usgs_forsythe/DinnerPointAve_gprpy_steps.npz`. That file is about 100 MB and is gitignored. Recreate it, then run the comparison:
+
+```bash
+conda activate gprpy
+python src/gprpy_reference.py
+```
+
+```bash
+conda activate gprMax-v4
+MPLBACKEND=Agg python src/compare_gprpy.py
+```
+
+`src/compare_gprpy.py` does not import GPRPy. It reads the `.npz`, runs `dewow` (25 ns) and then `gain_agc` (50 ns), and writes `figures/gprpy_comparison.csv` and `figures/gprpy_comparison.png`. "Interior" drops one window from each end of the trace: 32 samples for dewow, 64 for AGC.
+
+| Step | Region | Max abs. difference | Relative RMS | Correlation |
+| --- | --- | --- | --- | --- |
+| dewow | full | 1080.6326 | 0.030876 | 0.999541 |
+| dewow | interior | 1080.6326 | 0.025966 | 0.999686 |
+| AGC | full | 3.7854 | 6.782221 | 0.976026 |
+| AGC | interior | 3.6120 | 7.051782 | 0.999535 |
+
+GPRPy's moving window is one sample longer (33 and 65 instead of 32 and 64) and is centred differently, and its edge samples share one frozen window. Dewow still matches: interior correlation 0.999686, relative RMS 0.026. AGC does not match in amplitude. GPRPy divides by the L2 norm of the window; `gain_agc` divides by the RMS, about `sqrt(64)` smaller. The relative RMS of about 7 is that factor. Interior correlation stays 0.999535 because correlation ignores a constant scale. On the full trace the AGC correlation falls to 0.976026 because of the frozen edge gain. The two AGC panels in the figure share a colour scale, so the GPRPy panel looks pale and the difference looks like the `preprocessing.py` panel.

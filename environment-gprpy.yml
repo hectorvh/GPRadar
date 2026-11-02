@@ -1,0 +1,15 @@
+# Versions match the gprpy environment used to write the reference .npz.
+name: gprpy
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12.15
+  - pip
+  - pip:
+      - gprpy==1.0.14
+      - numpy==2.5.4
+      - scipy==1.18.1
+      - matplotlib==3.10.8
+      - tqdm==4.70.1
+      - Pmw==2.1.1
+      - pyevtk==1.7.0
