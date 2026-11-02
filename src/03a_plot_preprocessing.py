@@ -1,6 +1,7 @@
 """Show the processing sequence and the band-pass spectrum of one pipe B-scan."""
 
 import csv
+import importlib
 import sys
 from pathlib import Path
 
@@ -10,16 +11,15 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from gprmax_loader import load_gprmax
-from preprocessing import (
-    amplitude_spectrum,
-    bandpass,
-    default_band,
-    dewow,
-    gain_agc,
-    remove_background,
-    time_zero,
-)
+load_gprmax = importlib.import_module("02a_gprmax_loader").load_gprmax
+processing = importlib.import_module("02b_preprocessing")
+amplitude_spectrum = processing.amplitude_spectrum
+bandpass = processing.bandpass
+default_band = processing.default_band
+dewow = processing.dewow
+gain_agc = processing.gain_agc
+remove_background = processing.remove_background
+time_zero = processing.time_zero
 
 SCAN = ROOT / "data" / "sim" / "pipe_study" / "f1.5_e6_s0_d5" / "pipe_merged.h5"
 FIGURE = ROOT / "figures" / "preprocessing_steps_sim.png"

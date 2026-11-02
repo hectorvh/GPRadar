@@ -1,5 +1,6 @@
 """Processing steps keep a pulse and leave the input alone."""
 
+import importlib
 import sys
 from pathlib import Path
 
@@ -8,16 +9,15 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from preprocessing import (
-    amplitude_spectrum,
-    bandpass,
-    default_band,
-    dewow,
-    gain_agc,
-    gain_tpow,
-    remove_background,
-    time_zero,
-)
+processing = importlib.import_module("02b_preprocessing")
+amplitude_spectrum = processing.amplitude_spectrum
+bandpass = processing.bandpass
+default_band = processing.default_band
+dewow = processing.dewow
+gain_agc = processing.gain_agc
+gain_tpow = processing.gain_tpow
+remove_background = processing.remove_background
+time_zero = processing.time_zero
 
 
 def test_time_zero_aligns_a_known_shift():

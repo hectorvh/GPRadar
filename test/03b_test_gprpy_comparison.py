@@ -1,5 +1,6 @@
 """Dewow and AGC on DinnerPointAve agree with GPRPy away from the trace ends."""
 
+import importlib
 import sys
 from pathlib import Path
 
@@ -7,20 +8,19 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from compare_gprpy import (
-    AGC_WINDOW_NS,
-    DEWOW_WINDOW_NS,
-    NPZ,
-    compare,
-    load_reference,
-    pearson,
-    window_samples,
-)
+comparison = importlib.import_module("03b_compare_gprpy")
+AGC_WINDOW_NS = comparison.AGC_WINDOW_NS
+DEWOW_WINDOW_NS = comparison.DEWOW_WINDOW_NS
+NPZ = comparison.NPZ
+compare = comparison.compare
+load_reference = comparison.load_reference
+pearson = comparison.pearson
+window_samples = comparison.window_samples
 
 # The reference file is gitignored. Without it the comparison cannot run.
 pytestmark = pytest.mark.skipif(
     not NPZ.is_file(),
-    reason="run src/gprpy_reference.py in the gprpy env to write the reference npz",
+    reason="run src/02c_gprpy_reference.py in the gprpy env to write the reference npz",
 )
 
 

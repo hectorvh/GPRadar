@@ -109,5 +109,57 @@ Together:
 - Polarity tells an empty void from a wet or metal target when both make strong hyperbolas.
 - Raw hyperbolas are "smeared" targets. Migration collapses them back to a point, but it needs the right velocity.
 - Small targets look bigger than they are in unmigrated data.
+- Dewow, mean-trace removal and a band-pass clean the record. Gain only makes late arrivals visible; it does not remove noise. The chain is in [gpr_signal_processing.md](gpr_signal_processing.md).
+- A manufacturer file is a header plus a block of integer samples. The header holds the trace count, the time window and the step along the line.
+- A detector such as YOLO proposes a box around a hyperbola. The fit inside that box is what returns position, depth and velocity. That step is in [gpr_yolo.md](gpr_yolo.md).
+- The field profiles are raw USGS lines from Forsythe refuge. They have no depth axis and no labelled targets.
 
-*Source: Jol, H. M. (Ed.). (2008). Ground penetrating radar theory and applications. elsevier. Ch. 1 (Annan) and Ch. 14 (Yarovoy).*
+*Source for sections 1–6: Jol, H. M. (Ed.). (2008). Ground penetrating radar theory and applications. elsevier. Ch. 1 (Annan) and Ch. 14 (Yarovoy).*
+
+## 7. Common raw formats
+
+An instrument file is a header plus the samples. The header says how many samples sit in a trace, how many traces are in the line, the time window, and the distance between traces. The samples are integers from the receiver. Nothing in the file is depth: depth still needs a velocity.
+
+| Format | Maker | Files | Samples | What the header carries |
+| --- | --- | --- | --- | --- |
+| `.h5`, `.out` | gprMax | one HDF5 file | float field (Ez here) | `dt`, cell size, source and receiver positions. A merged B-scan drops the waveform, so the centre frequency is absent |
+| `.rd3` + `.rad` | MALA | binary samples and a text header | int16, traces packed one after another | `SAMPLES`, `FREQUENCY` (sampling rate, MHz), `TIMEWINDOW`, `DISTANCE INTERVAL`, `LAST TRACE`, `STOP POSITION`, antenna name and separation, stacks |
+| `.rd7` + `.rad` | MALA | same pair | int32 | the same `.rad` header |
+| `.DZT` | GSSI | one binary file | uint8 or uint16, or int32 | a header of at least 1024 bytes: samples per trace, bits per sample, scans per metre or per second, range in ns, start time |
+| `.DT1` + `.HD` | Sensors & Software | binary traces and a text header | int16, after a 128-byte header on every trace | number of traces, points per trace, time-zero sample, total time window, start and end position, step size, nominal frequency, antenna separation |
+
+`LAST TRACE` in a MALA `.rad` file is the number of traces, not a zero-based index. Dinner Point Avenue has `LAST TRACE` 4188 and `DISTANCE INTERVAL` 0.152091 m, so the last trace is at 4187 × 0.152091 m = 636.805 m, which is `STOP POSITION`. The sampling rate is `FREQUENCY` 1280 MHz, so `dt` = 0.78125 ns. `TIMEWINDOW` 794.53125 ns is 1017 × `dt`.
+
+`load_gprmax` reads the gprMax HDF5 into one array plus `dt`, trace spacing and source metadata. Field profiles in `data/raw/usgs_forsythe/` are MALA `.rd3`/`.rad` and are read with GPRPy.
+
+A few counts that are easy to get wrong:
+
+- Trace count comes from the header (`LAST TRACE`, or the number of traces in the `.HD`). Dividing the file size by the samples per trace is the check, not a second definition.
+- `FREQUENCY` in a `.rad` file is the sampling rate, not the antenna frequency. The antenna is the `ANTENNAS` line (80 MHz on Dinner Point Avenue).
+- Time in the header is two-way time. Position is distance along the line. Neither is depth.
+
+## 8. The field profiles
+
+The real data are ten common-offset GPR lines from the Edwin B. Forsythe National Wildlife Refuge, Atlantic County and Ocean County, New Jersey. They were collected for a U.S. Geological Survey study of the Kirkwood-Cohansey aquifer and of how sea-level rise might change fresh groundwater discharge to the wetlands. The lines themselves are the data release
+
+Fiore, A. R. (2018). *Raw ground-penetrating radar data, Edwin B. Forsythe National Wildlife Refuge, New Jersey, 2014–15.* U.S. Geological Survey data release, https://doi.org/10.5066/F7JH3KBD
+
+The hydrogeology and the interpreted sections are in Fiore, Voronin, and Wieben, USGS Scientific Investigations Report 2017-5135, https://doi.org/10.3133/sir20175135. This repository keeps the raw release, not those interpretations.
+
+A MALA antenna was towed by hand. Acquisition software was MALA RAMAC GroundVision 1.4.6. The survey dates in the metadata are 24 October 2014, 13 and 14 November 2014, and 7 January 2015. The files in `data/raw/usgs_forsythe/` are the instrument records: a `.rd3` of int16 samples and a `.rad` header for each line. No filter, topographic correction, velocity, or depth conversion has been applied. Depth is still two-way time.
+
+Two antennas were used.
+
+| Lines | Antenna | Samples | Trace spacing | Time window | Antenna separation |
+| --- | --- | --- | --- | --- | --- |
+| DinnerPointAve (4188 traces), GameFarmRd-1 (2302), GameFarmRd-2 (1937) | MALA HDR 80 MHz, shielded | 1017 | 0.152091 m | 794.53125 ns | 0.48 m |
+| ReedyCreek-1 (3689), ReedyCreek-2 (2653), ScottsLandingRd (2388), SouthWildlifeDr (1293), StaffordAve-eastwest (2688), StaffordAve-westeast (2615), WescottAve (1573) | MALA 100 MHz, shielded | 1024 | 0.303838 m | 502.529843 ns | 0.499872 m |
+
+`LAST TRACE` in each `.rad` file is that trace count. Dinner Point Avenue is the line used for the GPRPy comparison in [gpr_signal_processing.md](gpr_signal_processing.md).
+
+Two text files travel with the profiles:
+
+- `markers.txt` notes surface features at a distance along the line, in feet: gates, vehicles, phragmites, ice puddles where the wheel stopped and traces were lost. Those notes explain gaps and noise. They are not picked reflections.
+- `TraceCoordinates.txt` gives latitude and longitude (NAD83) for some traces. Positions came from a handheld GPS with a stated resolution of about 10 feet, and tree cover or cloud can make that worse. The coordinate is a place on the line, not a depth.
+
+The survey target was the aquifer framework, not a mapped pipe. A hyperbola in these lines may be a buried object, a contact, or interference (the markers mention a vehicle and possible pipes along Reedy Creek). Nothing in the raw release labels those events. The synthetic pipe scans in `data/sim/` are the records that have a known target position and permittivity.

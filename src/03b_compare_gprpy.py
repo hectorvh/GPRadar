@@ -1,7 +1,7 @@
 """Compare dewow and AGC on a field profile with GPRPy 1.0.14.
 
 GPRPy's ``dewow`` and ``agcGain`` (``gprpy/toolbox/gprpyTools.py``) are not
-the same operators as ``dewow`` and ``gain_agc`` in ``preprocessing.py``.
+the same operators as ``dewow`` and ``gain_agc`` in ``02b_preprocessing.py``.
 The notes below are those differences. The functions in this repository
 are not changed to remove them.
 
@@ -41,13 +41,14 @@ comparison is sample by sample. The figure uses the stored ``twtt`` and
 
 Run from the repository root, in the gprMax-v4 environment:
 
-    MPLBACKEND=Agg python src/compare_gprpy.py
+    MPLBACKEND=Agg python src/03b_compare_gprpy.py
 
-``src/gprpy_reference.py`` writes the ``.npz`` and has to be run first, in
+``src/02c_gprpy_reference.py`` writes the ``.npz`` and has to be run first, in
 the gprpy environment. This script does not import GPRPy.
 """
 
 import csv
+import importlib
 import sys
 from pathlib import Path
 
@@ -57,7 +58,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from preprocessing import dewow, gain_agc
+processing = importlib.import_module("02b_preprocessing")
+dewow = processing.dewow
+gain_agc = processing.gain_agc
 
 NPZ = ROOT / "data" / "raw" / "usgs_forsythe" / "DinnerPointAve_gprpy_steps.npz"
 FIGURE = ROOT / "figures" / "gprpy_comparison.png"
@@ -75,7 +78,7 @@ def window_samples(window_ns):
 
 
 def load_reference(path):
-    """Load the arrays written by ``src/gprpy_reference.py``."""
+    """Load the arrays written by ``src/02c_gprpy_reference.py``."""
 
     with np.load(path) as archive:
         raw = np.asarray(archive["raw"], dtype=np.float64).copy()
@@ -212,7 +215,7 @@ def main():
             f"Missing {NPZ.relative_to(ROOT)}.\n"
             "Create it first, in the gprpy environment, from the repository root:\n"
             "    conda activate gprpy\n"
-            "    python src/gprpy_reference.py",
+            "    python src/02c_gprpy_reference.py",
             file=sys.stderr,
         )
         sys.exit(1)

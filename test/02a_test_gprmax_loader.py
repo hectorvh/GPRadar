@@ -1,5 +1,6 @@
 """Loader checks against synthetic outputs and the pipe B-scan already run."""
 
+import importlib
 import sys
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from gprmax_loader import load_gprmax
+load_gprmax = importlib.import_module("02a_gprmax_loader").load_gprmax
 
 ROOT = Path(__file__).resolve().parents[1]
 ASCAN = ROOT / "data" / "sim" / "cylinder_Ascan_2D.h5"

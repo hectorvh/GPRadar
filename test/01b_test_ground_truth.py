@@ -1,11 +1,12 @@
 """Ground truth is the cylinder centre and the soil permittivity."""
 
+import importlib
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pipe_bscan_study import ground_truth_from_model
+ground_truth_from_model = importlib.import_module("01a_pipe_bscan_study").ground_truth_from_model
 
 ROOT = Path(__file__).resolve().parents[1]
 

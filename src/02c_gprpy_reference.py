@@ -2,9 +2,9 @@
 
 Run in the gprpy environment from the repository root:
     conda activate gprpy
-    python src/gprpy_reference.py
+    python src/02c_gprpy_reference.py
 
-Saves GPRPy's array after each step, so src/preprocessing.py can be
+Saves GPRPy's array after each step, so src/02b_preprocessing.py can be
 compared against it. Parameters are in samples (dt = 0.78125 ns):
 dewow 32 samples = 25 ns, AGC 64 samples = 50 ns.
 """
