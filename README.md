@@ -12,6 +12,9 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `notebooks/01a_download_usgs_raw.ipynb` | Downloads Dinner Point Avenue and removes the other lines. |
 | `src/01a_pipe_bscan_study.py` | Eight variants of `pipe.in`, then one comparison figure. |
 | `notebooks/01b_pipe_bscan_study.ipynb` | The same eight runs, plotted in the notebook. |
+| `configs/scenes.yaml` | Field-scale presets: 80 MHz and 400 MHz. |
+| `src/01c_scene_generator.py` | Draws a 2D scene, writes the `.in` file, the reference trace, and the travel times. |
+| `test/01c_test_scene_generator.py` | Checks the draw, the fixed grid, the reference model, and the visibility rule. |
 | `test/01b_test_ground_truth.py` | Checks the pipe centre and the soil permittivity. |
 | `src/02a_gprmax_loader.py` | Reads a gprMax HDF5 output into one scan. |
 | `notebooks/02a_gprmax_loader.ipynb` | The same read, then the Dinner Point Avenue comparison. |
@@ -25,7 +28,7 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `test/03b_test_gprpy_comparison.py` | Checks the interior correlation with GPRPy. |
 | `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
 | `environment-gprpy.yml` | Conda environment for the GPRPy reference script. |
-| `data/sim/` | Cylinder A-scan and the pipe-study B-scans. |
+| `data/sim/` | Cylinder A-scan, the pipe-study B-scans, and field-scale scenes. |
 | `figures/` | Plots, plus `gprpy_comparison.csv` and `gprpy_comparison.png`. |
 
 ## Environments
@@ -83,10 +86,46 @@ jupyter notebook notebooks/01b_pipe_bscan_study.ipynb
 
 Outputs:
 
-- `figures/pipe_bscan_variants.png` — Ez with the mean trace removed (the script only)
-- `data/sim/pipe_study/<tag>/pipe_merged.h5` — one merged B-scan per case
-- `data/sim/pipe_study/<tag>/ground_truth.json` — target centre, depth, radius, and permittivity
-- `data/sim/pipe_study/cases.csv` — the eight cases
+- `figures/pipe_bscan_variants.png`: Ez with the mean trace removed (the script only)
+- `data/sim/pipe_study/<tag>/pipe_merged.h5`: one merged B-scan per case
+- `data/sim/pipe_study/<tag>/ground_truth.json`: target centre, depth, radius, and permittivity
+- `data/sim/pipe_study/cases.csv`: the eight cases
+
+## Field-scale scenes
+
+`src/01c_scene_generator.py` reads `configs/scenes.yaml` and writes one 2D model, in the same form as `pipe.in`, plus a JSON file of the parameters and the predicted hyperbola. It also writes `reference.in`: the same soil and layers, with no targets and no rocks. That model is one trace, saved as `reference.h5`. Subtracting it removes the direct air wave and the horizontal reflections. The soil is a half-space plus 0, 1, or 2 layers, conductivity 0 to 0.01 S/m. Each scene has 1 to 3 targets, a metal pipe, an air-filled PVC pipe, or an air void, and 0 to 5 rocks. A cylinder is drawn large enough to cover at least one cell. Targets sit inside the fixed profile, with 0.05 m of clearance from each other and from the ends.
+
+Every scene in a preset uses the same cell size, time window, domain, and trace count. The cell is checked against one tenth of the shortest wavelength. That wavelength is the slowest soil velocity divided by 2.5 times the centre frequency: the gprMax Ricker has little energy above that multiple. The check allows 0.1 mm, so a round cell size can land the step and the offset on whole cells. At 80 MHz, lambda_min/10 is 0.037474 m and the cell is 0.0375 m. The time window has to cover the bistatic two-way time to the deepest target bottom the preset allows, at that slowest velocity, plus 25%, plus the Ricker delay. The pulse peaks at sqrt(2)/f. The z axis is one cell, as in `pipe.in`, so the PML on that face is 0. The in-plane PML is 10 cells, and the antennas sit two cells above the soil.
+
+The profile length is fixed from that same bound. The flank half-width is the distance at which the hyperbola leaves the window. Full flanks, plus one hyperbola-width of flat ground on each side, is six half-widths. `field_80mhz` needs 15.22 m, so the profile is 15.30 m: 102 steps of 0.15 m, 103 traces. `field_400mhz` needs 10.33 m. The profile is capped at 5.00 m: 100 steps of 0.05 m, 101 traces.
+
+`field_80mhz` is an 80 MHz Ricker. The offset is 0.4875 m, 13 cells, the nearest node to the 0.48 m Dinner Point Avenue pair. The trace step is 0.15 m, 4 cells. Relative permittivity is 4 to 16. Target tops are 0.3 m to 2.0 m. `field_400mhz` is a 400 MHz Ricker. The offset is 0.1625 m, 26 cells, the nearest node to the 0.16 m separation in a shielded housing such as the GSSI 400 MHz antenna. The trace step is 0.05 m, 8 cells. Relative permittivity is 4 to 12. Target tops are 0.2 m to 1.0 m. Those ranges keep one scene to a few minutes.
+
+| Preset | dx | Time window | Domain (x, y) | Profile | Traces | PML |
+| --- | --- | --- | --- | --- | --- | --- |
+| field_80mhz | 0.0375 m | 102.10 ns | 16.6125 m, 3.975 m | 15.30 m | 103 | 10 cells, 0.375 m |
+| field_400mhz | 0.00625 m | 47.10 ns | 5.300 m, 2.2375 m | 5.00 m | 101 | 10 cells, 0.0625 m |
+
+The bound the window is checked against is 102.09 ns at 80 MHz (permittivity 16, target bottom 2.5 m) and 47.07 ns at 400 MHz (permittivity 12, target bottom 1.5 m).
+
+A target is marked visible when its predicted apex is at least one centre period after the direct air wave and still inside the window. The direct wave arrives at the Ricker delay plus the offset divided by the speed of light. A target that fails that test stays in the model as clutter and gets no label. In 1000 draws, the visible share at 80 MHz was 77.3% of air voids (527/682), 81.5% of metal pipes (546/670), and 78.9% of PVC pipes (526/667). At 400 MHz every target was visible (682 air, 670 metal, 667 PVC).
+
+Seed 0, including the reference trace, on this 16-thread CPU:
+
+| Preset | Wall time | Cells | Iterations | Traces |
+| --- | --- | --- | --- | --- |
+| field_80mhz | 81.6 s | 46958 | 1156 | 103 |
+| field_400mhz | 381.9 s | 303584 | 3197 | 101 |
+
+The 80 MHz run is 80.0 s for the B-scan and 1.6 s for the reference. The 400 MHz run is 377.3 s and 4.7 s. Every scene in a preset has this grid, so 300 scenes is about 6.8 hours at 80 MHz and about 31.8 hours at 400 MHz. That batch was not run. A merged file newer than its `.in`, with the full trace count, is skipped.
+
+```bash
+conda activate gprMax-v4
+python src/01c_scene_generator.py --preset field_80mhz --seed 0 --n 1 --out data/sim/scenes --run --figure figures/scene_field_80mhz_seed0.png
+python src/01c_scene_generator.py --preset field_400mhz --seed 0 --n 1 --out data/sim/scenes --run --figure figures/scene_field_400mhz_seed0.png
+```
+
+The figure is the raw B-scan beside the processed one, with the predicted hyperbolas drawn on both. Processing is time zero, dewow, background removal, a band-pass around the centre frequency, then AGC. Dewow and AGC use three periods of the centre frequency, the same multiple as the 2 ns window on the 1.5 GHz pipe: 37.5 ns at 80 MHz and 7.5 ns at 400 MHz. The apex check uses the reference-subtracted traces and takes the envelope maximum within half a period of the prediction.
 
 ## Reading a gprMax file
 
@@ -118,11 +157,11 @@ python -m pytest test/02a_test_gprmax_loader.py
 
 The steps in `src/02b_preprocessing.py` run in this order:
 
-1. **Time zero** — shift each trace so the first break is at the start of the record.
-2. **Dewow** — subtract a running mean and remove the low-frequency bias from antenna coupling.
-3. **Background removal** — subtract the mean trace and remove the horizontal direct wave.
-4. **Band-pass** — keep about half to twice the antenna frequency, without shifting the pulse.
-5. **Gain** — divide by a running RMS so a weaker late reflection remains visible.
+1. **Time zero**: shift each trace so the first break is at the start of the record.
+2. **Dewow**: subtract a running mean and remove the low-frequency bias from antenna coupling.
+3. **Background removal**: subtract the mean trace and remove the horizontal direct wave.
+4. **Band-pass**: keep about half to twice the antenna frequency, without shifting the pulse.
+5. **Gain**: divide by a running RMS so a weaker late reflection remains visible.
 
 ```bash
 conda activate gprMax-v4

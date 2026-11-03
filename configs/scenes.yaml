@@ -1,0 +1,82 @@
+# Field-scale 2D scenes. Lengths are metres, frequency is hertz, conductivity is S/m.
+#
+# f_max_factor: the gprMax Ricker (zeta = pi^2 f^2) has little energy above
+# about 2.5 times the centre frequency. The fixed dx is checked against
+# lambda_min/10 at this frequency.
+f_max_factor: 2.5
+# In-plane PML depth, in cells. The invariant z axis is one cell, as in pipe.in,
+# so that face has no PML.
+pml_cells: 10
+# Fraction added to the two-way time to the deepest target bottom.
+time_margin: 0.25
+# Gap between circle surfaces, metres.
+clearance_m: 0.05
+# Flat ground added beyond each flank, in hyperbola-widths. Used to choose
+# the fixed profile length at the slowest, deepest target the preset allows.
+background_widths: 1.0
+
+presets:
+  field_80mhz:
+    # MALA HDR-80 on Dinner Point Avenue: 80 MHz, about 0.48 m Tx-Rx, 0.15 m traces.
+    frequency_hz: 8.0e7
+    # 13 cells and 4 cells of dx, so the antennas stay on nodes.
+    dx: 0.0375
+    tx_rx_offset_m: 0.4875
+    trace_step_m: 0.15
+    # Derived window at er 16 and a 2.5 m target bottom is 102.09 ns.
+    time_window_s: 1.021e-7
+    # PML + 3.0 m of soil + 2 antenna cells + 0.15 m of air + PML.
+    domain_y_m: 3.975
+    # At er 16, top 2.0 m, radius 0.25 m, the flank half-width is 2.54 m.
+    # Full flanks plus one hyperbola-width of flat ground on each side is
+    # 15.22 m. 15.30 m is 102 steps.
+    profile_length_m: 15.30
+    eps_min: 4.0
+    eps_max: 16.0
+    top_depth_min_m: 0.3
+    top_depth_max_m: 2.0
+  field_400mhz:
+    # Shielded 400 MHz housing. A GSSI 400 MHz antenna keeps the transmitter
+    # and receiver about 0.16 m apart. 0.1625 m is 26 cells.
+    frequency_hz: 4.0e8
+    # Finer than lambda/10 at er 12 (0.00865 m), so the run stays on one grid.
+    dx: 0.00625
+    tx_rx_offset_m: 0.1625
+    trace_step_m: 0.05
+    # Derived window at er 12 and a 1.5 m target bottom is 47.07 ns.
+    time_window_s: 4.71e-8
+    # PML + 2.0 m of soil + 2 antenna cells + 0.10 m of air + PML.
+    domain_y_m: 2.2375
+    # The same flank rule gives 10.33 m. Capped at 5 m, 100 steps.
+    profile_length_m: 5.0
+    eps_min: 4.0
+    eps_max: 12.0
+    top_depth_min_m: 0.2
+    top_depth_max_m: 1.0
+
+soil:
+  # One homogeneous half-space, plus 0, 1, or 2 horizontal layers above it.
+  # Permittivity limits live on each preset.
+  sigma_min: 0.0
+  sigma_max: 0.01
+  extra_layers_min: 0
+  extra_layers_max: 2
+  layer_thickness_min_m: 0.15
+  layer_thickness_max_m: 0.6
+
+targets:
+  count_min: 1
+  count_max: 3
+  radius_min_m: 0.025
+  radius_max_m: 0.25
+  # Air-filled PVC shell. The wall is at least two cells thick.
+  pvc_eps_r: 3.0
+  types: [metal, pvc, air]
+
+rocks:
+  count_min: 0
+  count_max: 5
+  eps_min: 6.0
+  eps_max: 9.0
+  radius_min_m: 0.02
+  radius_max_m: 0.08
