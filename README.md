@@ -26,6 +26,13 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `notebooks/03a_scipy_gpr_simulated.ipynb` | Loads one pipe B-scan and shows each processing step. |
 | `src/03b_compare_gprpy.py` | Compares dewow and AGC with that GPRPy reference. |
 | `test/03b_test_gprpy_comparison.py` | Checks the interior correlation with GPRPy. |
+| `src/04a_inventory_mendeley.py` | Read-only inventory of the Mendeley GPR image set. |
+| `test/04a_test_inventory.py` | Checks YOLO/VOC conversion, dHash, and that the inventory does not write into the data root. |
+| `src/04b_split_mendeley.py` | Locked original split, labelling export, and YOLO label import. |
+| `test/04b_test_split.py` | Checks grouping, stratification, the test lock, export bytes, and import validation. |
+| `data/splits/mendeley_originals.csv` | Split table for the 285 originals (no image bytes). |
+| `configs/mendeley_test_lock.txt` | SHA-256 lock of the sorted test ids. |
+| `data/labels/mendeley_originals/` | YOLO labels for the cavity and utility originals (after import). |
 | `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
 | `environment-gprpy.yml` | Conda environment for the GPRPy reference script. |
 | `data/sim/` | Cylinder A-scan, the pipe-study B-scans, and field-scale scenes. |
@@ -177,6 +184,49 @@ jupyter notebook notebooks/03a_scipy_gpr_simulated.ipynb
 ```
 
 On this 12 cm profile the hyperbola covers most traces, so mean-trace removal leaves artefacts near the apex. Longer profiles, or subtracting a no-target simulation, avoid this.
+
+## Real data: Mendeley GPR dataset
+
+Detection tests use Mojahid et al. (2025), *Intelligent recognition of subsurface utilities and voids using ground-penetrating radar and deep learning techniques: Data of GPR profiles images*, Data in Brief / Mendeley Data, DOI [10.17632/ww7fd9t325.1](https://doi.org/10.17632/ww7fd9t325.1). Unzip the download into `data/raw/mendeley_gpr/` (gitignored). Do not commit those images.
+
+```bash
+conda activate gprMax-v4
+python src/04a_inventory_mendeley.py --root data/raw/mendeley_gpr --out figures/mendeley_inventory
+```
+
+That walk is read-only on the data root. It writes `figures/mendeley_inventory/files.csv`, `boxes.csv`, `groups.csv`, `summary.md`, plus `figures/mendeley_inventory_originals.png` and `figures/mendeley_inventory_matches.png`.
+
+| Class | Originals | Augmented | Published class total |
+| --- | ---: | ---: | ---: |
+| void (`cavities`) | 79 | 553 | 553 |
+| utility (`Utilities`) | 131 | 786 | 786 |
+| intact | 75 | 900 | 900 |
+
+The published 2,239 count matches the three augmented folders. The 285 originals are present as well. Antenna frequency is not recorded in the files (`frequency = unknown`). YOLO class id 0 is used for both void and utility; intact images have no boxes. Only augmented void and utility images carry YOLO and VOC labels.
+
+The augmented folders are not used for training or evaluation. Only 328 of 2,239 augmented images matched an original at high confidence, so the mapping is not reliable enough for a leakage-free split. The working set is the 285 originals, with one detection class `target`. Intact originals are negatives (no boxes). The 210 cavity and utility originals are labelled by hand.
+
+Near-duplicates among originals (dHash ≤ 6 under flip and rotation) are grouped and always share a split. The split is stratified by folder class at the group level: 30% test, 70% train, seed 0. The sorted test ids are locked in `configs/mendeley_test_lock.txt`.
+
+```bash
+conda activate gprMax-v4
+python src/04b_split_mendeley.py split
+python src/04b_split_mendeley.py export
+```
+
+`export` copies the 210 cavity and utility originals to `data/raw/mendeley_labelling/images/` under stable ids (`void_0014.jpg`, `utility_0181.jpg`, …) without encoding the split. `labels.txt` holds the single class name `target`. `figures/mendeley_labelling_guide.png` shows the authors' boxes on augmented images as a visual reference.
+
+Labelling rule: one box per target hyperbola or void anomaly. The box spans the apex and the visible flanks down to where they fade into the background. Overlapping hyperbolas from one target get one box.
+
+In makesense.ai: upload `data/raw/mendeley_labelling/images/`, load `labels.txt`, draw the boxes, export "YOLO" as a zip, and unzip it to `data/raw/mendeley_labelling/labels_yolo/`. Then:
+
+```bash
+python src/04b_split_mendeley.py import
+```
+
+Import checks that every exported image has a class-0 box inside the frame (at least 4 px wide and tall), then writes `data/labels/mendeley_originals/<id>.txt`.
+
+Limitation: The antenna frequency of each real image is not recorded in the dataset (200 or 400 MHz). Synthetic scans were simulated at 400 MHz and matched to the real images by image scale, not by time or depth.
 
 ## Field profile
 
