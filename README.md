@@ -206,7 +206,7 @@ The published 2,239 count matches the three augmented folders. The 285 originals
 
 The augmented folders are not used for training or evaluation. Only 328 of 2,239 augmented images matched an original at high confidence, so the mapping is not reliable enough for a leakage-free split. The working set is the 285 originals, with one detection class `target`. Intact originals are negatives (no boxes). The 210 cavity and utility originals are labelled by hand.
 
-Near-duplicates among originals (dHash ≤ 6 under flip and rotation) are grouped and always share a split. The split is stratified by folder class at the group level: 30% test, 70% train, seed 0. The sorted test ids are locked in `configs/mendeley_test_lock.txt`.
+Near-duplicates among originals (identity dHash ≤ 6, or a flip/rotation with transform dHash ≤ 2) are grouped and always share a split. The split is stratified by folder class at the group level: 30% test, 70% train, seed 0. Counts: void 55/24 train/test images (55/24 groups), utility 92/39 (90/38 groups), intact 55/20 (45/19 groups). 271 groups in total. The sorted test ids are locked in `configs/mendeley_test_lock.txt`.
 
 ```bash
 conda activate gprMax-v4

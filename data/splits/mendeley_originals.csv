@@ -1,0 +1,286 @@
+id,path,class,group_id,split,md5
+intact_0001,intact/1.JPG,intact,g0000,test,46b6aae2d3f19f5ad196dd0f07caa36d
+intact_0001_2,intact/1 (2).JPG,intact,g0000,test,2bbce0270988f3ff09b49904a73ab306
+intact_0002,intact/2.JPG,intact,g0001,train,911ea2ce6223745418ed45574effc7af
+intact_0002_2,intact/2 (2).JPG,intact,g0002,train,8af022a1c6520d3d3b7cc74137f9a810
+intact_0003,intact/3.JPG,intact,g0003,test,2501aed7168197b4bd83122271d978e0
+intact_0003_2,intact/3 (2).JPG,intact,g0004,train,6827bf65b36d82ec0f75bef82ba53174
+intact_0004,intact/4.JPG,intact,g0005,test,f3ce15c84a7536db929b5baabfefe1f5
+intact_0004_2,intact/4 (2).JPG,intact,g0004,train,945e78a56460d7315a47197a8058cc2c
+intact_0005,intact/5.JPG,intact,g0006,train,1047e0842acd4b4ba30d3f513d7c3a7d
+intact_0005_2,intact/5 (2).JPG,intact,g0007,test,1792c909520c83eb06df19ae5bac1e85
+intact_0006,intact/6.JPG,intact,g0008,train,f8e794501de6fa6cb6c9f83d574a0e1b
+intact_0006_2,intact/6 (2).JPG,intact,g0009,train,90aedaecad283d9ffab3dbd4ede6a021
+intact_0007,intact/7.JPG,intact,g0010,train,87173bef1cd6f40b1deb345c7005c17c
+intact_0007_2,intact/7 (2).JPG,intact,g0016,train,7af6e11b578109654668516fdcdfe23c
+intact_0008,intact/8.JPG,intact,g0016,train,f8bdae2d3eed17a696b49806ba1022a9
+intact_0008_2,intact/8 (2).JPG,intact,g0016,train,a12e7f6332cea0359f786e8066b8a986
+intact_0009,intact/9.JPG,intact,g0011,test,7aa908fd51a1d424b82ad659a542ab68
+intact_0009_2,intact/9 (2).JPG,intact,g0016,train,dbc6682beaa4b7914214ef5490aff8bf
+intact_0010,intact/10.JPG,intact,g0012,test,98f87cf640266193de1693752470f156
+intact_0010_2,intact/10 (2).JPG,intact,g0013,train,3947914d22244f76e2d233257b2f7f81
+intact_0011,intact/11.JPG,intact,g0014,train,2050ba5cd969d1a08611fdbc66d6ef45
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train,7571c669785326306aec784f5b53de90
+intact_0012,intact/12.JPG,intact,g0015,train,c08889e4d1495f3d9ac1b58f5bc8574b
+intact_0012_2,intact/12 (2).JPG,intact,g0015,train,e76ce460e0d6571f24788d30e2ecab37
+intact_0013,intact/13.JPG,intact,g0016,train,d05eeabb10a354d979f0474ef7998187
+intact_0013_2,intact/13 (2).JPG,intact,g0017,train,e93d6687e33028473d6f11e32d80f5d0
+intact_0014,intact/14.JPG,intact,g0018,train,f8515e6cc75b11fb22594cf0d20d7c64
+intact_0014_2,intact/14 (2).JPG,intact,g0019,train,d9b5aaf4c9a7d90fdb7730bc0b919ad7
+intact_0015,intact/15.JPG,intact,g0020,train,9d9acbf1347e4e8700f2e6106c5ba35e
+intact_0015_2,intact/15 (2).JPG,intact,g0016,train,ae3b7cdb44c24248fb08c35fc6bb7210
+intact_0016,intact/16.JPG,intact,g0021,train,dbcc7c416bd4c9ad6fb2b89876bae6d6
+intact_0016_2,intact/16 (2).JPG,intact,g0022,train,a9227e63fac0cf5b331d4ac28c552e16
+intact_0017,intact/17.JPG,intact,g0023,test,88c6b9b937ebde5ffed64d21fa9d99b4
+intact_0017_2,intact/17 (2).JPG,intact,g0024,test,85a7686117e8e36a0c179d67c5330c37
+intact_0018,intact/18.JPG,intact,g0016,train,577e1c93d923b19df3f2342f6bf31970
+intact_0018_2,intact/18 (2).JPG,intact,g0016,train,7cec6f2a273d67bd64c2a6b3ab4ff938
+intact_0019,intact/19.JPG,intact,g0025,train,62d8a6e5e152d14a9557885583bc8793
+intact_0019_2,intact/19 (2).JPG,intact,g0026,train,3bf475856edf69afd6fcd297c8868b11
+intact_0020,intact/20.JPG,intact,g0027,test,52c79e7ae076be66ed686711ef3b3423
+intact_0020_2,intact/20 (2).JPG,intact,g0028,test,550aa9613ddd66de8085f7c9e105369e
+intact_0021,intact/21.JPG,intact,g0029,test,a066b9d2e9a120f1529e8772000953d2
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train,56a817338d70a1e6c2ddcf38c6cd50b8
+intact_0023,intact/23.JPG,intact,g0031,train,2a8fcedbdf52a4acb158aa0dd8536089
+intact_0023_2,intact/23 (2).JPG,intact,g0032,train,efe5989d48a91658f5c389276f3e96f0
+intact_0025,intact/25.JPG,intact,g0033,test,712d8c304e4bc9c8d1900484bf059279
+intact_0025_2,intact/25 (2).JPG,intact,g0034,train,175e8b37c97ef0bb7eae1c433100973b
+intact_0026,intact/26.JPG,intact,g0035,test,f0dfe106c7c0fe76434773347021ac19
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train,6eba452e9f44d8024a4ca6ab87b6941f
+intact_0027,intact/27.JPG,intact,g0037,train,27a4d60b594344b0c445d59ecf7ae711
+intact_0027_2,intact/27 (2).JPG,intact,g0038,train,12d43755cf33461ee9cf2a35b64e6060
+intact_0028,intact/28.JPG,intact,g0039,train,4ba117aa3e5385334d1ac865f63b4c79
+intact_0028_2,intact/28 (2).JPG,intact,g0040,test,7617738c3dd4c00e314079ea108b56ed
+intact_0031,intact/31.JPG,intact,g0041,train,291132bae7a5e4a7b0484508be85703f
+intact_0031_2,intact/31 (2).JPG,intact,g0042,test,b369a1648a879ebf21dc9f649c28c97d
+intact_0032,intact/32.JPG,intact,g0043,train,6cf7bdff08ba0ca83a9daa614150d577
+intact_0032_2,intact/32 (2).JPG,intact,g0044,train,6e34b85bcbdc0a57923f27004b62a014
+intact_0036,intact/36.JPG,intact,g0045,test,71819ecfa1a860a2d27b509152a91bc6
+intact_0036_2,intact/36 (2).JPG,intact,g0046,train,b129af0b4884d8e52afeea4b1a5e874c
+intact_0037,intact/37.JPG,intact,g0047,train,16e8a3cea8663c70cba4badcdf939491
+intact_0038,intact/38.JPG,intact,g0048,train,5856573122dcb658f4f770ec74abbf29
+intact_0038_2,intact/38 (2).JPG,intact,g0049,train,11400d816423482e8bb9e8240dc279fa
+intact_0039,intact/39.JPG,intact,g0050,train,69ff5750cea89c481aa47e1ae456a386
+intact_0039_2,intact/39 (2).JPG,intact,g0051,train,531a640ef75ef3430276d50a65f4ec50
+intact_0040,intact/40.JPG,intact,g0052,train,605eeee65cd09bbad2dad35e03ad76ea
+intact_0040_2,intact/40 (2).JPG,intact,g0053,train,ff83369b564c536bab62599a24d16202
+intact_0041,intact/41.JPG,intact,g0054,train,8b4f71c786d0a432d1d7a5d2f8b7a7c6
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train,fb404bc9834ee84cf169749e1cb99764
+intact_0042,intact/42.JPG,intact,g0056,train,60df8f94b251454c7e326b8f96fa31c3
+intact_0042_2,intact/42 (2).JPG,intact,g0057,train,a3c86df5efee72f8c104d72ef618ff4c
+intact_0043,intact/43.JPG,intact,g0058,train,2ceb0c89f5662eecc4f5d26476ebe6ac
+intact_0043_2,intact/43 (2).JPG,intact,g0059,test,8d2c1497b0d8158e9bbb6036d5febee2
+intact_0044,intact/44.JPG,intact,g0060,test,b4f7f5ebb45000dbc232fad16c6f51ff
+intact_0044_2,intact/44 (2).JPG,intact,g0061,test,b17e767c830959e4040d015e7859f012
+intact_0045,intact/45.JPG,intact,g0062,train,3628e20103f6eb2d4549a3f1a6f9414b
+intact_0045_2,intact/45 (2).JPG,intact,g0063,train,9edba4115bfe5d430a893b24fe7fd048
+utility_0001,Utilities/001.jpg,utility,g0064,test,f06e524433cef85ff9ffc2bee724e0d7
+utility_0004,Utilities/004.jpg,utility,g0065,train,d06915cc37cfb37fe8cb3ae0450dcd97
+utility_0007,Utilities/007.jpg,utility,g0066,train,70f5bf742520d3979bf73791ce7ab1c1
+utility_0008,Utilities/008.jpg,utility,g0067,train,a001e91356fa425d604dc39c9cda66c5
+utility_0009,Utilities/009.jpg,utility,g0068,train,b8f4dd8b1fc267e64e4a4edcb8dc86ff
+utility_0011,Utilities/011.jpg,utility,g0069,test,83ffa36f5bd320e7f3706f3e862133f4
+utility_0012,Utilities/012.jpg,utility,g0070,train,171b8d7d4e31d2b21a5c71a4e5b5bec2
+utility_0013,Utilities/013.jpg,utility,g0071,train,ea48fae9fd9b3916d31bbe99cf95cd56
+utility_0014,Utilities/014.jpg,utility,g0072,train,47b08485a9bcc215d6f2a3c23178e7c1
+utility_0015,Utilities/015.jpg,utility,g0073,train,e709c02beec8b20b349b16a216e14002
+utility_0016,Utilities/016.jpg,utility,g0074,train,f070e817144bf1daf3320c282308845f
+utility_0018,Utilities/018.jpg,utility,g0075,train,4a816c24a1eb6ba16defe37f1d3f6690
+utility_0023,Utilities/023.jpg,utility,g0076,train,bb97e7916d0cb3bae13bac9377318590
+utility_0024,Utilities/024.jpg,utility,g0077,train,bfa139bad199437338403d1f4ab93ba6
+utility_0026,Utilities/026.jpg,utility,g0078,train,ed63d0dd7deb6f126493b3732afdc3cf
+utility_0027,Utilities/027.jpg,utility,g0079,train,3bbbfcd5a2d50b78e21ba5f6875284f5
+utility_0028,Utilities/028.jpg,utility,g0080,train,3b0b70e62b16d2eeb8ab50f7b21cf3c1
+utility_0029,Utilities/029.jpg,utility,g0081,train,3d1cb454e5dd50a78f1f6afc5bb811b6
+utility_0030,Utilities/030.jpg,utility,g0082,test,61d34c6b523b0507e2727e9bff891a9c
+utility_0031,Utilities/031.jpg,utility,g0083,train,0044fcd1f8065bc4f50ff63211200d6b
+utility_0032,Utilities/032.jpg,utility,g0084,test,7b96f1cb89311cc7a95c21911b70da50
+utility_0033,Utilities/033.jpg,utility,g0085,train,2b39b0e9ce9dc6cd041db8a6a8d9a44d
+utility_0034,Utilities/034.jpg,utility,g0086,test,0cbb9fea320d462b8bc0f81d3a1ae3ca
+utility_0036,Utilities/036.jpg,utility,g0087,train,18d337ff45ee801d43af18aaa6670583
+utility_0037,Utilities/037.jpg,utility,g0088,train,2d736e6186ed55ad7881028c871ea0cd
+utility_0040,Utilities/040.jpg,utility,g0089,test,e2e12c6eba05b50bc943b6765750bbed
+utility_0042,Utilities/042.jpg,utility,g0090,train,229077ca67c2b1162da16e3778f32d45
+utility_0044,Utilities/044.jpg,utility,g0091,train,87f61caaa6f36c284955d269a3dc9aab
+utility_0046,Utilities/046.jpg,utility,g0092,test,d9ca6673a5ce688dfecfaf5b6d6ebad1
+utility_0055,Utilities/055.jpg,utility,g0093,test,4a209543f51ffca3e82d629c9d3a34fe
+utility_0059,Utilities/059.jpg,utility,g0094,train,677b6c687909518f615b4cc813641563
+utility_0060,Utilities/060.jpg,utility,g0095,train,dab2b6921b3a1e8f08048966ac08189b
+utility_0061,Utilities/061.jpg,utility,g0096,test,148914ed8814e05e5c81af21458d081e
+utility_0062,Utilities/062.jpg,utility,g0097,train,2b750e21731c6d78617467911a3e20a0
+utility_0063,Utilities/063.jpg,utility,g0098,train,88a65ea17fbda2aa22a6570b85721315
+utility_0064,Utilities/064.jpg,utility,g0099,train,da1fb04024a2d2f484dc736dc3c8c126
+utility_0065,Utilities/065.jpg,utility,g0100,train,1ef3e77c67b70a2ef919bd7e3236e4fd
+utility_0068,Utilities/068.jpg,utility,g0101,train,65c9bf615445ed84af5c40786db3c7c0
+utility_0071,Utilities/071.jpg,utility,g0102,train,eb4ba05aba9a6b8fb6690a1ab81c6685
+utility_0073,Utilities/073.jpg,utility,g0103,test,3468f3f9ff6a120a99d72faef558ae7b
+utility_0075,Utilities/075.jpg,utility,g0104,train,90d2c2199af5dcfccf01781e7e8e6b25
+utility_0083,Utilities/083.jpg,utility,g0105,train,9c4fba0efa36e09fdba4b096074dd4e8
+utility_0091,Utilities/091.jpg,utility,g0106,train,27e715621e4540a070d8b1f2a75d1522
+utility_0095,Utilities/095.jpg,utility,g0107,test,0433d04890a90f10a652084cc6ec2e53
+utility_0098,Utilities/098.jpg,utility,g0108,train,278514f4258269abd55abf73c4fd053d
+utility_0101,Utilities/101.jpg,utility,g0109,train,0b5de15df89a74f9c4e17de9f8468ca6
+utility_0102,Utilities/102.jpg,utility,g0110,train,d5ce0e97afd85fb93316c333e349c7d0
+utility_0103,Utilities/103.jpg,utility,g0111,test,d869a581ff406a4b926960ffaf3fe085
+utility_0105,Utilities/105.jpg,utility,g0112,test,6cb7222f87123d4d2ca24701d5890233
+utility_0106,Utilities/106.jpg,utility,g0113,train,4589c9f1328f0910c65db94af5f0f65b
+utility_0107,Utilities/107.jpg,utility,g0114,train,c029a7be9ba4cab2605b2802a865fbd3
+utility_0110,Utilities/110.jpg,utility,g0115,test,9a51bf947db680c465ac26bd3cb3d0f3
+utility_0113,Utilities/113.jpg,utility,g0116,test,3d4ab9448a6c4293d990694b6d31c689
+utility_0115,Utilities/115.jpg,utility,g0117,train,9b37514fe84e5848af086e957caa3091
+utility_0121,Utilities/121.jpg,utility,g0118,test,9937a84f80f5a038d5c76dbf21a05272
+utility_0125,Utilities/125.jpg,utility,g0119,test,9f852136e94defb69295e9fbe03d5920
+utility_0128,Utilities/128.jpg,utility,g0120,train,a386bba9dd44a832bf1361ab3a844812
+utility_0129,Utilities/129.jpg,utility,g0121,train,4574999a5410c479e9af2933db59ad03
+utility_0132,Utilities/132.jpg,utility,g0122,test,b561c3fe70d069bf3997572c671ad3e7
+utility_0133,Utilities/133.jpg,utility,g0123,train,9f77554a8d858fcb17e7a1e0ec5ea0bd
+utility_0139,Utilities/139.jpg,utility,g0124,train,ba131016dc3d961d4e9ee74c2ab676b9
+utility_0141,Utilities/141.jpg,utility,g0125,test,3641b823a2dc3f5da954a3f1d12e72bd
+utility_0142,Utilities/142.jpg,utility,g0126,train,e9d3c9c4adb28651c23114f94d08cbf9
+utility_0143,Utilities/143.jpg,utility,g0127,train,b0fcf02c94b1010a7d62b048c132afd5
+utility_0145,Utilities/145.jpg,utility,g0128,test,3e0bc2a584d4fdf438ae22331da9b4ee
+utility_0146,Utilities/146.jpg,utility,g0129,train,adf746f04733e841c373510f3f2add52
+utility_0147,Utilities/147.jpg,utility,g0130,train,c3a2a8103467eb5c069a03ad510bf63e
+utility_0148,Utilities/148.jpg,utility,g0131,train,883f8acef391574183ad3e861c6fc1e5
+utility_0150,Utilities/150.jpg,utility,g0132,test,4eea7f43df019b6b51cc8da215775f18
+utility_0151,Utilities/151.jpg,utility,g0133,train,f635ef15e75475851f26a935c0fc9ada
+utility_0152,Utilities/152.jpg,utility,g0134,train,27859713e9f309f27114fb5d0a9c750e
+utility_0153,Utilities/153.jpg,utility,g0135,test,ee107d6bc59bf0ac3b2e4306308ce610
+utility_0155,Utilities/155.jpg,utility,g0136,train,54deacca15c5ee24fc45669b5901f572
+utility_0156,Utilities/156.jpg,utility,g0137,train,dd0ef9c23cbc2023954b087469690bc0
+utility_0157,Utilities/157.jpg,utility,g0138,test,d4310d35a3e658d321ac7f1305636c55
+utility_0159,Utilities/159.jpg,utility,g0139,train,b3f9d354d8f83e13120a7f030fc2e1ca
+utility_0161,Utilities/161.jpg,utility,g0140,train,662668695c0b67cc20c43e6f940abaa7
+utility_0164,Utilities/164.jpg,utility,g0141,train,21d102f498ab917172edecaf8980d409
+utility_0166,Utilities/166.jpg,utility,g0142,train,9a10c7d6d9dc2acf4dec576e57ca2166
+utility_0168,Utilities/168.jpg,utility,g0143,train,864dc857fbfec1bceac397dc4ef1fce6
+utility_0170,Utilities/170.jpg,utility,g0144,train,223e732b10e3326e995d38ae60207db1
+utility_0173,Utilities/173.jpg,utility,g0145,train,da52ccc31dfc74d8ec9190602d98cd4f
+utility_0175,Utilities/175.jpg,utility,g0146,train,4b2d8ff852620eff4af51d429b7a453f
+utility_0176,Utilities/176.jpg,utility,g0147,train,719d8d31d63331a83b41383dad9d624a
+utility_0177,Utilities/177.jpg,utility,g0148,train,0f2bfb25a8c24630b9868e51b1ce7441
+utility_0179,Utilities/179.jpg,utility,g0149,test,4480d52ce6f9707d86a74611e2a63cd7
+utility_0181,Utilities/181.jpg,utility,g0150,train,227112b8a038eedee8dc7b639963fe9e
+utility_0183,Utilities/183.jpg,utility,g0150,train,3dcaa733c168021639dc8739d4e70b37
+utility_0185,Utilities/185.jpg,utility,g0151,test,e480fca887460b9d5ca993cde8753a7a
+utility_0186,Utilities/186.jpg,utility,g0152,test,5be1bc498fe2196a6832c40c6f3504ec
+utility_0188,Utilities/188.jpg,utility,g0152,test,c378fcad7365f79bb72a4b25a1cb4a30
+utility_0190,Utilities/190.jpg,utility,g0153,test,eb4f3bdcdffcae7768b5f5ff754705c2
+utility_0192,Utilities/192.jpg,utility,g0154,train,cf623a34b663cb2a7ec83cde067ce8b7
+utility_0194,Utilities/194.jpg,utility,g0155,test,f92a348311c07763c7c3ab020c862d39
+utility_0195,Utilities/195.jpg,utility,g0156,train,3a20be8e50611841d55188497ccdf165
+utility_0198,Utilities/198.jpg,utility,g0157,train,39949740a4449f8247e0b5dec308a432
+utility_0201,Utilities/201.jpg,utility,g0158,train,73ed8eb6d97dcc95855fd15b585be365
+utility_0204,Utilities/204.jpg,utility,g0159,train,ebd05d2ba742225c6814ced465c108f6
+utility_0206,Utilities/206.jpg,utility,g0160,train,8741dce2f3845727f2252d5762157a22
+utility_0208,Utilities/208.jpg,utility,g0161,train,dd8d6bd25c3a5ca8320528fd2c8962a5
+utility_0209,Utilities/209.jpg,utility,g0162,test,c1df0d7ebddaffb1ee46260b537fc4e0
+utility_0210,Utilities/210.jpg,utility,g0163,train,10c27b021d7fbf299efcbfeeb17afc17
+utility_0214,Utilities/214.jpg,utility,g0164,test,0cd41ac5de89d9edd442e766c866c079
+utility_0215,Utilities/215.jpg,utility,g0165,train,bdc7745a4cf9721489f8f4de22436cd7
+utility_0218,Utilities/218.jpg,utility,g0166,train,ecc52921cde0899ed245216e2ac3e9ce
+utility_0222,Utilities/222.jpg,utility,g0167,test,229cc1957870ec961f2bbfc703a678ee
+utility_0225,Utilities/225.jpg,utility,g0168,train,74a5fb2abf6483a42c20248e436c4862
+utility_0228,Utilities/228.jpg,utility,g0169,train,a9521a8c598191893a3b347807aecd02
+utility_0229,Utilities/229.jpg,utility,g0170,test,885f34ca43ea2d20af518326cf0d62a3
+utility_0232,Utilities/232.jpg,utility,g0171,train,4f64358f47d99c2c784296f437256505
+utility_0233,Utilities/233.jpg,utility,g0172,train,f1a27a3939295bae6a60abefbaf3ce88
+utility_0234,Utilities/234.jpg,utility,g0173,train,c9922c6540d65cf3aa00dc6541800d74
+utility_0237,Utilities/237.jpg,utility,g0174,test,3e9167c319f577ee22b43d227633e867
+utility_0239,Utilities/239.jpg,utility,g0175,train,41bbcb03ce0b9b2a5039050d1b457757
+utility_0240,Utilities/240.jpg,utility,g0176,train,6c5b5dc18ec17d76c9678ce3cb607bde
+utility_0242,Utilities/242.jpg,utility,g0177,train,bbe6bec68544ef8a68e2b5e8240bfd70
+utility_0245,Utilities/245.jpg,utility,g0178,train,1238a017312ca3e81460ec9ef6c2f58f
+utility_0246,Utilities/246.jpg,utility,g0179,train,ddb87cd3029c8d2012836e5bee1e6d46
+utility_0248,Utilities/248.jpg,utility,g0180,train,782a7413b4090a7105dcce012e819cc3
+utility_0251,Utilities/251.jpg,utility,g0181,test,105d252f576fcf6bb9cd2d05d1be5a83
+utility_0263,Utilities/263.jpg,utility,g0182,test,029344615f8ae6be0af996b5ccf7395f
+utility_0265,Utilities/265.jpg,utility,g0183,train,8a283c409637bdcbd9f2365be86e1ec7
+utility_0266,Utilities/266.jpg,utility,g0184,train,46b38006e94058ac5dece5cfb5d09e99
+utility_0268,Utilities/268.jpg,utility,g0185,train,e4187e7ba443943530e2227baa065db2
+utility_0281,Utilities/281.jpg,utility,g0186,test,2a19bd2a7d76bb5d5089723cc7b871df
+utility_0289,Utilities/289.jpg,utility,g0187,train,184205a081605dff3714400c36534a8c
+utility_0297,Utilities/297.jpg,utility,g0188,train,e03b4065c9dac5761efee9199f62b60d
+utility_0301,Utilities/301.jpg,utility,g0187,train,c606a48525be04bc6b22209eb246db21
+utility_0304,Utilities/304.jpg,utility,g0189,test,0125fee936b02f24a563a6a97a5c776b
+utility_0308,Utilities/308.jpg,utility,g0190,test,12bfecc2aae95453686a05cc466df8fe
+utility_0309,Utilities/309.jpg,utility,g0191,train,b54cdab45a7d042b057d116a92435211
+void_0001,cavities/1.JPG,void,g0192,train,d94782cb019d1ec55a29c97faeff6b5a
+void_0002,cavities/2.JPG,void,g0193,test,02376f92edb2b3397b43a794c3ce9f40
+void_0003,cavities/3.JPG,void,g0194,train,9fe5898545976fce0ee6727536673398
+void_0004,cavities/4.JPG,void,g0195,test,f2015615fcec9c4351f699ebc2950d7d
+void_0005,cavities/5.JPG,void,g0196,test,c76d8827c46117ed9f3abd9c1aa53a3b
+void_0006,cavities/6.JPG,void,g0197,train,d8d3d29425962a93bff3476cd82ef929
+void_0007,cavities/7.JPG,void,g0198,test,ebe17cc11ff2dc4333d0e575ec96d6e5
+void_0008,cavities/8.JPG,void,g0199,train,5d8a0f676004fd49c77dfe840d5801cb
+void_0009,cavities/9.JPG,void,g0200,train,856102f6cc03fea85cab5afc3927159c
+void_0010,cavities/10.JPG,void,g0201,train,375c3659da7206d7ab500c5d20593290
+void_0011,cavities/11.JPG,void,g0202,test,14877990a6d58a465b5d09fdf17f26a2
+void_0012,cavities/12.JPG,void,g0203,test,a79559c9d5568cee31ed1ab6f828f3cb
+void_0014,cavities/14.JPG,void,g0204,train,0d1b086e718347cc7c9e5907f9667870
+void_0015,cavities/15.JPG,void,g0205,train,16292889db072dd2552ab2c486cd609f
+void_0016,cavities/16.JPG,void,g0206,test,1b2659efe6259a212228f9d467d090ee
+void_0017,cavities/17.JPG,void,g0207,train,a0c8ea2510731536a9dcb3de5c8d2a10
+void_0018,cavities/18.JPG,void,g0208,train,00337a87d985e9bcef15575ae4139688
+void_0019,cavities/19.JPG,void,g0209,train,30c551d663c0ba0e639890c5d6ee192b
+void_0020,cavities/20.JPG,void,g0210,train,23406f42fd8533f9bf4b8e9324c13f88
+void_0021,cavities/21.JPG,void,g0211,train,3e8becea11134b38f2f49668410d05c3
+void_0022,cavities/22.JPG,void,g0212,train,22fe7db20c1ecf33634efedd2bf8e69f
+void_0023,cavities/23.JPG,void,g0213,train,204165ab559dc4c948db6e9cb230afb0
+void_0024,cavities/24.JPG,void,g0214,train,657b1c5a89551c97b165e1d751286772
+void_0025,cavities/25.JPG,void,g0215,train,6624a4d2df86c361afc753ba5328076e
+void_0026,cavities/26.JPG,void,g0216,train,68036ac9a46c1c1636ac1771d95e1c00
+void_0027,cavities/27.JPG,void,g0217,train,4fcac5e56321ac2d0745c442d2acec3c
+void_0028,cavities/28.JPG,void,g0218,train,376ac743928a4295d01c4299c896796e
+void_0029,cavities/29.JPG,void,g0219,test,927f0ada7a8639d160511a71cf95d6d3
+void_0030,cavities/30.JPG,void,g0220,test,83cad21768b83a2f5a3530145c3be2ae
+void_0031,cavities/31.JPG,void,g0221,train,f0964a5ed2fa4bc18ac765caf16010db
+void_0032,cavities/32.JPG,void,g0222,train,e1fbf2870bd544c737b3ad424e82fd29
+void_0033,cavities/33.JPG,void,g0223,test,575dc6b8d569055e1090cebe52751196
+void_0034,cavities/34.JPG,void,g0224,train,7be0f0ee7cc7d87c17b759df4d643457
+void_0035,cavities/35.JPG,void,g0225,train,28467162c50e5e84ceef45e4291d1a19
+void_0036,cavities/36.JPG,void,g0226,train,d12e2689cf396f5210a31efe6f5f6b52
+void_0037,cavities/37.JPG,void,g0227,train,53edd2d7a83fce3ff0ed9d35da247a19
+void_0038,cavities/38.JPG,void,g0228,train,8684da5594c3fc3173e54004ba49f78b
+void_0039,cavities/39.JPG,void,g0229,test,f480221bcc9aafa1413c3ca5a2a1502f
+void_0040,cavities/40.JPG,void,g0230,train,ce6a52269753cd7f8245217bda4693e1
+void_0041,cavities/41.JPG,void,g0231,test,8514074cf1639c76be91324667c3d633
+void_0042,cavities/42.JPG,void,g0232,test,2fe5a4e82dbda998e1e38c59837239e1
+void_0043,cavities/43.JPG,void,g0233,train,000f2cac9913269f0e5ec9fea2f226a2
+void_0044,cavities/44.JPG,void,g0234,train,94708507bd52486b04b5caeff56f2382
+void_0045,cavities/45.JPG,void,g0235,train,d7c39c837aeb6b105ece700108028ece
+void_0046,cavities/46.JPG,void,g0236,train,6557c70e37761980468978eb87df8d1b
+void_0047,cavities/47.JPG,void,g0237,train,2e2b71d2c9ecbe7bf297627e2c7c4ee6
+void_0048,cavities/48.JPG,void,g0238,test,f9ea506e298260b1dc0aa895ab4fe91e
+void_0049,cavities/49.JPG,void,g0239,train,e1ec1d14b36eae79b6efe8b3b062986e
+void_0050,cavities/50.JPG,void,g0240,test,efe06f3812ace256808b986510cddbd7
+void_0051,cavities/51.JPG,void,g0241,test,aca485699553f054453583b618376b4d
+void_0052,cavities/52.JPG,void,g0242,test,d5d710f80b6b8ddfc39b188432d6c2b6
+void_0053,cavities/53.JPG,void,g0243,test,b617d46d3364041bc872aa41805b4192
+void_0054,cavities/54.JPG,void,g0244,train,d7c074c27db10d0b40c2edb7a290591c
+void_0055,cavities/55.JPG,void,g0245,train,74d0af49eb5f4483888b2a7880688767
+void_0056,cavities/56.JPG,void,g0246,train,5d74813742eb196b8cb93dece04f53f8
+void_0057,cavities/57.JPG,void,g0247,train,4d8ae7bacea6a7da5e63be20980d436e
+void_0058,cavities/58.JPG,void,g0248,train,0edd03755383a9450f7155e72fa61e98
+void_0059,cavities/59.JPG,void,g0249,train,119bd91807764549afa81ac751967f73
+void_0060,cavities/60.JPG,void,g0250,test,23b4c6aa612c76a98e8fe9752092e693
+void_0061,cavities/61.JPG,void,g0251,train,de96ba9aa46b56d89fd841106770786c
+void_0062,cavities/62.JPG,void,g0252,train,c0022e624c2e8f2b812e4ed28bd13438
+void_0063,cavities/63.JPG,void,g0253,train,5c1f5e5a6cdada2df5a1e9a89ee6ebf1
+void_0064,cavities/64.JPG,void,g0254,train,a0fd462ea08ebeffb8931a6600e99f44
+void_0065,cavities/65.JPG,void,g0255,train,59d47b1afd864e5ec3e7c7ce3f46fba9
+void_0066,cavities/66.JPG,void,g0256,test,61ebcc10353a7abca5b4ce6d606239ef
+void_0067,cavities/67.JPG,void,g0257,train,c22e12c48475895e21efe1f5718137cc
+void_0068,cavities/68.JPG,void,g0258,train,d1b2da5867bfb34f762fd1ce902f06f6
+void_0069,cavities/69.JPG,void,g0259,train,2956f6891242e6b03825630844abe46f
+void_0070,cavities/70.JPG,void,g0260,train,c40fd93653866bd32fcd454f2688f399
+void_0071,cavities/71.JPG,void,g0261,train,7b63a225317c4f703416b0b872ab8037
+void_0072,cavities/72.JPG,void,g0262,train,b1af3c6bf76833052d03c60bf68efae5
+void_0073,cavities/73.JPG,void,g0263,test,c5f4f68b67c6f75a9ff3c5db76d7c80c
+void_0074,cavities/74.JPG,void,g0264,train,cbe86435656bd4b03fe65ca34e99ac8e
+void_0075,cavities/75.JPG,void,g0265,train,d3d8aa2e19f8e4ebdfc62dafa36bd0fc
+void_0076,cavities/76.JPG,void,g0266,train,bf0232f14b9f44a7fb4bafda3ce6ecd4
+void_0077,cavities/77.JPG,void,g0267,test,9503d0ec0a79eae8771b01f316024305
+void_0078,cavities/78.JPG,void,g0268,train,466f0ad24c7fd828b6894ab6d9f24f9c
+void_0079,cavities/79.JPG,void,g0269,test,839bed23757d193d8a3724f35a783d0a
+void_0080,cavities/80.JPG,void,g0270,test,5631b7d700c07d740d6acebc7fb28657

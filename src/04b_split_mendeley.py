@@ -118,27 +118,32 @@ def list_originals(root):
 
 
 def pair_distance(hashes_a, hashes_b):
-    """Minimum Hamming distance treating one image as a transform of the other.
+    """Minimum dHash distance using identity and ``04a`` flip/rotation transforms.
 
-    Compares the identity hash of each image to every transform hash of the
-    other (the same idea as the augmented-to-original match in ``04a``).
-    Comparing every transform to every transform is too weak on these
-    thumbnails and merges unrelated classes.
+    Identity is always included. Each image's identity hash is also compared to
+    every transformed hash of the other image (same transform set as ``04a``).
     """
 
-    best = 65
-    identity = "identity"
+    best = inventory.hamming64(hashes_a["identity"], hashes_b["identity"])
     for name, hb in hashes_b.items():
-        best = min(best, inventory.hamming64(hashes_a[identity], hb))
+        best = min(best, inventory.hamming64(hashes_a["identity"], hb))
     for name, ha in hashes_a.items():
-        best = min(best, inventory.hamming64(hashes_b[identity], ha))
+        best = min(best, inventory.hamming64(hashes_b["identity"], ha))
     return best
+
+
+def identity_distance(hashes_a, hashes_b):
+    """Hamming distance of the untransformed dHash values."""
+
+    return inventory.hamming64(hashes_a["identity"], hashes_b["identity"])
 
 
 def build_groups(originals):
     """Union-find near-duplicates at dHash <= 6. Return groups and review pairs.
 
-    A group that mixes classes raises ``ValueError``.
+    Same-class pairs merge when the transform-aware distance is <= 6.
+    Cross-class pairs at that threshold are collected and raise ``ValueError``.
+    Review pairs use identity distance 7-10 and are not merged.
     """
 
     n = len(originals)
@@ -151,30 +156,57 @@ def build_groups(originals):
 
     uf = UnionFind(n)
     review_pairs = []
+    cross_edges = []
+    # Identity <= 6 matches the inventory near-duplicates. Transform distance
+    # <= 2 catches a true flip/rotation copy without pulling in the weaker
+    # cross-class collisions (those sit around transform dHash 6 with identity 10+).
+    TRANSFORM_DUP_DIST = 2
     for i in range(n):
         for j in range(i + 1, n):
+            ident = identity_distance(all_hashes[i], all_hashes[j])
             dist = pair_distance(all_hashes[i], all_hashes[j])
-            if dist <= NEAR_DUP_DIST:
-                uf.union(i, j)
-            elif REVIEW_LO <= dist <= REVIEW_HI:
-                review_pairs.append((i, j, dist))
+            linked = ident <= NEAR_DUP_DIST or dist <= TRANSFORM_DUP_DIST
+            same_class = originals[i]["class"] == originals[j]["class"]
+            if linked:
+                if same_class:
+                    uf.union(i, j)
+                else:
+                    cross_edges.append(
+                        {
+                            "a": originals[i]["path"],
+                            "b": originals[j]["path"],
+                            "class_a": originals[i]["class"],
+                            "class_b": originals[j]["class"],
+                            "distance": dist,
+                            "identity_distance": ident,
+                        }
+                    )
+            elif REVIEW_LO <= ident <= REVIEW_HI:
+                review_pairs.append((i, j, ident))
+
+    if cross_edges:
+        lines = [
+            "cross-class near-duplicate pair "
+            f"(dHash={e['distance']}, identity={e['identity_distance']}): "
+            f"{e['a']} ({e['class_a']}) ↔ {e['b']} ({e['class_b']})"
+            for e in cross_edges
+        ]
+        raise ValueError(
+            "Refusing to split: near-duplicate links across classes.\n" + "\n".join(lines)
+        )
 
     buckets = defaultdict(list)
     for index, row in enumerate(originals):
         buckets[uf.find(index)].append(index)
 
     groups = []
-    cross = []
     for root_index, members in sorted(buckets.items(), key=lambda item: min(item[1])):
         classes = {originals[i]["class"] for i in members}
         if len(classes) > 1:
-            cross.append(
-                {
-                    "members": [originals[i]["path"] for i in members],
-                    "classes": sorted(classes),
-                }
+            raise ValueError(
+                f"cross-class near-duplicate group: classes={sorted(classes)} "
+                f"members={[originals[i]['path'] for i in members]}"
             )
-            continue
         groups.append(
             {
                 "class": next(iter(classes)),
@@ -183,13 +215,6 @@ def build_groups(originals):
                 "ids": [originals[i]["id"] for i in sorted(members)],
             }
         )
-
-    if cross:
-        lines = [
-            f"cross-class near-duplicate group: classes={g['classes']} members={g['members']}"
-            for g in cross
-        ]
-        raise ValueError("\n".join(lines))
 
     # Stable group ids: by class then first id.
     groups.sort(key=lambda g: (g["class"], g["ids"][0]))
