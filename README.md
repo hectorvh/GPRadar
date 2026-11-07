@@ -144,14 +144,18 @@ Apex check: 403 of 424 visible targets within a quarter period (0.63 ns); the ot
 
 `src/05a_render_synthetic.py` turns the 200 `field_400mhz` scenes into 224×224 greyscale YOLO crops. Processing is time zero, dewow (7.5 ns), mean-trace removal, band-pass around 400 MHz, then AGC (7.5 ns). The reference trace is not subtracted on the image (real data has none); it is used only to fit boxes on the envelope.
 
-Box rule: for each visible target, keep the continuous predicted hyperbola through the apex (drop the outer straight-ray kink), shift it by the same time-zero picks as the image, set the top to the apex minus half a period, and follow the flanks until the reference-subtracted band-passed envelope falls below 20% of its apex value. Add half a period below and two traces on each side. Crops draw width and height fractions from the real train box distribution, then resize anisotropically to 224×224. About 20% of crops are negatives. Seeds 0-179 are train, 180-199 are val (by scene, not by crop). Test-split Mendeley ids are never read.
+Box rule: for each visible target or clear rock, keep the continuous predicted hyperbola through the apex (drop the outer straight-ray kink), shift it by the same time-zero picks as the image, set the top to the apex minus half a period, and follow the flanks until the reference-subtracted band-passed envelope falls below 20% of its apex value. Then extend the bottom down the apex trace until the envelope stays below that level for one full period (stacked arches), and add half a period. Add two traces on each side. Rocks use the same ``01c`` travel-time function as targets. A rock is labelled only if it is visible by the one-period rule and its apex envelope is at least 25% of the median target apex in the scene and at least 5 times the noise floor. Class id is 0 for both.
+
+Crops draw width and height fractions from the real train box distribution, resize anisotropically to 224×224, then match the grey histogram of a random train original before JPEG. About 20% of crops are negatives. Seeds 0-179 are train, 180-199 are val (by scene, not by crop). Test-split Mendeley ids are never read. The left white strip on early check panels was a plot-extent mismatch (midpoint boxes on a receiver-x axis), not blank data; crops use midpoints and skip near-empty columns.
+
+Render on 200 scenes (6 crops each): 1200 crops (train 1080 = 900 pos / 180 neg; val 120 = 100 pos / 20 neg). YOLO boxes 2514 (train 2284 = 1711 target / 573 rock; val 230 = 187 target / 43 rock). Physical boxes: 424 targets and 141 rocks labelled; 359 rocks rejected by visibility or amplitude. Record-fraction height median before ringing 0.225, after 0.235 (real train box height median 0.50). Crop YOLO medians: width 0.436 / height 0.438 (real train 0.471 / 0.502). Appearance (median std / share within 20 grey of median): real train 11.0 / 0.910; synth before hist-match 42.9 / 0.444; synth after 13.0 / 0.909.
 
 ```bash
 conda activate gprMax-v4
 python src/05a_render_synthetic.py
 ```
 
-Outputs: `data/synth/field_400mhz/{images,labels}/{train,val}/`, `dataset.yaml`, `manifest.csv`, `data/synth/real_train_box_stats.json`, `figures/synthetic_boxes_check.png`, and `figures/synthetic_vs_real.png`.
+Outputs: `data/synth/field_400mhz/{images,labels}/{train,val}/`, `dataset.yaml`, `manifest.csv`, `data/synth/real_train_box_stats.json`, `figures/synthetic_boxes_check.png`, `figures/synthetic_rocks_check.png`, and `figures/synthetic_vs_real.png`.
 
 ## Reading a gprMax file
 
