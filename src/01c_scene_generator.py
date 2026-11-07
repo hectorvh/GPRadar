@@ -454,7 +454,9 @@ def write_model(scene, path, reference=False):
             lines.append(
                 _cylinder(target["x"], target["centre_y"], target["inner_radius_m"], "free_space")
             )
-    path.write_text("\n".join(lines) + "\n")
+    text = "\n".join(lines) + "\n"
+    if not (path.exists() and path.read_text() == text):
+        path.write_text(text)
     return path
 
 
