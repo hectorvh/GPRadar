@@ -2,9 +2,9 @@
 
 Processing matches ``01c`` / ``02b`` (no reference subtraction on the image).
 Boxes follow the hand-labelling rule on the kink-fixed predicted hyperbola,
-including rocks that look clear on the AGC image, and a capped downward
-ringing extension under each apex. Real train labels supply the box-size
-distribution. Test-split Mendeley ids are never opened.
+including rocks that pass a reflection-coefficient gate, and a capped
+downward ringing extension under each apex. Real train labels supply the
+box-size distribution. Test-split Mendeley ids are never opened.
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ import argparse
 import csv
 import importlib
 import json
+import math
 import sys
 from collections import defaultdict
 from io import BytesIO
@@ -45,7 +46,7 @@ PERIOD_S = 1.0 / FREQUENCY_HZ
 PERIOD_NS = 1e9 * PERIOD_S
 IMAGE_SIZE = 224
 ENVELOPE_FRAC = 0.20
-ROCK_IMAGE_RATIO = 2.0
+ROCK_R_MIN = 0.03
 RINGING_MAX_PERIODS = 3.0
 CROPS_PER_SCENE = 6
 NEGATIVE_FRAC = 0.20
@@ -506,84 +507,80 @@ def shifted_hyperbola(x_m, t_s, apex_x, midpoints, dt, picks, time_window_s):
     return x_fixed, t_fixed - shift_s[trace_index]
 
 
-def rock_visible_on_image(
-    processed,
-    midpoints,
-    dt,
-    curve_x_m,
-    curve_t_s,
-    apex_x,
-    flank_halfwidth_m,
-    all_curves,
-    ratio=ROCK_IMAGE_RATIO,
-):
-    """True if the rock arch stands out on the AGC image.
+def host_eps_for_rock(scene, rock):
+    """Soil-band permittivity that contains the rock centre."""
 
-    Along the predicted hyperbola within one flank width of the apex, the mean
-    |amplitude| must be at least ``ratio`` times the median |amplitude| of the
-    same rows outside all predicted hyperbolas.
-    """
+    centre_y = float(rock["centre_y"])
+    for band in scene["column"]:
+        y0 = float(band["y0"])
+        y1 = float(band["y1"])
+        if y0 <= centre_y <= y1 or y0 <= centre_y < y1:
+            return float(band["eps_r"]), band["name"]
+    # Fall back to the nearest band if the centre sits on a gap.
+    best = None
+    best_dist = None
+    for band in scene["column"]:
+        y0 = float(band["y0"])
+        y1 = float(band["y1"])
+        mid = 0.5 * (y0 + y1)
+        dist = abs(centre_y - mid)
+        if best_dist is None or dist < best_dist:
+            best_dist = dist
+            best = band
+    if best is None:
+        raise ValueError(f"no soil band for rock {rock.get('name')}")
+    return float(best["eps_r"]), best["name"]
 
-    processed = np.asarray(processed, dtype=np.float64)
-    midpoints = np.asarray(midpoints, dtype=float)
-    x = np.asarray(curve_x_m, dtype=float)
-    t = np.asarray(curve_t_s, dtype=float)
-    if x.size == 0 or flank_halfwidth_m <= 0:
-        return False, {"reason": "empty curve", "mean_on": 0.0, "median_off": 0.0}
 
-    near = np.abs(x - float(apex_x)) <= float(flank_halfwidth_m) + 1e-12
-    x_near = x[near]
-    t_near = t[near]
-    if x_near.size == 0:
-        return False, {"reason": "no samples in flank", "mean_on": 0.0, "median_off": 0.0}
+def reflection_coefficient(eps_host, eps_rock):
+    """Normal-incidence |R| between host and rock permittivities."""
 
-    on_vals = []
-    row_set = set()
-    for xv, tv in zip(x_near, t_near):
-        trace = int(np.argmin(np.abs(midpoints - float(xv))))
-        sample = int(round(float(tv) / float(dt)))
-        if sample < 0 or sample >= processed.shape[0]:
-            continue
-        on_vals.append(abs(float(processed[sample, trace])))
-        row_set.add(sample)
-    if not on_vals or not row_set:
-        return False, {"reason": "no on-curve samples", "mean_on": 0.0, "median_off": 0.0}
-    mean_on = float(np.mean(on_vals))
+    sh = math.sqrt(float(eps_host))
+    sr = math.sqrt(float(eps_rock))
+    denom = sh + sr
+    if denom <= 0:
+        return 0.0
+    return abs(sh - sr) / denom
 
-    # Mask traces near any predicted hyperbola at each row.
-    step = float(np.median(np.diff(midpoints))) if midpoints.size > 1 else 0.05
-    half_traces = max(1, int(round(0.5 * float(flank_halfwidth_m) / step)))
-    blocked = np.zeros(processed.shape[1], dtype=bool)
-    for curve in all_curves:
-        cx = np.asarray(curve["curve_x_m"], dtype=float)
-        ct = np.asarray(curve["curve_t_s"], dtype=float)
-        if cx.size == 0:
-            continue
-        for xv, tv in zip(cx, ct):
-            sample = int(round(float(tv) / float(dt)))
-            if sample not in row_set:
-                continue
-            trace = int(np.argmin(np.abs(midpoints - float(xv))))
-            lo = max(0, trace - half_traces)
-            hi = min(processed.shape[1], trace + half_traces + 1)
-            blocked[lo:hi] = True
 
-    off_vals = []
-    free = np.flatnonzero(~blocked)
-    if free.size == 0:
-        free = np.arange(processed.shape[1])
-    for sample in sorted(row_set):
-        off_vals.extend(np.abs(processed[sample, free]).tolist())
-    if not off_vals:
-        return False, {"reason": "no off samples", "mean_on": mean_on, "median_off": 0.0}
-    median_off = float(np.median(off_vals))
-    ok = mean_on >= float(ratio) * median_off and median_off > 0
-    return ok, {
-        "reason": None if ok else "image amplitude",
-        "mean_on": mean_on,
-        "median_off": median_off,
-        "ratio": mean_on / median_off if median_off > 0 else 0.0,
+def rock_timing_ok(apex_s, direct_s, period_s, window_s):
+    """Rocks: apex at least half a centre period after the direct wave."""
+
+    if float(apex_s) < float(direct_s) + 0.5 * float(period_s):
+        return False, "less than half a period after the direct wave"
+    if float(apex_s) >= float(window_s):
+        return False, "outside the time window"
+    return True, None
+
+
+def rock_passes_physics(scene, rock, r_min=ROCK_R_MIN):
+    """Label rock if R >= ``r_min`` and the half-period timing rule passes."""
+
+    eps_host, band_name = host_eps_for_rock(scene, rock)
+    eps_rock = float(rock["eps_r"])
+    r_val = reflection_coefficient(eps_host, eps_rock)
+    apex = float(scenes_mod.hyperbola_time(scene, rock, rock["x"]))
+    direct = float(scenes_mod.direct_wave_time(scene))
+    period = 1.0 / float(scene["frequency_hz"])
+    timing_ok, timing_reason = rock_timing_ok(
+        apex, direct, period, scene["time_window_s"]
+    )
+    stats = {
+        "R": float(r_val),
+        "eps_host": float(eps_host),
+        "eps_rock": eps_rock,
+        "host_band": band_name,
+        "apex_time_s": apex,
+        "direct_wave_time_s": direct,
     }
+    if not timing_ok:
+        stats["reason"] = timing_reason
+        return False, stats
+    if r_val < float(r_min):
+        stats["reason"] = f"R < {r_min}"
+        return False, stats
+    stats["reason"] = None
+    return True, stats
 
 
 def predict_rock_row(scene, rock):
@@ -594,9 +591,9 @@ def predict_rock_row(scene, rock):
     apex = float(scenes_mod.hyperbola_time(scene, rock, rock["x"]))
     direct = float(scenes_mod.direct_wave_time(scene))
     period = 1.0 / float(scene["frequency_hz"])
-    visible, reason = scenes_mod.is_visible(
-        apex, direct, period, scene["time_window_s"]
-    )
+    visible, reason = rock_timing_ok(apex, direct, period, scene["time_window_s"])
+    eps_host, band_name = host_eps_for_rock(scene, rock)
+    r_val = reflection_coefficient(eps_host, rock["eps_r"])
     return {
         "name": rock["name"],
         "x": rock["x"],
@@ -606,6 +603,9 @@ def predict_rock_row(scene, rock):
         "type": "rock",
         "material": rock.get("material"),
         "eps_r": rock.get("eps_r"),
+        "eps_host": eps_host,
+        "host_band": band_name,
+        "R": float(r_val),
         "apex_time_s": apex,
         "direct_wave_time_s": direct,
         "visible": bool(visible),
@@ -648,9 +648,8 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
     midpoints = midpoints_for_scene(scene)
     period_s = 1.0 / float(scene["frequency_hz"])
 
-    # Flank-only pass: gather candidates and predicted curves for the image rule.
+    # Flank-only pass: gather candidates; rocks use the physics R gate.
     flank_candidates = []
-    all_pred_curves = []
     apex_records = []
 
     for target in scene["ground_truth"]["targets"]:
@@ -669,7 +668,6 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
             "curve_x_m": [float(v) for v in hx],
             "curve_t_s": [float(v) for v in ht],
         }
-        all_pred_curves.append(curve)
         apex_t = _shifted_apex_time(
             target["apex_time_s"], target["x"], midpoints, scan.dt, picks
         )
@@ -738,22 +736,24 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
             "curve_x_m": [float(v) for v in hx],
             "curve_t_s": [float(v) for v in ht],
         }
-        all_pred_curves.append(curve)
         apex_t = _shifted_apex_time(
             row["apex_time_s"], row["x"], midpoints, scan.dt, picks
         )
-        if not row["visible"]:
+        ok, phys = rock_passes_physics(scene, rock)
+        if not ok:
             rock_rejected.append(
                 {
                     "seed": scene["seed"],
                     "name": row["name"],
-                    "reason": row["visibility_reason"] or "not visible",
+                    "reason": phys.get("reason") or "physics gate",
                     "apex_x_m": float(row["x"]),
                     "apex_t_s": apex_t,
                     "curve_x_m": curve["curve_x_m"],
                     "curve_t_s": curve["curve_t_s"],
-                    "mean_on": None,
-                    "median_off": None,
+                    "R": phys.get("R"),
+                    "eps_host": phys.get("eps_host"),
+                    "eps_rock": phys.get("eps_rock"),
+                    "host_band": phys.get("host_band"),
                 }
             )
             apex_records.append(
@@ -761,11 +761,12 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
                     "name": row["name"],
                     "kind": "rock",
                     "labelled": False,
-                    "reason": row["visibility_reason"] or "not visible",
+                    "reason": phys.get("reason") or "physics gate",
                     "apex_x_m": float(row["x"]),
                     "apex_t_s": apex_t,
                     "curve_x_m": curve["curve_x_m"],
                     "curve_t_s": curve["curve_t_s"],
+                    "R": phys.get("R"),
                 }
             )
             continue
@@ -793,8 +794,10 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
                     "apex_t_s": apex_t,
                     "curve_x_m": curve["curve_x_m"],
                     "curve_t_s": curve["curve_t_s"],
-                    "mean_on": None,
-                    "median_off": None,
+                    "R": phys.get("R"),
+                    "eps_host": phys.get("eps_host"),
+                    "eps_rock": phys.get("eps_rock"),
+                    "host_band": phys.get("host_band"),
                 }
             )
             apex_records.append(
@@ -807,44 +810,7 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
                     "apex_t_s": apex_t,
                     "curve_x_m": curve["curve_x_m"],
                     "curve_t_s": curve["curve_t_s"],
-                }
-            )
-            continue
-        ok, stats = rock_visible_on_image(
-            processed,
-            midpoints,
-            scan.dt,
-            box["hyperbola_x_m"],
-            box["hyperbola_t_s"],
-            box["apex_x_m"],
-            box["flank_halfwidth_m"],
-            all_pred_curves,
-        )
-        if not ok:
-            rock_rejected.append(
-                {
-                    "seed": scene["seed"],
-                    "name": row["name"],
-                    "reason": stats.get("reason") or "image amplitude",
-                    "apex_x_m": float(row["x"]),
-                    "apex_t_s": apex_t,
-                    "curve_x_m": curve["curve_x_m"],
-                    "curve_t_s": curve["curve_t_s"],
-                    "mean_on": stats.get("mean_on"),
-                    "median_off": stats.get("median_off"),
-                    "ratio": stats.get("ratio"),
-                }
-            )
-            apex_records.append(
-                {
-                    "name": row["name"],
-                    "kind": "rock",
-                    "labelled": False,
-                    "reason": stats.get("reason") or "image amplitude",
-                    "apex_x_m": float(row["x"]),
-                    "apex_t_s": apex_t,
-                    "curve_x_m": curve["curve_x_m"],
-                    "curve_t_s": curve["curve_t_s"],
+                    "R": phys.get("R"),
                 }
             )
             continue
@@ -852,9 +818,9 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
         box["type"] = "rock"
         box["kind"] = "rock"
         box["eps_r"] = row.get("eps_r")
-        box["image_mean_on"] = stats["mean_on"]
-        box["image_median_off"] = stats["median_off"]
-        box["image_ratio"] = stats["ratio"]
+        box["eps_host"] = phys["eps_host"]
+        box["host_band"] = phys["host_band"]
+        box["R"] = phys["R"]
         flank_candidates.append(box)
 
     # Second pass: apply capped ringing using other labelled curves.
@@ -875,19 +841,18 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
             x_m, t_s = src["hyperbola_x_m"], src["hyperbola_t_s"]
             apex_x, apex_t = src["x"], src["apex_time_s"]
             box_type = src["type"]
-            eps_r = None
-            image_stats = {}
+            extra = {}
         else:
             rock = next(r for r in scene.get("rocks", []) if r["name"] == candidate["name"])
             row = predict_rock_row(scene, rock)
             x_m, t_s = row["hyperbola_x_m"], row["hyperbola_t_s"]
             apex_x, apex_t = row["x"], row["apex_time_s"]
             box_type = "rock"
-            eps_r = row.get("eps_r")
-            image_stats = {
-                "image_mean_on": candidate.get("image_mean_on"),
-                "image_median_off": candidate.get("image_median_off"),
-                "image_ratio": candidate.get("image_ratio"),
+            extra = {
+                "eps_r": row.get("eps_r"),
+                "eps_host": candidate.get("eps_host"),
+                "host_band": candidate.get("host_band"),
+                "R": candidate.get("R"),
             }
         box = box_from_hyperbola(
             x_m,
@@ -909,22 +874,21 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
         box["name"] = candidate["name"]
         box["type"] = box_type
         box["kind"] = candidate["kind"]
-        if eps_r is not None:
-            box["eps_r"] = eps_r
-        box.update(image_stats)
+        box.update(extra)
         boxes.append(box)
-        apex_records.append(
-            {
-                "name": box["name"],
-                "kind": box["kind"],
-                "labelled": True,
-                "reason": None,
-                "apex_x_m": box["apex_x_m"],
-                "apex_t_s": box["apex_t_s"],
-                "curve_x_m": box["curve_x_m"],
-                "curve_t_s": box["curve_t_s"],
-            }
-        )
+        record = {
+            "name": box["name"],
+            "kind": box["kind"],
+            "labelled": True,
+            "reason": None,
+            "apex_x_m": box["apex_x_m"],
+            "apex_t_s": box["apex_t_s"],
+            "curve_x_m": box["curve_x_m"],
+            "curve_t_s": box["curve_t_s"],
+        }
+        if box.get("kind") == "rock":
+            record["R"] = box.get("R")
+        apex_records.append(record)
 
     target_boxes = [b for b in boxes if b["kind"] == "target"]
     rock_boxes = [b for b in boxes if b["kind"] == "rock"]
@@ -1721,12 +1685,12 @@ def plot_rocks_check(
     figure_path=DEFAULT_ROCKS,
     n_scenes=200,
 ):
-    """Six labelled rocks and six rejected rocks, with predicted curves."""
+    """Six labelled rocks and six rejected rocks, with predicted curves and R."""
 
     labelled = []
     rejected = []
-    # Prefer seed 129 rock_0 among rejected if present (clear arch example).
-    prefer_rejected = []
+    prefer_labelled = []
+    prefer_seeds = {15, 135, 192}
     for seed in range(int(n_scenes)):
         scene_dir = Path(scenes_root) / f"seed{seed}"
         if not (scene_dir / "scene_merged.h5").is_file():
@@ -1736,16 +1700,19 @@ def plot_rocks_check(
         )
         for box in payload["boxes"]:
             if box.get("kind") == "rock":
-                labelled.append((seed, box, processed, midpoints, scan.dt))
+                item = (seed, box, processed, midpoints, scan.dt)
+                if seed in prefer_seeds:
+                    prefer_labelled.append(item)
+                else:
+                    labelled.append(item)
         for row in payload.get("rocks_rejected", []):
-            item = (seed, row, processed, midpoints, scan.dt)
-            if seed == 129 and row.get("name") == "rock_0":
-                prefer_rejected.append(item)
-            else:
-                rejected.append(item)
-        if len(labelled) >= 6 and len(rejected) + len(prefer_rejected) >= 6:
+            rejected.append((seed, row, processed, midpoints, scan.dt))
+        if (
+            len(labelled) + len(prefer_labelled) >= 6
+            and len(rejected) >= 6
+        ):
             break
-    rejected = prefer_rejected + rejected
+    labelled = prefer_labelled + labelled
 
     fig, axes = plt.subplots(2, 6, figsize=(18, 6))
     for index in range(6):
@@ -1778,7 +1745,9 @@ def plot_rocks_check(
                     linewidth=1.2,
                 )
             )
-            ax.set_title(f"pass s{seed} {box['name']}", fontsize=8)
+            r_val = box.get("R")
+            r_txt = f" R={r_val:.3f}" if r_val is not None else ""
+            ax.set_title(f"pass s{seed} {box['name']}{r_txt}", fontsize=8)
         ax.set_xticks([])
         ax.set_yticks([])
     for index in range(6):
@@ -1802,11 +1771,13 @@ def plot_rocks_check(
                     color="#ff9900",
                     lw=1.0,
                 )
-            ax.set_title(f"rej s{seed} {row['name']}", fontsize=8)
+            r_val = row.get("R")
+            r_txt = f" R={r_val:.3f}" if r_val is not None else ""
+            ax.set_title(f"rej s{seed} {row['name']}{r_txt}", fontsize=8)
         ax.set_xticks([])
         ax.set_yticks([])
     fig.suptitle(
-        "Rocks: labelled (top, blue curve+box) vs rejected (bottom, orange curve)",
+        "Rocks: labelled (top, blue) vs rejected (bottom, orange); titles show R",
         fontsize=12,
     )
     fig.tight_layout()

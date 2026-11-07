@@ -68,40 +68,26 @@ def test_loading_test_split_id_raises(tmp_path):
     render.assert_not_test("void_0002", test_ids)
 
 
-def test_rock_image_visibility_rule():
-    # One-period direct-wave rule still applies upstream.
+def test_rock_physics_rule():
+    # Targets keep the one-period rule; rocks use half a period.
     period = 2.5e-9
     direct = 5.0e-9
     window = 50.0e-9
     ok, _reason = render.scenes_mod.is_visible(direct + 0.5 * period, direct, period, window)
     assert not ok
-    ok, reason = render.scenes_mod.is_visible(direct + 1.5 * period, direct, period, window)
+    ok, reason = render.rock_timing_ok(direct + 0.5 * period, direct, period, window)
     assert ok and reason is None
-
-    # Clear arch near apex vs quiet background on the same rows.
-    midpoints = np.arange(21, dtype=float) * 0.05
-    dt = 1.0e-9
-    processed = np.full((80, 21), 0.2, dtype=float)
-    apex_x = midpoints[10]
-    curve_x = midpoints[8:13]
-    curve_t = np.array([20, 21, 20, 21, 22], dtype=float) * dt
-    for x, t in zip(curve_x, curve_t):
-        trace = int(np.argmin(np.abs(midpoints - x)))
-        sample = int(round(t / dt))
-        processed[sample, trace] = 5.0
-    all_curves = [{"curve_x_m": curve_x, "curve_t_s": curve_t}]
-    ok, stats = render.rock_visible_on_image(
-        processed, midpoints, dt, curve_x, curve_t, apex_x, flank_halfwidth_m=0.12, all_curves=all_curves
-    )
-    assert ok
-    assert stats["mean_on"] >= 2.0 * stats["median_off"]
-
-    # Buried rock: on-curve samples no louder than the background.
-    buried = np.full_like(processed, 1.0)
-    ok, stats = render.rock_visible_on_image(
-        buried, midpoints, dt, curve_x, curve_t, apex_x, flank_halfwidth_m=0.12, all_curves=all_curves
-    )
+    ok, reason = render.rock_timing_ok(direct + 0.25 * period, direct, period, window)
     assert not ok
+    ok, reason = render.rock_timing_ok(window + 1e-12, direct, period, window)
+    assert not ok
+
+    # Reflection coefficient threshold.
+    r_hi = render.reflection_coefficient(9.0, 4.0)
+    r_lo = render.reflection_coefficient(9.0, 8.5)
+    assert r_hi >= render.ROCK_R_MIN
+    assert r_lo < render.ROCK_R_MIN
+    assert abs(r_hi - abs(3.0 - 2.0) / (3.0 + 2.0)) < 1e-12
 
 
 def test_ringing_extension_never_moves_bottom_up():
