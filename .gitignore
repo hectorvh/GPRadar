@@ -5,5 +5,16 @@ data/raw/
 data/sim/
 data/synth/*/images/
 data/synth/*/labels/
+data/real_yolo/*
+!data/real_yolo/subset_membership.csv
+runs/
+results/*.log
+results/training_log.csv
+results/detection_results.csv
+results/detection_summary.csv
+results/detection_*dryrun*
+figures/detection_*dryrun*
+yolo11n.pt
+yolov8n.pt
 installation.md
 *.zip

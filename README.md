@@ -284,3 +284,64 @@ MPLBACKEND=Agg python src/03b_compare_gprpy.py
 | AGC | interior | 3.6120 | 7.051782 | 0.999535 |
 
 GPRPy's moving window is one sample longer (33 and 65 instead of 32 and 64) and is centred differently, and its edge samples share one frozen window. Dewow still matches: interior correlation 0.999686, relative RMS 0.026. AGC does not match in amplitude. GPRPy divides by the L2 norm of the window; `gain_agc` divides by the RMS, about `sqrt(64)` smaller. The relative RMS of about 7 is that factor. Interior correlation stays 0.999535 because correlation ignores a constant scale. On the full trace the AGC correlation falls to 0.976026 because of the frozen edge gain. The two AGC panels in the figure share a colour scale, so the GPRPy panel looks pale and the difference looks like the `02b_preprocessing.py` panel.
+
+## Detection experiment
+
+Research question: with 25% and 100% of the real train labels, does a detector pre-trained on synthetic B-scans and fine-tuned on real ones (regime C) detect hyperbolas better on the real test set than one trained on real data only (regime A)?
+
+Design: YOLO11n, image size 224, batch 16. Regime A starts from the COCO checkpoint. Regime C first trains on `data/synth/field_400mhz` (60 epochs, patience 20), then fine-tunes on real data like A (150 epochs, patience 40). Real train groups are split into validation (20% of groups, seed 0) and a train pool; nested 25% and 100% pool subsets are drawn for seeds 0, 1 and 2. Full grid: {A, C} x {25%, 100%} x seeds {0, 1, 2} plus three stage-1 runs (15 weights). Regime B is stage-1 only (synthetic, no real fine-tune), evaluated on the real test set for reference. The locked test split (83 images) is used only by `06c` after all training.
+
+Environment (`gprdet`, Python 3.11). Ultralytics is AGPL-3.0. PyTorch is installed from the CUDA 12.4 wheel index so Pascal GPUs (compute capability 6.1) still work; newer CUDA 12.8+ builds dropped Pascal.
+
+```bash
+conda env create -f environment-det.yml
+conda activate gprdet
+python -c "import torch; print(torch.__version__, torch.cuda.is_available()); x=torch.randn(2,3,device='cuda'); print(float(x.sum()))"
+```
+
+Prepare real YOLO folders (train/val subsets and a separate test folder; greyscale PNG as 3-channel):
+
+```bash
+conda activate gprdet
+python src/06a_prepare_real_yolo.py
+```
+
+Smoke test (2 epochs, seed 0, 25% only: one stage-1, one A, one C):
+
+```bash
+conda activate gprdet
+python src/06b_train_detectors.py --smoke
+```
+
+Full training (skips finished `best.pt`; log in `results/train_all.log`):
+
+```powershell
+conda activate gprdet; python src/06b_train_detectors.py --seeds 0 1 2 --fractions 0.25 1.0 --regimes A C *>&1 | Tee-Object -FilePath results/train_all.log
+```
+
+Evaluation on the locked test set (run once after training; refuse if any of the 15 weights is missing):
+
+```powershell
+conda activate gprdet; python src/06c_evaluate_detectors.py
+```
+
+Dry-run check (validation images + smoke weights only):
+
+```bash
+conda activate gprdet
+python src/06c_evaluate_detectors.py --dry-run
+```
+
+Results placeholders (fill after the real `06c` run):
+
+| Regime | Fraction | mAP@0.5 mean (std) | Notes |
+| --- | ---: | --- | --- |
+| A | 0.25 | TBD | |
+| C | 0.25 | TBD | |
+| A | 1.0 | TBD | |
+| C | 1.0 | TBD | |
+| B | - | TBD | synth only |
+
+C minus A (mAP@0.5), mean over seeds with 95% bootstrap CI over test images: 25% TBD; 100% TBD. Figures: `figures/detection_results.png`, `figures/detection_examples.png`.
+
+Limitations: one model size (YOLO11n), 224 px inputs, small real test set (83 images), synthetic scenes more crowded than real images (median about 3 boxes per crop vs 1 to 2), 2D simulation at 400 MHz while the real antenna frequency is unknown, real voids are often clusters while synthetic voids are single cylinders.

@@ -1,0 +1,632 @@
+id,path,class,group_id,role,seed,fraction,subset_tag
+intact_0006_2,intact/6 (2).JPG,intact,g0009,train_subset,0,0.25,seed0_f025
+intact_0013_2,intact/13 (2).JPG,intact,g0017,train_subset,0,0.25,seed0_f025
+intact_0015,intact/15.JPG,intact,g0020,train_subset,0,0.25,seed0_f025
+intact_0023_2,intact/23 (2).JPG,intact,g0032,train_subset,0,0.25,seed0_f025
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train_subset,0,0.25,seed0_f025
+intact_0031,intact/31.JPG,intact,g0041,train_subset,0,0.25,seed0_f025
+intact_0038,intact/38.JPG,intact,g0048,train_subset,0,0.25,seed0_f025
+intact_0039_2,intact/39 (2).JPG,intact,g0051,train_subset,0,0.25,seed0_f025
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train_subset,0,0.25,seed0_f025
+utility_0012,Utilities/012.jpg,utility,g0070,train_subset,0,0.25,seed0_f025
+utility_0024,Utilities/024.jpg,utility,g0077,train_subset,0,0.25,seed0_f025
+utility_0027,Utilities/027.jpg,utility,g0079,train_subset,0,0.25,seed0_f025
+utility_0036,Utilities/036.jpg,utility,g0087,train_subset,0,0.25,seed0_f025
+utility_0037,Utilities/037.jpg,utility,g0088,train_subset,0,0.25,seed0_f025
+utility_0064,Utilities/064.jpg,utility,g0099,train_subset,0,0.25,seed0_f025
+utility_0068,Utilities/068.jpg,utility,g0101,train_subset,0,0.25,seed0_f025
+utility_0083,Utilities/083.jpg,utility,g0105,train_subset,0,0.25,seed0_f025
+utility_0098,Utilities/098.jpg,utility,g0108,train_subset,0,0.25,seed0_f025
+utility_0107,Utilities/107.jpg,utility,g0114,train_subset,0,0.25,seed0_f025
+utility_0129,Utilities/129.jpg,utility,g0121,train_subset,0,0.25,seed0_f025
+utility_0151,Utilities/151.jpg,utility,g0133,train_subset,0,0.25,seed0_f025
+utility_0152,Utilities/152.jpg,utility,g0134,train_subset,0,0.25,seed0_f025
+utility_0168,Utilities/168.jpg,utility,g0143,train_subset,0,0.25,seed0_f025
+utility_0228,Utilities/228.jpg,utility,g0169,train_subset,0,0.25,seed0_f025
+utility_0232,Utilities/232.jpg,utility,g0171,train_subset,0,0.25,seed0_f025
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,0,0.25,seed0_f025
+utility_0309,Utilities/309.jpg,utility,g0191,train_subset,0,0.25,seed0_f025
+void_0001,cavities/1.JPG,void,g0192,train_subset,0,0.25,seed0_f025
+void_0019,cavities/19.JPG,void,g0209,train_subset,0,0.25,seed0_f025
+void_0024,cavities/24.JPG,void,g0214,train_subset,0,0.25,seed0_f025
+void_0025,cavities/25.JPG,void,g0215,train_subset,0,0.25,seed0_f025
+void_0027,cavities/27.JPG,void,g0217,train_subset,0,0.25,seed0_f025
+void_0034,cavities/34.JPG,void,g0224,train_subset,0,0.25,seed0_f025
+void_0036,cavities/36.JPG,void,g0226,train_subset,0,0.25,seed0_f025
+void_0037,cavities/37.JPG,void,g0227,train_subset,0,0.25,seed0_f025
+void_0040,cavities/40.JPG,void,g0230,train_subset,0,0.25,seed0_f025
+void_0063,cavities/63.JPG,void,g0253,train_subset,0,0.25,seed0_f025
+void_0072,cavities/72.JPG,void,g0262,train_subset,0,0.25,seed0_f025
+intact_0002_2,intact/2 (2).JPG,intact,g0002,train_subset,0,1.0,seed0_f100
+intact_0003_2,intact/3 (2).JPG,intact,g0004,train_subset,0,1.0,seed0_f100
+intact_0004_2,intact/4 (2).JPG,intact,g0004,train_subset,0,1.0,seed0_f100
+intact_0005,intact/5.JPG,intact,g0006,train_subset,0,1.0,seed0_f100
+intact_0006,intact/6.JPG,intact,g0008,train_subset,0,1.0,seed0_f100
+intact_0006_2,intact/6 (2).JPG,intact,g0009,train_subset,0,1.0,seed0_f100
+intact_0007,intact/7.JPG,intact,g0010,train_subset,0,1.0,seed0_f100
+intact_0010_2,intact/10 (2).JPG,intact,g0013,train_subset,0,1.0,seed0_f100
+intact_0011,intact/11.JPG,intact,g0014,train_subset,0,1.0,seed0_f100
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train_subset,0,1.0,seed0_f100
+intact_0012,intact/12.JPG,intact,g0015,train_subset,0,1.0,seed0_f100
+intact_0012_2,intact/12 (2).JPG,intact,g0015,train_subset,0,1.0,seed0_f100
+intact_0013_2,intact/13 (2).JPG,intact,g0017,train_subset,0,1.0,seed0_f100
+intact_0014,intact/14.JPG,intact,g0018,train_subset,0,1.0,seed0_f100
+intact_0014_2,intact/14 (2).JPG,intact,g0019,train_subset,0,1.0,seed0_f100
+intact_0015,intact/15.JPG,intact,g0020,train_subset,0,1.0,seed0_f100
+intact_0016_2,intact/16 (2).JPG,intact,g0022,train_subset,0,1.0,seed0_f100
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train_subset,0,1.0,seed0_f100
+intact_0023,intact/23.JPG,intact,g0031,train_subset,0,1.0,seed0_f100
+intact_0023_2,intact/23 (2).JPG,intact,g0032,train_subset,0,1.0,seed0_f100
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train_subset,0,1.0,seed0_f100
+intact_0027,intact/27.JPG,intact,g0037,train_subset,0,1.0,seed0_f100
+intact_0027_2,intact/27 (2).JPG,intact,g0038,train_subset,0,1.0,seed0_f100
+intact_0028,intact/28.JPG,intact,g0039,train_subset,0,1.0,seed0_f100
+intact_0031,intact/31.JPG,intact,g0041,train_subset,0,1.0,seed0_f100
+intact_0032,intact/32.JPG,intact,g0043,train_subset,0,1.0,seed0_f100
+intact_0036_2,intact/36 (2).JPG,intact,g0046,train_subset,0,1.0,seed0_f100
+intact_0038,intact/38.JPG,intact,g0048,train_subset,0,1.0,seed0_f100
+intact_0038_2,intact/38 (2).JPG,intact,g0049,train_subset,0,1.0,seed0_f100
+intact_0039,intact/39.JPG,intact,g0050,train_subset,0,1.0,seed0_f100
+intact_0039_2,intact/39 (2).JPG,intact,g0051,train_subset,0,1.0,seed0_f100
+intact_0040_2,intact/40 (2).JPG,intact,g0053,train_subset,0,1.0,seed0_f100
+intact_0041,intact/41.JPG,intact,g0054,train_subset,0,1.0,seed0_f100
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train_subset,0,1.0,seed0_f100
+intact_0042,intact/42.JPG,intact,g0056,train_subset,0,1.0,seed0_f100
+intact_0042_2,intact/42 (2).JPG,intact,g0057,train_subset,0,1.0,seed0_f100
+intact_0043,intact/43.JPG,intact,g0058,train_subset,0,1.0,seed0_f100
+intact_0045,intact/45.JPG,intact,g0062,train_subset,0,1.0,seed0_f100
+intact_0045_2,intact/45 (2).JPG,intact,g0063,train_subset,0,1.0,seed0_f100
+utility_0004,Utilities/004.jpg,utility,g0065,train_subset,0,1.0,seed0_f100
+utility_0008,Utilities/008.jpg,utility,g0067,train_subset,0,1.0,seed0_f100
+utility_0009,Utilities/009.jpg,utility,g0068,train_subset,0,1.0,seed0_f100
+utility_0012,Utilities/012.jpg,utility,g0070,train_subset,0,1.0,seed0_f100
+utility_0013,Utilities/013.jpg,utility,g0071,train_subset,0,1.0,seed0_f100
+utility_0014,Utilities/014.jpg,utility,g0072,train_subset,0,1.0,seed0_f100
+utility_0015,Utilities/015.jpg,utility,g0073,train_subset,0,1.0,seed0_f100
+utility_0016,Utilities/016.jpg,utility,g0074,train_subset,0,1.0,seed0_f100
+utility_0018,Utilities/018.jpg,utility,g0075,train_subset,0,1.0,seed0_f100
+utility_0023,Utilities/023.jpg,utility,g0076,train_subset,0,1.0,seed0_f100
+utility_0024,Utilities/024.jpg,utility,g0077,train_subset,0,1.0,seed0_f100
+utility_0026,Utilities/026.jpg,utility,g0078,train_subset,0,1.0,seed0_f100
+utility_0027,Utilities/027.jpg,utility,g0079,train_subset,0,1.0,seed0_f100
+utility_0029,Utilities/029.jpg,utility,g0081,train_subset,0,1.0,seed0_f100
+utility_0031,Utilities/031.jpg,utility,g0083,train_subset,0,1.0,seed0_f100
+utility_0033,Utilities/033.jpg,utility,g0085,train_subset,0,1.0,seed0_f100
+utility_0036,Utilities/036.jpg,utility,g0087,train_subset,0,1.0,seed0_f100
+utility_0037,Utilities/037.jpg,utility,g0088,train_subset,0,1.0,seed0_f100
+utility_0042,Utilities/042.jpg,utility,g0090,train_subset,0,1.0,seed0_f100
+utility_0059,Utilities/059.jpg,utility,g0094,train_subset,0,1.0,seed0_f100
+utility_0062,Utilities/062.jpg,utility,g0097,train_subset,0,1.0,seed0_f100
+utility_0063,Utilities/063.jpg,utility,g0098,train_subset,0,1.0,seed0_f100
+utility_0064,Utilities/064.jpg,utility,g0099,train_subset,0,1.0,seed0_f100
+utility_0068,Utilities/068.jpg,utility,g0101,train_subset,0,1.0,seed0_f100
+utility_0075,Utilities/075.jpg,utility,g0104,train_subset,0,1.0,seed0_f100
+utility_0083,Utilities/083.jpg,utility,g0105,train_subset,0,1.0,seed0_f100
+utility_0091,Utilities/091.jpg,utility,g0106,train_subset,0,1.0,seed0_f100
+utility_0098,Utilities/098.jpg,utility,g0108,train_subset,0,1.0,seed0_f100
+utility_0101,Utilities/101.jpg,utility,g0109,train_subset,0,1.0,seed0_f100
+utility_0106,Utilities/106.jpg,utility,g0113,train_subset,0,1.0,seed0_f100
+utility_0107,Utilities/107.jpg,utility,g0114,train_subset,0,1.0,seed0_f100
+utility_0115,Utilities/115.jpg,utility,g0117,train_subset,0,1.0,seed0_f100
+utility_0128,Utilities/128.jpg,utility,g0120,train_subset,0,1.0,seed0_f100
+utility_0129,Utilities/129.jpg,utility,g0121,train_subset,0,1.0,seed0_f100
+utility_0133,Utilities/133.jpg,utility,g0123,train_subset,0,1.0,seed0_f100
+utility_0139,Utilities/139.jpg,utility,g0124,train_subset,0,1.0,seed0_f100
+utility_0142,Utilities/142.jpg,utility,g0126,train_subset,0,1.0,seed0_f100
+utility_0143,Utilities/143.jpg,utility,g0127,train_subset,0,1.0,seed0_f100
+utility_0148,Utilities/148.jpg,utility,g0131,train_subset,0,1.0,seed0_f100
+utility_0151,Utilities/151.jpg,utility,g0133,train_subset,0,1.0,seed0_f100
+utility_0152,Utilities/152.jpg,utility,g0134,train_subset,0,1.0,seed0_f100
+utility_0156,Utilities/156.jpg,utility,g0137,train_subset,0,1.0,seed0_f100
+utility_0159,Utilities/159.jpg,utility,g0139,train_subset,0,1.0,seed0_f100
+utility_0166,Utilities/166.jpg,utility,g0142,train_subset,0,1.0,seed0_f100
+utility_0168,Utilities/168.jpg,utility,g0143,train_subset,0,1.0,seed0_f100
+utility_0170,Utilities/170.jpg,utility,g0144,train_subset,0,1.0,seed0_f100
+utility_0175,Utilities/175.jpg,utility,g0146,train_subset,0,1.0,seed0_f100
+utility_0176,Utilities/176.jpg,utility,g0147,train_subset,0,1.0,seed0_f100
+utility_0177,Utilities/177.jpg,utility,g0148,train_subset,0,1.0,seed0_f100
+utility_0181,Utilities/181.jpg,utility,g0150,train_subset,0,1.0,seed0_f100
+utility_0183,Utilities/183.jpg,utility,g0150,train_subset,0,1.0,seed0_f100
+utility_0192,Utilities/192.jpg,utility,g0154,train_subset,0,1.0,seed0_f100
+utility_0195,Utilities/195.jpg,utility,g0156,train_subset,0,1.0,seed0_f100
+utility_0198,Utilities/198.jpg,utility,g0157,train_subset,0,1.0,seed0_f100
+utility_0204,Utilities/204.jpg,utility,g0159,train_subset,0,1.0,seed0_f100
+utility_0206,Utilities/206.jpg,utility,g0160,train_subset,0,1.0,seed0_f100
+utility_0208,Utilities/208.jpg,utility,g0161,train_subset,0,1.0,seed0_f100
+utility_0210,Utilities/210.jpg,utility,g0163,train_subset,0,1.0,seed0_f100
+utility_0215,Utilities/215.jpg,utility,g0165,train_subset,0,1.0,seed0_f100
+utility_0218,Utilities/218.jpg,utility,g0166,train_subset,0,1.0,seed0_f100
+utility_0225,Utilities/225.jpg,utility,g0168,train_subset,0,1.0,seed0_f100
+utility_0228,Utilities/228.jpg,utility,g0169,train_subset,0,1.0,seed0_f100
+utility_0232,Utilities/232.jpg,utility,g0171,train_subset,0,1.0,seed0_f100
+utility_0234,Utilities/234.jpg,utility,g0173,train_subset,0,1.0,seed0_f100
+utility_0239,Utilities/239.jpg,utility,g0175,train_subset,0,1.0,seed0_f100
+utility_0240,Utilities/240.jpg,utility,g0176,train_subset,0,1.0,seed0_f100
+utility_0242,Utilities/242.jpg,utility,g0177,train_subset,0,1.0,seed0_f100
+utility_0246,Utilities/246.jpg,utility,g0179,train_subset,0,1.0,seed0_f100
+utility_0248,Utilities/248.jpg,utility,g0180,train_subset,0,1.0,seed0_f100
+utility_0265,Utilities/265.jpg,utility,g0183,train_subset,0,1.0,seed0_f100
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,0,1.0,seed0_f100
+utility_0297,Utilities/297.jpg,utility,g0188,train_subset,0,1.0,seed0_f100
+utility_0309,Utilities/309.jpg,utility,g0191,train_subset,0,1.0,seed0_f100
+void_0001,cavities/1.JPG,void,g0192,train_subset,0,1.0,seed0_f100
+void_0006,cavities/6.JPG,void,g0197,train_subset,0,1.0,seed0_f100
+void_0008,cavities/8.JPG,void,g0199,train_subset,0,1.0,seed0_f100
+void_0009,cavities/9.JPG,void,g0200,train_subset,0,1.0,seed0_f100
+void_0014,cavities/14.JPG,void,g0204,train_subset,0,1.0,seed0_f100
+void_0017,cavities/17.JPG,void,g0207,train_subset,0,1.0,seed0_f100
+void_0018,cavities/18.JPG,void,g0208,train_subset,0,1.0,seed0_f100
+void_0019,cavities/19.JPG,void,g0209,train_subset,0,1.0,seed0_f100
+void_0020,cavities/20.JPG,void,g0210,train_subset,0,1.0,seed0_f100
+void_0022,cavities/22.JPG,void,g0212,train_subset,0,1.0,seed0_f100
+void_0023,cavities/23.JPG,void,g0213,train_subset,0,1.0,seed0_f100
+void_0024,cavities/24.JPG,void,g0214,train_subset,0,1.0,seed0_f100
+void_0025,cavities/25.JPG,void,g0215,train_subset,0,1.0,seed0_f100
+void_0026,cavities/26.JPG,void,g0216,train_subset,0,1.0,seed0_f100
+void_0027,cavities/27.JPG,void,g0217,train_subset,0,1.0,seed0_f100
+void_0028,cavities/28.JPG,void,g0218,train_subset,0,1.0,seed0_f100
+void_0031,cavities/31.JPG,void,g0221,train_subset,0,1.0,seed0_f100
+void_0032,cavities/32.JPG,void,g0222,train_subset,0,1.0,seed0_f100
+void_0034,cavities/34.JPG,void,g0224,train_subset,0,1.0,seed0_f100
+void_0035,cavities/35.JPG,void,g0225,train_subset,0,1.0,seed0_f100
+void_0036,cavities/36.JPG,void,g0226,train_subset,0,1.0,seed0_f100
+void_0037,cavities/37.JPG,void,g0227,train_subset,0,1.0,seed0_f100
+void_0038,cavities/38.JPG,void,g0228,train_subset,0,1.0,seed0_f100
+void_0040,cavities/40.JPG,void,g0230,train_subset,0,1.0,seed0_f100
+void_0043,cavities/43.JPG,void,g0233,train_subset,0,1.0,seed0_f100
+void_0045,cavities/45.JPG,void,g0235,train_subset,0,1.0,seed0_f100
+void_0046,cavities/46.JPG,void,g0236,train_subset,0,1.0,seed0_f100
+void_0047,cavities/47.JPG,void,g0237,train_subset,0,1.0,seed0_f100
+void_0054,cavities/54.JPG,void,g0244,train_subset,0,1.0,seed0_f100
+void_0056,cavities/56.JPG,void,g0246,train_subset,0,1.0,seed0_f100
+void_0057,cavities/57.JPG,void,g0247,train_subset,0,1.0,seed0_f100
+void_0059,cavities/59.JPG,void,g0249,train_subset,0,1.0,seed0_f100
+void_0062,cavities/62.JPG,void,g0252,train_subset,0,1.0,seed0_f100
+void_0063,cavities/63.JPG,void,g0253,train_subset,0,1.0,seed0_f100
+void_0065,cavities/65.JPG,void,g0255,train_subset,0,1.0,seed0_f100
+void_0067,cavities/67.JPG,void,g0257,train_subset,0,1.0,seed0_f100
+void_0068,cavities/68.JPG,void,g0258,train_subset,0,1.0,seed0_f100
+void_0069,cavities/69.JPG,void,g0259,train_subset,0,1.0,seed0_f100
+void_0070,cavities/70.JPG,void,g0260,train_subset,0,1.0,seed0_f100
+void_0071,cavities/71.JPG,void,g0261,train_subset,0,1.0,seed0_f100
+void_0072,cavities/72.JPG,void,g0262,train_subset,0,1.0,seed0_f100
+void_0075,cavities/75.JPG,void,g0265,train_subset,0,1.0,seed0_f100
+void_0076,cavities/76.JPG,void,g0266,train_subset,0,1.0,seed0_f100
+void_0078,cavities/78.JPG,void,g0268,train_subset,0,1.0,seed0_f100
+intact_0005,intact/5.JPG,intact,g0006,train_subset,1,0.25,seed1_f025
+intact_0011,intact/11.JPG,intact,g0014,train_subset,1,0.25,seed1_f025
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train_subset,1,0.25,seed1_f025
+intact_0014,intact/14.JPG,intact,g0018,train_subset,1,0.25,seed1_f025
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train_subset,1,0.25,seed1_f025
+intact_0027,intact/27.JPG,intact,g0037,train_subset,1,0.25,seed1_f025
+intact_0028,intact/28.JPG,intact,g0039,train_subset,1,0.25,seed1_f025
+intact_0038,intact/38.JPG,intact,g0048,train_subset,1,0.25,seed1_f025
+intact_0040_2,intact/40 (2).JPG,intact,g0053,train_subset,1,0.25,seed1_f025
+intact_0045_2,intact/45 (2).JPG,intact,g0063,train_subset,1,0.25,seed1_f025
+utility_0004,Utilities/004.jpg,utility,g0065,train_subset,1,0.25,seed1_f025
+utility_0008,Utilities/008.jpg,utility,g0067,train_subset,1,0.25,seed1_f025
+utility_0013,Utilities/013.jpg,utility,g0071,train_subset,1,0.25,seed1_f025
+utility_0018,Utilities/018.jpg,utility,g0075,train_subset,1,0.25,seed1_f025
+utility_0023,Utilities/023.jpg,utility,g0076,train_subset,1,0.25,seed1_f025
+utility_0024,Utilities/024.jpg,utility,g0077,train_subset,1,0.25,seed1_f025
+utility_0029,Utilities/029.jpg,utility,g0081,train_subset,1,0.25,seed1_f025
+utility_0062,Utilities/062.jpg,utility,g0097,train_subset,1,0.25,seed1_f025
+utility_0129,Utilities/129.jpg,utility,g0121,train_subset,1,0.25,seed1_f025
+utility_0133,Utilities/133.jpg,utility,g0123,train_subset,1,0.25,seed1_f025
+utility_0148,Utilities/148.jpg,utility,g0131,train_subset,1,0.25,seed1_f025
+utility_0166,Utilities/166.jpg,utility,g0142,train_subset,1,0.25,seed1_f025
+utility_0181,Utilities/181.jpg,utility,g0150,train_subset,1,0.25,seed1_f025
+utility_0183,Utilities/183.jpg,utility,g0150,train_subset,1,0.25,seed1_f025
+utility_0198,Utilities/198.jpg,utility,g0157,train_subset,1,0.25,seed1_f025
+utility_0215,Utilities/215.jpg,utility,g0165,train_subset,1,0.25,seed1_f025
+utility_0232,Utilities/232.jpg,utility,g0171,train_subset,1,0.25,seed1_f025
+utility_0265,Utilities/265.jpg,utility,g0183,train_subset,1,0.25,seed1_f025
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,1,0.25,seed1_f025
+void_0008,cavities/8.JPG,void,g0199,train_subset,1,0.25,seed1_f025
+void_0017,cavities/17.JPG,void,g0207,train_subset,1,0.25,seed1_f025
+void_0022,cavities/22.JPG,void,g0212,train_subset,1,0.25,seed1_f025
+void_0024,cavities/24.JPG,void,g0214,train_subset,1,0.25,seed1_f025
+void_0032,cavities/32.JPG,void,g0222,train_subset,1,0.25,seed1_f025
+void_0047,cavities/47.JPG,void,g0237,train_subset,1,0.25,seed1_f025
+void_0056,cavities/56.JPG,void,g0246,train_subset,1,0.25,seed1_f025
+void_0062,cavities/62.JPG,void,g0252,train_subset,1,0.25,seed1_f025
+void_0063,cavities/63.JPG,void,g0253,train_subset,1,0.25,seed1_f025
+void_0075,cavities/75.JPG,void,g0265,train_subset,1,0.25,seed1_f025
+void_0076,cavities/76.JPG,void,g0266,train_subset,1,0.25,seed1_f025
+intact_0002_2,intact/2 (2).JPG,intact,g0002,train_subset,1,1.0,seed1_f100
+intact_0003_2,intact/3 (2).JPG,intact,g0004,train_subset,1,1.0,seed1_f100
+intact_0004_2,intact/4 (2).JPG,intact,g0004,train_subset,1,1.0,seed1_f100
+intact_0005,intact/5.JPG,intact,g0006,train_subset,1,1.0,seed1_f100
+intact_0006,intact/6.JPG,intact,g0008,train_subset,1,1.0,seed1_f100
+intact_0006_2,intact/6 (2).JPG,intact,g0009,train_subset,1,1.0,seed1_f100
+intact_0007,intact/7.JPG,intact,g0010,train_subset,1,1.0,seed1_f100
+intact_0010_2,intact/10 (2).JPG,intact,g0013,train_subset,1,1.0,seed1_f100
+intact_0011,intact/11.JPG,intact,g0014,train_subset,1,1.0,seed1_f100
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train_subset,1,1.0,seed1_f100
+intact_0012,intact/12.JPG,intact,g0015,train_subset,1,1.0,seed1_f100
+intact_0012_2,intact/12 (2).JPG,intact,g0015,train_subset,1,1.0,seed1_f100
+intact_0013_2,intact/13 (2).JPG,intact,g0017,train_subset,1,1.0,seed1_f100
+intact_0014,intact/14.JPG,intact,g0018,train_subset,1,1.0,seed1_f100
+intact_0014_2,intact/14 (2).JPG,intact,g0019,train_subset,1,1.0,seed1_f100
+intact_0015,intact/15.JPG,intact,g0020,train_subset,1,1.0,seed1_f100
+intact_0016_2,intact/16 (2).JPG,intact,g0022,train_subset,1,1.0,seed1_f100
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train_subset,1,1.0,seed1_f100
+intact_0023,intact/23.JPG,intact,g0031,train_subset,1,1.0,seed1_f100
+intact_0023_2,intact/23 (2).JPG,intact,g0032,train_subset,1,1.0,seed1_f100
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train_subset,1,1.0,seed1_f100
+intact_0027,intact/27.JPG,intact,g0037,train_subset,1,1.0,seed1_f100
+intact_0027_2,intact/27 (2).JPG,intact,g0038,train_subset,1,1.0,seed1_f100
+intact_0028,intact/28.JPG,intact,g0039,train_subset,1,1.0,seed1_f100
+intact_0031,intact/31.JPG,intact,g0041,train_subset,1,1.0,seed1_f100
+intact_0032,intact/32.JPG,intact,g0043,train_subset,1,1.0,seed1_f100
+intact_0036_2,intact/36 (2).JPG,intact,g0046,train_subset,1,1.0,seed1_f100
+intact_0038,intact/38.JPG,intact,g0048,train_subset,1,1.0,seed1_f100
+intact_0038_2,intact/38 (2).JPG,intact,g0049,train_subset,1,1.0,seed1_f100
+intact_0039,intact/39.JPG,intact,g0050,train_subset,1,1.0,seed1_f100
+intact_0039_2,intact/39 (2).JPG,intact,g0051,train_subset,1,1.0,seed1_f100
+intact_0040_2,intact/40 (2).JPG,intact,g0053,train_subset,1,1.0,seed1_f100
+intact_0041,intact/41.JPG,intact,g0054,train_subset,1,1.0,seed1_f100
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train_subset,1,1.0,seed1_f100
+intact_0042,intact/42.JPG,intact,g0056,train_subset,1,1.0,seed1_f100
+intact_0042_2,intact/42 (2).JPG,intact,g0057,train_subset,1,1.0,seed1_f100
+intact_0043,intact/43.JPG,intact,g0058,train_subset,1,1.0,seed1_f100
+intact_0045,intact/45.JPG,intact,g0062,train_subset,1,1.0,seed1_f100
+intact_0045_2,intact/45 (2).JPG,intact,g0063,train_subset,1,1.0,seed1_f100
+utility_0004,Utilities/004.jpg,utility,g0065,train_subset,1,1.0,seed1_f100
+utility_0008,Utilities/008.jpg,utility,g0067,train_subset,1,1.0,seed1_f100
+utility_0009,Utilities/009.jpg,utility,g0068,train_subset,1,1.0,seed1_f100
+utility_0012,Utilities/012.jpg,utility,g0070,train_subset,1,1.0,seed1_f100
+utility_0013,Utilities/013.jpg,utility,g0071,train_subset,1,1.0,seed1_f100
+utility_0014,Utilities/014.jpg,utility,g0072,train_subset,1,1.0,seed1_f100
+utility_0015,Utilities/015.jpg,utility,g0073,train_subset,1,1.0,seed1_f100
+utility_0016,Utilities/016.jpg,utility,g0074,train_subset,1,1.0,seed1_f100
+utility_0018,Utilities/018.jpg,utility,g0075,train_subset,1,1.0,seed1_f100
+utility_0023,Utilities/023.jpg,utility,g0076,train_subset,1,1.0,seed1_f100
+utility_0024,Utilities/024.jpg,utility,g0077,train_subset,1,1.0,seed1_f100
+utility_0026,Utilities/026.jpg,utility,g0078,train_subset,1,1.0,seed1_f100
+utility_0027,Utilities/027.jpg,utility,g0079,train_subset,1,1.0,seed1_f100
+utility_0029,Utilities/029.jpg,utility,g0081,train_subset,1,1.0,seed1_f100
+utility_0031,Utilities/031.jpg,utility,g0083,train_subset,1,1.0,seed1_f100
+utility_0033,Utilities/033.jpg,utility,g0085,train_subset,1,1.0,seed1_f100
+utility_0036,Utilities/036.jpg,utility,g0087,train_subset,1,1.0,seed1_f100
+utility_0037,Utilities/037.jpg,utility,g0088,train_subset,1,1.0,seed1_f100
+utility_0042,Utilities/042.jpg,utility,g0090,train_subset,1,1.0,seed1_f100
+utility_0059,Utilities/059.jpg,utility,g0094,train_subset,1,1.0,seed1_f100
+utility_0062,Utilities/062.jpg,utility,g0097,train_subset,1,1.0,seed1_f100
+utility_0063,Utilities/063.jpg,utility,g0098,train_subset,1,1.0,seed1_f100
+utility_0064,Utilities/064.jpg,utility,g0099,train_subset,1,1.0,seed1_f100
+utility_0068,Utilities/068.jpg,utility,g0101,train_subset,1,1.0,seed1_f100
+utility_0075,Utilities/075.jpg,utility,g0104,train_subset,1,1.0,seed1_f100
+utility_0083,Utilities/083.jpg,utility,g0105,train_subset,1,1.0,seed1_f100
+utility_0091,Utilities/091.jpg,utility,g0106,train_subset,1,1.0,seed1_f100
+utility_0098,Utilities/098.jpg,utility,g0108,train_subset,1,1.0,seed1_f100
+utility_0101,Utilities/101.jpg,utility,g0109,train_subset,1,1.0,seed1_f100
+utility_0106,Utilities/106.jpg,utility,g0113,train_subset,1,1.0,seed1_f100
+utility_0107,Utilities/107.jpg,utility,g0114,train_subset,1,1.0,seed1_f100
+utility_0115,Utilities/115.jpg,utility,g0117,train_subset,1,1.0,seed1_f100
+utility_0128,Utilities/128.jpg,utility,g0120,train_subset,1,1.0,seed1_f100
+utility_0129,Utilities/129.jpg,utility,g0121,train_subset,1,1.0,seed1_f100
+utility_0133,Utilities/133.jpg,utility,g0123,train_subset,1,1.0,seed1_f100
+utility_0139,Utilities/139.jpg,utility,g0124,train_subset,1,1.0,seed1_f100
+utility_0142,Utilities/142.jpg,utility,g0126,train_subset,1,1.0,seed1_f100
+utility_0143,Utilities/143.jpg,utility,g0127,train_subset,1,1.0,seed1_f100
+utility_0148,Utilities/148.jpg,utility,g0131,train_subset,1,1.0,seed1_f100
+utility_0151,Utilities/151.jpg,utility,g0133,train_subset,1,1.0,seed1_f100
+utility_0152,Utilities/152.jpg,utility,g0134,train_subset,1,1.0,seed1_f100
+utility_0156,Utilities/156.jpg,utility,g0137,train_subset,1,1.0,seed1_f100
+utility_0159,Utilities/159.jpg,utility,g0139,train_subset,1,1.0,seed1_f100
+utility_0166,Utilities/166.jpg,utility,g0142,train_subset,1,1.0,seed1_f100
+utility_0168,Utilities/168.jpg,utility,g0143,train_subset,1,1.0,seed1_f100
+utility_0170,Utilities/170.jpg,utility,g0144,train_subset,1,1.0,seed1_f100
+utility_0175,Utilities/175.jpg,utility,g0146,train_subset,1,1.0,seed1_f100
+utility_0176,Utilities/176.jpg,utility,g0147,train_subset,1,1.0,seed1_f100
+utility_0177,Utilities/177.jpg,utility,g0148,train_subset,1,1.0,seed1_f100
+utility_0181,Utilities/181.jpg,utility,g0150,train_subset,1,1.0,seed1_f100
+utility_0183,Utilities/183.jpg,utility,g0150,train_subset,1,1.0,seed1_f100
+utility_0192,Utilities/192.jpg,utility,g0154,train_subset,1,1.0,seed1_f100
+utility_0195,Utilities/195.jpg,utility,g0156,train_subset,1,1.0,seed1_f100
+utility_0198,Utilities/198.jpg,utility,g0157,train_subset,1,1.0,seed1_f100
+utility_0204,Utilities/204.jpg,utility,g0159,train_subset,1,1.0,seed1_f100
+utility_0206,Utilities/206.jpg,utility,g0160,train_subset,1,1.0,seed1_f100
+utility_0208,Utilities/208.jpg,utility,g0161,train_subset,1,1.0,seed1_f100
+utility_0210,Utilities/210.jpg,utility,g0163,train_subset,1,1.0,seed1_f100
+utility_0215,Utilities/215.jpg,utility,g0165,train_subset,1,1.0,seed1_f100
+utility_0218,Utilities/218.jpg,utility,g0166,train_subset,1,1.0,seed1_f100
+utility_0225,Utilities/225.jpg,utility,g0168,train_subset,1,1.0,seed1_f100
+utility_0228,Utilities/228.jpg,utility,g0169,train_subset,1,1.0,seed1_f100
+utility_0232,Utilities/232.jpg,utility,g0171,train_subset,1,1.0,seed1_f100
+utility_0234,Utilities/234.jpg,utility,g0173,train_subset,1,1.0,seed1_f100
+utility_0239,Utilities/239.jpg,utility,g0175,train_subset,1,1.0,seed1_f100
+utility_0240,Utilities/240.jpg,utility,g0176,train_subset,1,1.0,seed1_f100
+utility_0242,Utilities/242.jpg,utility,g0177,train_subset,1,1.0,seed1_f100
+utility_0246,Utilities/246.jpg,utility,g0179,train_subset,1,1.0,seed1_f100
+utility_0248,Utilities/248.jpg,utility,g0180,train_subset,1,1.0,seed1_f100
+utility_0265,Utilities/265.jpg,utility,g0183,train_subset,1,1.0,seed1_f100
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,1,1.0,seed1_f100
+utility_0297,Utilities/297.jpg,utility,g0188,train_subset,1,1.0,seed1_f100
+utility_0309,Utilities/309.jpg,utility,g0191,train_subset,1,1.0,seed1_f100
+void_0001,cavities/1.JPG,void,g0192,train_subset,1,1.0,seed1_f100
+void_0006,cavities/6.JPG,void,g0197,train_subset,1,1.0,seed1_f100
+void_0008,cavities/8.JPG,void,g0199,train_subset,1,1.0,seed1_f100
+void_0009,cavities/9.JPG,void,g0200,train_subset,1,1.0,seed1_f100
+void_0014,cavities/14.JPG,void,g0204,train_subset,1,1.0,seed1_f100
+void_0017,cavities/17.JPG,void,g0207,train_subset,1,1.0,seed1_f100
+void_0018,cavities/18.JPG,void,g0208,train_subset,1,1.0,seed1_f100
+void_0019,cavities/19.JPG,void,g0209,train_subset,1,1.0,seed1_f100
+void_0020,cavities/20.JPG,void,g0210,train_subset,1,1.0,seed1_f100
+void_0022,cavities/22.JPG,void,g0212,train_subset,1,1.0,seed1_f100
+void_0023,cavities/23.JPG,void,g0213,train_subset,1,1.0,seed1_f100
+void_0024,cavities/24.JPG,void,g0214,train_subset,1,1.0,seed1_f100
+void_0025,cavities/25.JPG,void,g0215,train_subset,1,1.0,seed1_f100
+void_0026,cavities/26.JPG,void,g0216,train_subset,1,1.0,seed1_f100
+void_0027,cavities/27.JPG,void,g0217,train_subset,1,1.0,seed1_f100
+void_0028,cavities/28.JPG,void,g0218,train_subset,1,1.0,seed1_f100
+void_0031,cavities/31.JPG,void,g0221,train_subset,1,1.0,seed1_f100
+void_0032,cavities/32.JPG,void,g0222,train_subset,1,1.0,seed1_f100
+void_0034,cavities/34.JPG,void,g0224,train_subset,1,1.0,seed1_f100
+void_0035,cavities/35.JPG,void,g0225,train_subset,1,1.0,seed1_f100
+void_0036,cavities/36.JPG,void,g0226,train_subset,1,1.0,seed1_f100
+void_0037,cavities/37.JPG,void,g0227,train_subset,1,1.0,seed1_f100
+void_0038,cavities/38.JPG,void,g0228,train_subset,1,1.0,seed1_f100
+void_0040,cavities/40.JPG,void,g0230,train_subset,1,1.0,seed1_f100
+void_0043,cavities/43.JPG,void,g0233,train_subset,1,1.0,seed1_f100
+void_0045,cavities/45.JPG,void,g0235,train_subset,1,1.0,seed1_f100
+void_0046,cavities/46.JPG,void,g0236,train_subset,1,1.0,seed1_f100
+void_0047,cavities/47.JPG,void,g0237,train_subset,1,1.0,seed1_f100
+void_0054,cavities/54.JPG,void,g0244,train_subset,1,1.0,seed1_f100
+void_0056,cavities/56.JPG,void,g0246,train_subset,1,1.0,seed1_f100
+void_0057,cavities/57.JPG,void,g0247,train_subset,1,1.0,seed1_f100
+void_0059,cavities/59.JPG,void,g0249,train_subset,1,1.0,seed1_f100
+void_0062,cavities/62.JPG,void,g0252,train_subset,1,1.0,seed1_f100
+void_0063,cavities/63.JPG,void,g0253,train_subset,1,1.0,seed1_f100
+void_0065,cavities/65.JPG,void,g0255,train_subset,1,1.0,seed1_f100
+void_0067,cavities/67.JPG,void,g0257,train_subset,1,1.0,seed1_f100
+void_0068,cavities/68.JPG,void,g0258,train_subset,1,1.0,seed1_f100
+void_0069,cavities/69.JPG,void,g0259,train_subset,1,1.0,seed1_f100
+void_0070,cavities/70.JPG,void,g0260,train_subset,1,1.0,seed1_f100
+void_0071,cavities/71.JPG,void,g0261,train_subset,1,1.0,seed1_f100
+void_0072,cavities/72.JPG,void,g0262,train_subset,1,1.0,seed1_f100
+void_0075,cavities/75.JPG,void,g0265,train_subset,1,1.0,seed1_f100
+void_0076,cavities/76.JPG,void,g0266,train_subset,1,1.0,seed1_f100
+void_0078,cavities/78.JPG,void,g0268,train_subset,1,1.0,seed1_f100
+intact_0011,intact/11.JPG,intact,g0014,train_subset,2,0.25,seed2_f025
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train_subset,2,0.25,seed2_f025
+intact_0014,intact/14.JPG,intact,g0018,train_subset,2,0.25,seed2_f025
+intact_0016_2,intact/16 (2).JPG,intact,g0022,train_subset,2,0.25,seed2_f025
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train_subset,2,0.25,seed2_f025
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train_subset,2,0.25,seed2_f025
+intact_0027_2,intact/27 (2).JPG,intact,g0038,train_subset,2,0.25,seed2_f025
+intact_0028,intact/28.JPG,intact,g0039,train_subset,2,0.25,seed2_f025
+intact_0038,intact/38.JPG,intact,g0048,train_subset,2,0.25,seed2_f025
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train_subset,2,0.25,seed2_f025
+utility_0008,Utilities/008.jpg,utility,g0067,train_subset,2,0.25,seed2_f025
+utility_0013,Utilities/013.jpg,utility,g0071,train_subset,2,0.25,seed2_f025
+utility_0014,Utilities/014.jpg,utility,g0072,train_subset,2,0.25,seed2_f025
+utility_0016,Utilities/016.jpg,utility,g0074,train_subset,2,0.25,seed2_f025
+utility_0018,Utilities/018.jpg,utility,g0075,train_subset,2,0.25,seed2_f025
+utility_0027,Utilities/027.jpg,utility,g0079,train_subset,2,0.25,seed2_f025
+utility_0029,Utilities/029.jpg,utility,g0081,train_subset,2,0.25,seed2_f025
+utility_0042,Utilities/042.jpg,utility,g0090,train_subset,2,0.25,seed2_f025
+utility_0075,Utilities/075.jpg,utility,g0104,train_subset,2,0.25,seed2_f025
+utility_0083,Utilities/083.jpg,utility,g0105,train_subset,2,0.25,seed2_f025
+utility_0098,Utilities/098.jpg,utility,g0108,train_subset,2,0.25,seed2_f025
+utility_0143,Utilities/143.jpg,utility,g0127,train_subset,2,0.25,seed2_f025
+utility_0148,Utilities/148.jpg,utility,g0131,train_subset,2,0.25,seed2_f025
+utility_0156,Utilities/156.jpg,utility,g0137,train_subset,2,0.25,seed2_f025
+utility_0166,Utilities/166.jpg,utility,g0142,train_subset,2,0.25,seed2_f025
+utility_0168,Utilities/168.jpg,utility,g0143,train_subset,2,0.25,seed2_f025
+utility_0208,Utilities/208.jpg,utility,g0161,train_subset,2,0.25,seed2_f025
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,2,0.25,seed2_f025
+void_0014,cavities/14.JPG,void,g0204,train_subset,2,0.25,seed2_f025
+void_0018,cavities/18.JPG,void,g0208,train_subset,2,0.25,seed2_f025
+void_0022,cavities/22.JPG,void,g0212,train_subset,2,0.25,seed2_f025
+void_0028,cavities/28.JPG,void,g0218,train_subset,2,0.25,seed2_f025
+void_0036,cavities/36.JPG,void,g0226,train_subset,2,0.25,seed2_f025
+void_0037,cavities/37.JPG,void,g0227,train_subset,2,0.25,seed2_f025
+void_0038,cavities/38.JPG,void,g0228,train_subset,2,0.25,seed2_f025
+void_0046,cavities/46.JPG,void,g0236,train_subset,2,0.25,seed2_f025
+void_0059,cavities/59.JPG,void,g0249,train_subset,2,0.25,seed2_f025
+void_0062,cavities/62.JPG,void,g0252,train_subset,2,0.25,seed2_f025
+void_0070,cavities/70.JPG,void,g0260,train_subset,2,0.25,seed2_f025
+intact_0002_2,intact/2 (2).JPG,intact,g0002,train_subset,2,1.0,seed2_f100
+intact_0003_2,intact/3 (2).JPG,intact,g0004,train_subset,2,1.0,seed2_f100
+intact_0004_2,intact/4 (2).JPG,intact,g0004,train_subset,2,1.0,seed2_f100
+intact_0005,intact/5.JPG,intact,g0006,train_subset,2,1.0,seed2_f100
+intact_0006,intact/6.JPG,intact,g0008,train_subset,2,1.0,seed2_f100
+intact_0006_2,intact/6 (2).JPG,intact,g0009,train_subset,2,1.0,seed2_f100
+intact_0007,intact/7.JPG,intact,g0010,train_subset,2,1.0,seed2_f100
+intact_0010_2,intact/10 (2).JPG,intact,g0013,train_subset,2,1.0,seed2_f100
+intact_0011,intact/11.JPG,intact,g0014,train_subset,2,1.0,seed2_f100
+intact_0011_2,intact/11 (2).JPG,intact,g0014,train_subset,2,1.0,seed2_f100
+intact_0012,intact/12.JPG,intact,g0015,train_subset,2,1.0,seed2_f100
+intact_0012_2,intact/12 (2).JPG,intact,g0015,train_subset,2,1.0,seed2_f100
+intact_0013_2,intact/13 (2).JPG,intact,g0017,train_subset,2,1.0,seed2_f100
+intact_0014,intact/14.JPG,intact,g0018,train_subset,2,1.0,seed2_f100
+intact_0014_2,intact/14 (2).JPG,intact,g0019,train_subset,2,1.0,seed2_f100
+intact_0015,intact/15.JPG,intact,g0020,train_subset,2,1.0,seed2_f100
+intact_0016_2,intact/16 (2).JPG,intact,g0022,train_subset,2,1.0,seed2_f100
+intact_0021_2,intact/21 (2).JPG,intact,g0030,train_subset,2,1.0,seed2_f100
+intact_0023,intact/23.JPG,intact,g0031,train_subset,2,1.0,seed2_f100
+intact_0023_2,intact/23 (2).JPG,intact,g0032,train_subset,2,1.0,seed2_f100
+intact_0026_2,intact/26 (2).JPG,intact,g0036,train_subset,2,1.0,seed2_f100
+intact_0027,intact/27.JPG,intact,g0037,train_subset,2,1.0,seed2_f100
+intact_0027_2,intact/27 (2).JPG,intact,g0038,train_subset,2,1.0,seed2_f100
+intact_0028,intact/28.JPG,intact,g0039,train_subset,2,1.0,seed2_f100
+intact_0031,intact/31.JPG,intact,g0041,train_subset,2,1.0,seed2_f100
+intact_0032,intact/32.JPG,intact,g0043,train_subset,2,1.0,seed2_f100
+intact_0036_2,intact/36 (2).JPG,intact,g0046,train_subset,2,1.0,seed2_f100
+intact_0038,intact/38.JPG,intact,g0048,train_subset,2,1.0,seed2_f100
+intact_0038_2,intact/38 (2).JPG,intact,g0049,train_subset,2,1.0,seed2_f100
+intact_0039,intact/39.JPG,intact,g0050,train_subset,2,1.0,seed2_f100
+intact_0039_2,intact/39 (2).JPG,intact,g0051,train_subset,2,1.0,seed2_f100
+intact_0040_2,intact/40 (2).JPG,intact,g0053,train_subset,2,1.0,seed2_f100
+intact_0041,intact/41.JPG,intact,g0054,train_subset,2,1.0,seed2_f100
+intact_0041_2,intact/41 (2).JPG,intact,g0055,train_subset,2,1.0,seed2_f100
+intact_0042,intact/42.JPG,intact,g0056,train_subset,2,1.0,seed2_f100
+intact_0042_2,intact/42 (2).JPG,intact,g0057,train_subset,2,1.0,seed2_f100
+intact_0043,intact/43.JPG,intact,g0058,train_subset,2,1.0,seed2_f100
+intact_0045,intact/45.JPG,intact,g0062,train_subset,2,1.0,seed2_f100
+intact_0045_2,intact/45 (2).JPG,intact,g0063,train_subset,2,1.0,seed2_f100
+utility_0004,Utilities/004.jpg,utility,g0065,train_subset,2,1.0,seed2_f100
+utility_0008,Utilities/008.jpg,utility,g0067,train_subset,2,1.0,seed2_f100
+utility_0009,Utilities/009.jpg,utility,g0068,train_subset,2,1.0,seed2_f100
+utility_0012,Utilities/012.jpg,utility,g0070,train_subset,2,1.0,seed2_f100
+utility_0013,Utilities/013.jpg,utility,g0071,train_subset,2,1.0,seed2_f100
+utility_0014,Utilities/014.jpg,utility,g0072,train_subset,2,1.0,seed2_f100
+utility_0015,Utilities/015.jpg,utility,g0073,train_subset,2,1.0,seed2_f100
+utility_0016,Utilities/016.jpg,utility,g0074,train_subset,2,1.0,seed2_f100
+utility_0018,Utilities/018.jpg,utility,g0075,train_subset,2,1.0,seed2_f100
+utility_0023,Utilities/023.jpg,utility,g0076,train_subset,2,1.0,seed2_f100
+utility_0024,Utilities/024.jpg,utility,g0077,train_subset,2,1.0,seed2_f100
+utility_0026,Utilities/026.jpg,utility,g0078,train_subset,2,1.0,seed2_f100
+utility_0027,Utilities/027.jpg,utility,g0079,train_subset,2,1.0,seed2_f100
+utility_0029,Utilities/029.jpg,utility,g0081,train_subset,2,1.0,seed2_f100
+utility_0031,Utilities/031.jpg,utility,g0083,train_subset,2,1.0,seed2_f100
+utility_0033,Utilities/033.jpg,utility,g0085,train_subset,2,1.0,seed2_f100
+utility_0036,Utilities/036.jpg,utility,g0087,train_subset,2,1.0,seed2_f100
+utility_0037,Utilities/037.jpg,utility,g0088,train_subset,2,1.0,seed2_f100
+utility_0042,Utilities/042.jpg,utility,g0090,train_subset,2,1.0,seed2_f100
+utility_0059,Utilities/059.jpg,utility,g0094,train_subset,2,1.0,seed2_f100
+utility_0062,Utilities/062.jpg,utility,g0097,train_subset,2,1.0,seed2_f100
+utility_0063,Utilities/063.jpg,utility,g0098,train_subset,2,1.0,seed2_f100
+utility_0064,Utilities/064.jpg,utility,g0099,train_subset,2,1.0,seed2_f100
+utility_0068,Utilities/068.jpg,utility,g0101,train_subset,2,1.0,seed2_f100
+utility_0075,Utilities/075.jpg,utility,g0104,train_subset,2,1.0,seed2_f100
+utility_0083,Utilities/083.jpg,utility,g0105,train_subset,2,1.0,seed2_f100
+utility_0091,Utilities/091.jpg,utility,g0106,train_subset,2,1.0,seed2_f100
+utility_0098,Utilities/098.jpg,utility,g0108,train_subset,2,1.0,seed2_f100
+utility_0101,Utilities/101.jpg,utility,g0109,train_subset,2,1.0,seed2_f100
+utility_0106,Utilities/106.jpg,utility,g0113,train_subset,2,1.0,seed2_f100
+utility_0107,Utilities/107.jpg,utility,g0114,train_subset,2,1.0,seed2_f100
+utility_0115,Utilities/115.jpg,utility,g0117,train_subset,2,1.0,seed2_f100
+utility_0128,Utilities/128.jpg,utility,g0120,train_subset,2,1.0,seed2_f100
+utility_0129,Utilities/129.jpg,utility,g0121,train_subset,2,1.0,seed2_f100
+utility_0133,Utilities/133.jpg,utility,g0123,train_subset,2,1.0,seed2_f100
+utility_0139,Utilities/139.jpg,utility,g0124,train_subset,2,1.0,seed2_f100
+utility_0142,Utilities/142.jpg,utility,g0126,train_subset,2,1.0,seed2_f100
+utility_0143,Utilities/143.jpg,utility,g0127,train_subset,2,1.0,seed2_f100
+utility_0148,Utilities/148.jpg,utility,g0131,train_subset,2,1.0,seed2_f100
+utility_0151,Utilities/151.jpg,utility,g0133,train_subset,2,1.0,seed2_f100
+utility_0152,Utilities/152.jpg,utility,g0134,train_subset,2,1.0,seed2_f100
+utility_0156,Utilities/156.jpg,utility,g0137,train_subset,2,1.0,seed2_f100
+utility_0159,Utilities/159.jpg,utility,g0139,train_subset,2,1.0,seed2_f100
+utility_0166,Utilities/166.jpg,utility,g0142,train_subset,2,1.0,seed2_f100
+utility_0168,Utilities/168.jpg,utility,g0143,train_subset,2,1.0,seed2_f100
+utility_0170,Utilities/170.jpg,utility,g0144,train_subset,2,1.0,seed2_f100
+utility_0175,Utilities/175.jpg,utility,g0146,train_subset,2,1.0,seed2_f100
+utility_0176,Utilities/176.jpg,utility,g0147,train_subset,2,1.0,seed2_f100
+utility_0177,Utilities/177.jpg,utility,g0148,train_subset,2,1.0,seed2_f100
+utility_0181,Utilities/181.jpg,utility,g0150,train_subset,2,1.0,seed2_f100
+utility_0183,Utilities/183.jpg,utility,g0150,train_subset,2,1.0,seed2_f100
+utility_0192,Utilities/192.jpg,utility,g0154,train_subset,2,1.0,seed2_f100
+utility_0195,Utilities/195.jpg,utility,g0156,train_subset,2,1.0,seed2_f100
+utility_0198,Utilities/198.jpg,utility,g0157,train_subset,2,1.0,seed2_f100
+utility_0204,Utilities/204.jpg,utility,g0159,train_subset,2,1.0,seed2_f100
+utility_0206,Utilities/206.jpg,utility,g0160,train_subset,2,1.0,seed2_f100
+utility_0208,Utilities/208.jpg,utility,g0161,train_subset,2,1.0,seed2_f100
+utility_0210,Utilities/210.jpg,utility,g0163,train_subset,2,1.0,seed2_f100
+utility_0215,Utilities/215.jpg,utility,g0165,train_subset,2,1.0,seed2_f100
+utility_0218,Utilities/218.jpg,utility,g0166,train_subset,2,1.0,seed2_f100
+utility_0225,Utilities/225.jpg,utility,g0168,train_subset,2,1.0,seed2_f100
+utility_0228,Utilities/228.jpg,utility,g0169,train_subset,2,1.0,seed2_f100
+utility_0232,Utilities/232.jpg,utility,g0171,train_subset,2,1.0,seed2_f100
+utility_0234,Utilities/234.jpg,utility,g0173,train_subset,2,1.0,seed2_f100
+utility_0239,Utilities/239.jpg,utility,g0175,train_subset,2,1.0,seed2_f100
+utility_0240,Utilities/240.jpg,utility,g0176,train_subset,2,1.0,seed2_f100
+utility_0242,Utilities/242.jpg,utility,g0177,train_subset,2,1.0,seed2_f100
+utility_0246,Utilities/246.jpg,utility,g0179,train_subset,2,1.0,seed2_f100
+utility_0248,Utilities/248.jpg,utility,g0180,train_subset,2,1.0,seed2_f100
+utility_0265,Utilities/265.jpg,utility,g0183,train_subset,2,1.0,seed2_f100
+utility_0266,Utilities/266.jpg,utility,g0184,train_subset,2,1.0,seed2_f100
+utility_0297,Utilities/297.jpg,utility,g0188,train_subset,2,1.0,seed2_f100
+utility_0309,Utilities/309.jpg,utility,g0191,train_subset,2,1.0,seed2_f100
+void_0001,cavities/1.JPG,void,g0192,train_subset,2,1.0,seed2_f100
+void_0006,cavities/6.JPG,void,g0197,train_subset,2,1.0,seed2_f100
+void_0008,cavities/8.JPG,void,g0199,train_subset,2,1.0,seed2_f100
+void_0009,cavities/9.JPG,void,g0200,train_subset,2,1.0,seed2_f100
+void_0014,cavities/14.JPG,void,g0204,train_subset,2,1.0,seed2_f100
+void_0017,cavities/17.JPG,void,g0207,train_subset,2,1.0,seed2_f100
+void_0018,cavities/18.JPG,void,g0208,train_subset,2,1.0,seed2_f100
+void_0019,cavities/19.JPG,void,g0209,train_subset,2,1.0,seed2_f100
+void_0020,cavities/20.JPG,void,g0210,train_subset,2,1.0,seed2_f100
+void_0022,cavities/22.JPG,void,g0212,train_subset,2,1.0,seed2_f100
+void_0023,cavities/23.JPG,void,g0213,train_subset,2,1.0,seed2_f100
+void_0024,cavities/24.JPG,void,g0214,train_subset,2,1.0,seed2_f100
+void_0025,cavities/25.JPG,void,g0215,train_subset,2,1.0,seed2_f100
+void_0026,cavities/26.JPG,void,g0216,train_subset,2,1.0,seed2_f100
+void_0027,cavities/27.JPG,void,g0217,train_subset,2,1.0,seed2_f100
+void_0028,cavities/28.JPG,void,g0218,train_subset,2,1.0,seed2_f100
+void_0031,cavities/31.JPG,void,g0221,train_subset,2,1.0,seed2_f100
+void_0032,cavities/32.JPG,void,g0222,train_subset,2,1.0,seed2_f100
+void_0034,cavities/34.JPG,void,g0224,train_subset,2,1.0,seed2_f100
+void_0035,cavities/35.JPG,void,g0225,train_subset,2,1.0,seed2_f100
+void_0036,cavities/36.JPG,void,g0226,train_subset,2,1.0,seed2_f100
+void_0037,cavities/37.JPG,void,g0227,train_subset,2,1.0,seed2_f100
+void_0038,cavities/38.JPG,void,g0228,train_subset,2,1.0,seed2_f100
+void_0040,cavities/40.JPG,void,g0230,train_subset,2,1.0,seed2_f100
+void_0043,cavities/43.JPG,void,g0233,train_subset,2,1.0,seed2_f100
+void_0045,cavities/45.JPG,void,g0235,train_subset,2,1.0,seed2_f100
+void_0046,cavities/46.JPG,void,g0236,train_subset,2,1.0,seed2_f100
+void_0047,cavities/47.JPG,void,g0237,train_subset,2,1.0,seed2_f100
+void_0054,cavities/54.JPG,void,g0244,train_subset,2,1.0,seed2_f100
+void_0056,cavities/56.JPG,void,g0246,train_subset,2,1.0,seed2_f100
+void_0057,cavities/57.JPG,void,g0247,train_subset,2,1.0,seed2_f100
+void_0059,cavities/59.JPG,void,g0249,train_subset,2,1.0,seed2_f100
+void_0062,cavities/62.JPG,void,g0252,train_subset,2,1.0,seed2_f100
+void_0063,cavities/63.JPG,void,g0253,train_subset,2,1.0,seed2_f100
+void_0065,cavities/65.JPG,void,g0255,train_subset,2,1.0,seed2_f100
+void_0067,cavities/67.JPG,void,g0257,train_subset,2,1.0,seed2_f100
+void_0068,cavities/68.JPG,void,g0258,train_subset,2,1.0,seed2_f100
+void_0069,cavities/69.JPG,void,g0259,train_subset,2,1.0,seed2_f100
+void_0070,cavities/70.JPG,void,g0260,train_subset,2,1.0,seed2_f100
+void_0071,cavities/71.JPG,void,g0261,train_subset,2,1.0,seed2_f100
+void_0072,cavities/72.JPG,void,g0262,train_subset,2,1.0,seed2_f100
+void_0075,cavities/75.JPG,void,g0265,train_subset,2,1.0,seed2_f100
+void_0076,cavities/76.JPG,void,g0266,train_subset,2,1.0,seed2_f100
+void_0078,cavities/78.JPG,void,g0268,train_subset,2,1.0,seed2_f100
+intact_0002,intact/2.JPG,intact,g0001,val,,,val
+intact_0007_2,intact/7 (2).JPG,intact,g0016,val,,,val
+intact_0008,intact/8.JPG,intact,g0016,val,,,val
+intact_0008_2,intact/8 (2).JPG,intact,g0016,val,,,val
+intact_0009_2,intact/9 (2).JPG,intact,g0016,val,,,val
+intact_0013,intact/13.JPG,intact,g0016,val,,,val
+intact_0015_2,intact/15 (2).JPG,intact,g0016,val,,,val
+intact_0016,intact/16.JPG,intact,g0021,val,,,val
+intact_0018,intact/18.JPG,intact,g0016,val,,,val
+intact_0018_2,intact/18 (2).JPG,intact,g0016,val,,,val
+intact_0019,intact/19.JPG,intact,g0025,val,,,val
+intact_0019_2,intact/19 (2).JPG,intact,g0026,val,,,val
+intact_0025_2,intact/25 (2).JPG,intact,g0034,val,,,val
+intact_0032_2,intact/32 (2).JPG,intact,g0044,val,,,val
+intact_0037,intact/37.JPG,intact,g0047,val,,,val
+intact_0040,intact/40.JPG,intact,g0052,val,,,val
+utility_0007,Utilities/007.jpg,utility,g0066,val,,,val
+utility_0028,Utilities/028.jpg,utility,g0080,val,,,val
+utility_0044,Utilities/044.jpg,utility,g0091,val,,,val
+utility_0060,Utilities/060.jpg,utility,g0095,val,,,val
+utility_0065,Utilities/065.jpg,utility,g0100,val,,,val
+utility_0071,Utilities/071.jpg,utility,g0102,val,,,val
+utility_0102,Utilities/102.jpg,utility,g0110,val,,,val
+utility_0146,Utilities/146.jpg,utility,g0129,val,,,val
+utility_0147,Utilities/147.jpg,utility,g0130,val,,,val
+utility_0155,Utilities/155.jpg,utility,g0136,val,,,val
+utility_0161,Utilities/161.jpg,utility,g0140,val,,,val
+utility_0164,Utilities/164.jpg,utility,g0141,val,,,val
+utility_0173,Utilities/173.jpg,utility,g0145,val,,,val
+utility_0201,Utilities/201.jpg,utility,g0158,val,,,val
+utility_0233,Utilities/233.jpg,utility,g0172,val,,,val
+utility_0245,Utilities/245.jpg,utility,g0178,val,,,val
+utility_0268,Utilities/268.jpg,utility,g0185,val,,,val
+utility_0289,Utilities/289.jpg,utility,g0187,val,,,val
+utility_0301,Utilities/301.jpg,utility,g0187,val,,,val
+void_0003,cavities/3.JPG,void,g0194,val,,,val
+void_0010,cavities/10.JPG,void,g0201,val,,,val
+void_0015,cavities/15.JPG,void,g0205,val,,,val
+void_0021,cavities/21.JPG,void,g0211,val,,,val
+void_0044,cavities/44.JPG,void,g0234,val,,,val
+void_0049,cavities/49.JPG,void,g0239,val,,,val
+void_0055,cavities/55.JPG,void,g0245,val,,,val
+void_0058,cavities/58.JPG,void,g0248,val,,,val
+void_0061,cavities/61.JPG,void,g0251,val,,,val
+void_0064,cavities/64.JPG,void,g0254,val,,,val
+void_0074,cavities/74.JPG,void,g0264,val,,,val

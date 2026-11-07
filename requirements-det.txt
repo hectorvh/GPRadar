@@ -1,0 +1,10 @@
+# Install after conda create / pip torch cu124 (see environment-det.yml).
+# Ultralytics is AGPL-3.0.
+ultralytics==8.4.204
+numpy==2.4.6
+pandas==3.1.1
+matplotlib==3.11.2
+pillow==13.0.0
+PyYAML==6.0.3
+pytest==9.2.0
+opencv-python==5.0.0.93
