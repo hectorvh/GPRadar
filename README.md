@@ -345,3 +345,27 @@ Results placeholders (fill after the real `06c` run):
 C minus A (mAP@0.5), mean over seeds with 95% bootstrap CI over test images: 25% TBD; 100% TBD. Figures: `figures/detection_results.png`, `figures/detection_examples.png`.
 
 Limitations: one model size (YOLO11n), 224 px inputs, small real test set (83 images), synthetic scenes more crowded than real images (median about 3 boxes per crop vs 1 to 2), 2D simulation at 400 MHz while the real antenna frequency is unknown, real voids are often clusters while synthetic voids are single cylinders.
+
+## Results (locked test set: 83 real images, 3 seeds per setting)
+
+| Regime | Real labels | mAP@0.5 (mean ± std) | Recall utility | Recall void | FP per image | FP per intact image |
+| --- | --- | --- | --- | --- | --- | --- |
+| B: synthetic only | 0 | 0.161 ± 0.051 | 0.36 | 0.12 | 0.59 | 0.15 |
+| A: real only | 25% (38 images) | 0.687 ± 0.047 | 0.87 | 0.53 | 1.73 | 0.17 |
+| C: synthetic + real | 25% (38 images) | 0.661 ± 0.064 | 0.86 | 0.47 | 0.90 | 0.02 |
+| A: real only | 100% (156 images) | 0.756 ± 0.042 | 0.90 | 0.51 | 0.55 | 0.00 |
+| C: synthetic + real | 100% (156 images) | 0.732 ± 0.024 | 0.84 | 0.56 | 0.63 | 0.00 |
+
+Recall and false positives at confidence 0.25 and IoU 0.5.
+
+C minus A in mAP@0.5 (paired bootstrap over test images, 2000 resamples): 25%: -0.026 (95% CI -0.090 to +0.056); 100%: -0.024 (95% CI -0.055 to +0.042).
+
+**Finding:** synthetic pre-training did not measurably improve detection at either amount of real labels; both intervals include zero. More real labels helped more (+0.07 mAP for A from 25% to 100%).
+
+**Why:** the synthetic-only model reaches 0.16 mAP on real images, so little of what it learns transfers. The gap is much smaller for utilities (recall 0.36 without any real data) than for voids (0.12): synthetic targets are single hyperbolas, while real voids are clusters of arches. Voids are the hard class in every regime (recall about 0.5). At 25% labels, C produced fewer false positives (0.90 vs 1.73 per image), but one A seed dominates that difference and it was not tested, so it is an observation, not a result.
+
+**Note:** seed 0 alone suggested a gain on the validation set (+0.11 mAP@0.5 at 25%); it did not hold on the test set or across seeds.
+
+**Limitations:** one model size (YOLO11n) at 224 px; 83 test images; all fine-tunes ran the full 150 epochs; 2D simulation at 400 MHz while the real frequency (200 or 400 MHz) is unknown; synthetic scenes more crowded than real images (median 3 boxes per crop vs 1 to 2); synthetic voids are single cylinders.
+
+**Future work (exploratory, judged on validation only, since the test set has been used):** simulate void clusters, add a 200 MHz preset, train longer.
