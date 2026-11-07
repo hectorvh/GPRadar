@@ -68,20 +68,40 @@ def test_loading_test_split_id_raises(tmp_path):
     render.assert_not_test("void_0002", test_ids)
 
 
-def test_rock_visibility_and_amplitude_rule():
-    # Visibility: need one period after the direct wave.
+def test_rock_image_visibility_rule():
+    # One-period direct-wave rule still applies upstream.
     period = 2.5e-9
     direct = 5.0e-9
     window = 50.0e-9
-    ok, reason = render.scenes_mod.is_visible(direct + 0.5 * period, direct, period, window)
+    ok, _reason = render.scenes_mod.is_visible(direct + 0.5 * period, direct, period, window)
     assert not ok
     ok, reason = render.scenes_mod.is_visible(direct + 1.5 * period, direct, period, window)
     assert ok and reason is None
 
-    # Amplitude gate relative to targets and noise.
-    assert render.rock_passes_amplitude(10.0, [40.0, 40.0], noise=1.0) is True  # 25% of 40, 5x noise
-    assert render.rock_passes_amplitude(5.0, [40.0, 40.0], noise=1.0) is False  # below 25%
-    assert render.rock_passes_amplitude(10.0, [40.0], noise=3.0) is False  # below 5x noise
+    # Clear arch near apex vs quiet background on the same rows.
+    midpoints = np.arange(21, dtype=float) * 0.05
+    dt = 1.0e-9
+    processed = np.full((80, 21), 0.2, dtype=float)
+    apex_x = midpoints[10]
+    curve_x = midpoints[8:13]
+    curve_t = np.array([20, 21, 20, 21, 22], dtype=float) * dt
+    for x, t in zip(curve_x, curve_t):
+        trace = int(np.argmin(np.abs(midpoints - x)))
+        sample = int(round(t / dt))
+        processed[sample, trace] = 5.0
+    all_curves = [{"curve_x_m": curve_x, "curve_t_s": curve_t}]
+    ok, stats = render.rock_visible_on_image(
+        processed, midpoints, dt, curve_x, curve_t, apex_x, flank_halfwidth_m=0.12, all_curves=all_curves
+    )
+    assert ok
+    assert stats["mean_on"] >= 2.0 * stats["median_off"]
+
+    # Buried rock: on-curve samples no louder than the background.
+    buried = np.full_like(processed, 1.0)
+    ok, stats = render.rock_visible_on_image(
+        buried, midpoints, dt, curve_x, curve_t, apex_x, flank_halfwidth_m=0.12, all_curves=all_curves
+    )
+    assert not ok
 
 
 def test_ringing_extension_never_moves_bottom_up():
@@ -99,6 +119,24 @@ def test_ringing_extension_never_moves_bottom_up():
     ringing_bottom_s = bottom * 1e-9
     body = max(flank_bottom_s, ringing_bottom_s)
     assert body >= flank_bottom_s
+
+
+def test_ringing_cap_never_extends_more_than_three_periods():
+    envelope = np.ones((200, 5), dtype=float) * 5.0  # never falls
+    period_samples = 10
+    apex_sample = 20
+    flank_bottom_sample = 30
+    max_sample = flank_bottom_sample + 3 * period_samples
+    bottom = render.ringing_bottom_sample(
+        envelope,
+        apex_trace=2,
+        apex_sample=apex_sample,
+        period_samples=period_samples,
+        threshold=2.0,
+        max_sample=max_sample,
+    )
+    assert bottom <= max_sample
+    assert bottom - flank_bottom_sample <= 3 * period_samples
 
 
 def test_histogram_matching_keeps_range_and_moves_histogram():
@@ -129,6 +167,7 @@ def test_crop_excludes_blank_columns():
     rng = np.random.default_rng(1)
     boxes = [
         {
+            "name": "target_0",
             "xmin_m": 0.5,
             "xmax_m": 0.9,
             "tmin_s": 5e-9,
@@ -137,7 +176,7 @@ def test_crop_excludes_blank_columns():
         }
     ]
     for _ in range(20):
-        drawn = render.draw_crop(
+        drawn, _n_rej = render.draw_crop(
             processed,
             midpoints,
             dt=1e-9,
@@ -146,9 +185,78 @@ def test_crop_excludes_blank_columns():
             rng=rng,
             want_negative=True,
             usable_mask=mask,
+            apexes=[],
         )
         if drawn is None:
             continue
         x0, _y0, x1, _y1 = drawn["crop"]
         assert np.all(mask[x0:x1])
         assert x0 >= 3
+
+
+def test_crop_rejects_unlabelled_apex():
+    midpoints = np.arange(40, dtype=float) * 0.05
+    dt = 1.0e-9
+    processed = np.random.default_rng(0).normal(size=(60, 40))
+    stats = {"pooled": {"widths": [0.5], "heights": [0.5]}}
+    boxes = [
+        {
+            "name": "target_0",
+            "xmin_m": 0.8,
+            "xmax_m": 1.2,
+            "tmin_s": 10e-9,
+            "tmax_s": 25e-9,
+            "kind": "target",
+            "apex_x_m": 1.0,
+            "apex_t_s": 15e-9,
+        }
+    ]
+    # Rejected rock apex inside a typical crop around the target.
+    apexes = [
+        {
+            "name": "rock_0",
+            "kind": "rock",
+            "labelled": False,
+            "apex_x_m": 1.05,
+            "apex_t_s": 18e-9,
+        },
+        {
+            "name": "target_0",
+            "kind": "target",
+            "labelled": True,
+            "apex_x_m": 1.0,
+            "apex_t_s": 15e-9,
+        },
+    ]
+    crop = (10, 5, 30, 40)  # covers both apexes
+    assert render.crop_has_unlabelled_apex(crop, midpoints, dt, boxes, apexes)
+
+    # Negative crop must not contain any apex.
+    empty_crop = (0, 0, 8, 8)
+    assert not render.crop_has_unlabelled_apex(empty_crop, midpoints, dt, [], apexes)
+    apex_in_neg = {
+        "name": "rock_0",
+        "kind": "rock",
+        "labelled": False,
+        "apex_x_m": midpoints[2],
+        "apex_t_s": 3e-9,
+    }
+    assert render.crop_has_unlabelled_apex(empty_crop, midpoints, dt, [], [apex_in_neg])
+
+    rng = np.random.default_rng(2)
+    drawn, n_rej = render.draw_crop(
+        processed,
+        midpoints,
+        dt,
+        boxes,
+        stats,
+        rng,
+        want_negative=False,
+        apexes=apexes,
+    )
+    # Either no crop found, or every accepted crop has no unlabelled apex.
+    if drawn is not None:
+        assert not render.crop_has_unlabelled_apex(
+            drawn["crop"], midpoints, dt, boxes, apexes
+        )
+    assert n_rej >= 0

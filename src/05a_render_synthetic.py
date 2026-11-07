@@ -2,7 +2,7 @@
 
 Processing matches ``01c`` / ``02b`` (no reference subtraction on the image).
 Boxes follow the hand-labelling rule on the kink-fixed predicted hyperbola,
-including rocks that pass a visibility and amplitude check, and a downward
+including rocks that look clear on the AGC image, and a capped downward
 ringing extension under each apex. Real train labels supply the box-size
 distribution. Test-split Mendeley ids are never opened.
 """
@@ -45,11 +45,11 @@ PERIOD_S = 1.0 / FREQUENCY_HZ
 PERIOD_NS = 1e9 * PERIOD_S
 IMAGE_SIZE = 224
 ENVELOPE_FRAC = 0.20
-ROCK_REL_FRAC = 0.25
-ROCK_NOISE_FACTOR = 5.0
+ROCK_IMAGE_RATIO = 2.0
+RINGING_MAX_PERIODS = 3.0
 CROPS_PER_SCENE = 6
 NEGATIVE_FRAC = 0.20
-MAX_CROP_DRAWS = 50
+MAX_CROP_DRAWS = 250
 TRAIN_SEED_MAX = 179
 JPEG_Q_LO, JPEG_Q_HI = 75, 95
 # Aspect rule: crop width and height from independent real width/height
@@ -273,21 +273,36 @@ def _sample_envelope(envelope, trace_i, sample_i, half=2):
     return float(np.median(patch))
 
 
-def ringing_bottom_sample(envelope, apex_trace, apex_sample, period_samples, threshold):
+def ringing_bottom_sample(
+    envelope,
+    apex_trace,
+    apex_sample,
+    period_samples,
+    threshold,
+    max_sample=None,
+    stop_sample=None,
+):
     """Lowest sample of stacked ringing under the apex.
 
     Walk down the apex trace. Stop when the envelope stays below ``threshold``
-    for ``period_samples`` samples, or at the window end. Never returns a
-    sample above ``apex_sample``.
+    for ``period_samples`` samples, at ``max_sample``, just before
+    ``stop_sample``, or at the window end. Never returns a sample above
+    ``apex_sample``.
     """
 
     n_samples = envelope.shape[0]
     apex_trace = int(np.clip(apex_trace, 0, envelope.shape[1] - 1))
     apex_sample = int(np.clip(apex_sample, 0, n_samples - 1))
     period_samples = max(int(period_samples), 1)
+    end = n_samples
+    if max_sample is not None:
+        end = min(end, int(max_sample) + 1)
+    if stop_sample is not None and int(stop_sample) > apex_sample:
+        end = min(end, int(stop_sample))
+    end = max(end, apex_sample + 1)
     below = 0
     last_loud = apex_sample
-    for sample in range(apex_sample, n_samples):
+    for sample in range(apex_sample, end):
         value = _sample_envelope(envelope, apex_trace, sample)
         if threshold > 0 and value < threshold:
             below += 1
@@ -297,6 +312,41 @@ def ringing_bottom_sample(envelope, apex_trace, apex_sample, period_samples, thr
             below = 0
             last_loud = sample
     return max(last_loud, apex_sample)
+
+
+def other_hyperbola_crossing_sample(
+    apex_trace,
+    apex_sample,
+    midpoints,
+    dt,
+    other_curves,
+):
+    """First sample below the apex where another predicted hyperbola crosses.
+
+    ``other_curves`` entries are dicts with ``curve_x_m`` and ``curve_t_s``
+    (time-zero shifted). Returns None if no crossing is below the apex.
+    """
+
+    midpoints = np.asarray(midpoints, dtype=float)
+    apex_x = float(midpoints[int(np.clip(apex_trace, 0, midpoints.size - 1))])
+    candidates = []
+    for curve in other_curves:
+        x = np.asarray(curve["curve_x_m"], dtype=float)
+        t = np.asarray(curve["curve_t_s"], dtype=float)
+        if x.size < 2:
+            continue
+        order = np.argsort(x)
+        x = x[order]
+        t = t[order]
+        if apex_x < x[0] - 1e-9 or apex_x > x[-1] + 1e-9:
+            continue
+        t_cross = float(np.interp(apex_x, x, t))
+        sample = int(round(t_cross / float(dt)))
+        if sample > int(apex_sample):
+            candidates.append(sample)
+    if not candidates:
+        return None
+    return int(min(candidates))
 
 
 def box_from_hyperbola(
@@ -312,6 +362,8 @@ def box_from_hyperbola(
     period_s=PERIOD_S,
     envelope_frac=ENVELOPE_FRAC,
     extend_ringing=True,
+    other_curves=None,
+    ringing_max_periods=RINGING_MAX_PERIODS,
 ):
     """Physical box for one visible object, in metres and seconds."""
 
@@ -366,14 +418,39 @@ def box_from_hyperbola(
     xmax = float(x_used.max()) + margin_x
     tmin = float(apex_t_shifted) - half_period
     flank_bottom = float(t_used.max())
+    flank_halfwidth_m = max(abs(float(apex_x) - xmin), abs(xmax - float(apex_x)))
     period_samples = max(int(round(float(period_s) / float(dt))), 1)
+    flank_bottom_sample = int(round(flank_bottom / float(dt)))
+    max_ring_sample = flank_bottom_sample + int(
+        round(float(ringing_max_periods) * period_samples)
+    )
+    stop_sample = other_hyperbola_crossing_sample(
+        apex_trace, apex_sample, midpoints, dt, other_curves or []
+    )
+    cap_applied = False
     if extend_ringing:
-        ring_sample = ringing_bottom_sample(
+        uncapped = ringing_bottom_sample(
             envelope, apex_trace, apex_sample, period_samples, threshold
         )
-        ringing_bottom = float(ring_sample) * float(dt)
+        ring_sample = ringing_bottom_sample(
+            envelope,
+            apex_trace,
+            apex_sample,
+            period_samples,
+            threshold,
+            max_sample=max_ring_sample,
+            stop_sample=stop_sample,
+        )
         # Never move the bottom up relative to the flank bottom.
+        body_sample = max(flank_bottom_sample, ring_sample)
+        ringing_bottom = float(body_sample) * float(dt)
         body_bottom = max(flank_bottom, ringing_bottom)
+        if uncapped > ring_sample or (
+            stop_sample is not None and uncapped >= int(stop_sample)
+        ):
+            cap_applied = True
+        if body_sample >= max_ring_sample and uncapped > max_ring_sample:
+            cap_applied = True
     else:
         ringing_bottom = flank_bottom
         body_bottom = flank_bottom
@@ -400,30 +477,113 @@ def box_from_hyperbola(
         "apex_t_s": float(apex_t_shifted),
         "curve_x_m": [float(v) for v in x_used],
         "curve_t_s": [float(v) for v in t_used],
+        "hyperbola_x_m": [float(v) for v in x_fixed],
+        "hyperbola_t_s": [float(v) for v in t_shifted],
         "envelope_frac": float(envelope_frac),
         "apex_envelope": float(apex_env),
         "apex_trace": int(apex_trace),
         "apex_sample": int(apex_sample),
+        "flank_halfwidth_m": float(flank_halfwidth_m),
+        "cap_applied": bool(cap_applied),
+        "ringing_stop_sample": None if stop_sample is None else int(stop_sample),
+        "ringing_max_sample": int(max_ring_sample),
     }
 
 
-def noise_level(envelope, midpoints, objects, clearance_traces=6):
-    """Median absolute envelope in a target-free part of the record."""
+def shifted_hyperbola(x_m, t_s, apex_x, midpoints, dt, picks, time_window_s):
+    """Kink-fixed, time-zero-shifted hyperbola samples."""
 
+    x_fixed, t_fixed, _indices = fix_hyperbola_branch(x_m, t_s, apex_x, time_window_s)
+    if x_fixed.size == 0:
+        return x_fixed, t_fixed
+    picks = np.asarray(picks, dtype=int)
     midpoints = np.asarray(midpoints, dtype=float)
-    n_traces = midpoints.size
-    blocked = np.zeros(n_traces, dtype=bool)
-    step = float(np.median(np.diff(midpoints))) if n_traces > 1 else 1.0
-    for obj in objects:
-        centre = int(np.argmin(np.abs(midpoints - float(obj["x"]))))
-        radius_traces = int(round(float(obj.get("radius_m", 0.05)) / step)) + clearance_traces
-        lo = max(0, centre - radius_traces)
-        hi = min(n_traces, centre + radius_traces + 1)
-        blocked[lo:hi] = True
+    shift_s = picks * float(dt)
+    trace_index = np.array(
+        [int(np.argmin(np.abs(midpoints - float(x)))) for x in x_fixed],
+        dtype=int,
+    )
+    return x_fixed, t_fixed - shift_s[trace_index]
+
+
+def rock_visible_on_image(
+    processed,
+    midpoints,
+    dt,
+    curve_x_m,
+    curve_t_s,
+    apex_x,
+    flank_halfwidth_m,
+    all_curves,
+    ratio=ROCK_IMAGE_RATIO,
+):
+    """True if the rock arch stands out on the AGC image.
+
+    Along the predicted hyperbola within one flank width of the apex, the mean
+    |amplitude| must be at least ``ratio`` times the median |amplitude| of the
+    same rows outside all predicted hyperbolas.
+    """
+
+    processed = np.asarray(processed, dtype=np.float64)
+    midpoints = np.asarray(midpoints, dtype=float)
+    x = np.asarray(curve_x_m, dtype=float)
+    t = np.asarray(curve_t_s, dtype=float)
+    if x.size == 0 or flank_halfwidth_m <= 0:
+        return False, {"reason": "empty curve", "mean_on": 0.0, "median_off": 0.0}
+
+    near = np.abs(x - float(apex_x)) <= float(flank_halfwidth_m) + 1e-12
+    x_near = x[near]
+    t_near = t[near]
+    if x_near.size == 0:
+        return False, {"reason": "no samples in flank", "mean_on": 0.0, "median_off": 0.0}
+
+    on_vals = []
+    row_set = set()
+    for xv, tv in zip(x_near, t_near):
+        trace = int(np.argmin(np.abs(midpoints - float(xv))))
+        sample = int(round(float(tv) / float(dt)))
+        if sample < 0 or sample >= processed.shape[0]:
+            continue
+        on_vals.append(abs(float(processed[sample, trace])))
+        row_set.add(sample)
+    if not on_vals or not row_set:
+        return False, {"reason": "no on-curve samples", "mean_on": 0.0, "median_off": 0.0}
+    mean_on = float(np.mean(on_vals))
+
+    # Mask traces near any predicted hyperbola at each row.
+    step = float(np.median(np.diff(midpoints))) if midpoints.size > 1 else 0.05
+    half_traces = max(1, int(round(0.5 * float(flank_halfwidth_m) / step)))
+    blocked = np.zeros(processed.shape[1], dtype=bool)
+    for curve in all_curves:
+        cx = np.asarray(curve["curve_x_m"], dtype=float)
+        ct = np.asarray(curve["curve_t_s"], dtype=float)
+        if cx.size == 0:
+            continue
+        for xv, tv in zip(cx, ct):
+            sample = int(round(float(tv) / float(dt)))
+            if sample not in row_set:
+                continue
+            trace = int(np.argmin(np.abs(midpoints - float(xv))))
+            lo = max(0, trace - half_traces)
+            hi = min(processed.shape[1], trace + half_traces + 1)
+            blocked[lo:hi] = True
+
+    off_vals = []
     free = np.flatnonzero(~blocked)
     if free.size == 0:
-        free = np.arange(n_traces)
-    return float(np.median(np.abs(envelope[:, free])))
+        free = np.arange(processed.shape[1])
+    for sample in sorted(row_set):
+        off_vals.extend(np.abs(processed[sample, free]).tolist())
+    if not off_vals:
+        return False, {"reason": "no off samples", "mean_on": mean_on, "median_off": 0.0}
+    median_off = float(np.median(off_vals))
+    ok = mean_on >= float(ratio) * median_off and median_off > 0
+    return ok, {
+        "reason": None if ok else "image amplitude",
+        "mean_on": mean_on,
+        "median_off": median_off,
+        "ratio": mean_on / median_off if median_off > 0 else 0.0,
+    }
 
 
 def predict_rock_row(scene, rock):
@@ -455,19 +615,6 @@ def predict_rock_row(scene, rock):
     }
 
 
-def rock_passes_amplitude(apex_env, target_envs, noise):
-    """Amplitude gate for labelling a rock as a clear hyperbola."""
-
-    if not target_envs:
-        median_target = 0.0
-    else:
-        median_target = float(np.median(target_envs))
-    return (
-        float(apex_env) >= ROCK_REL_FRAC * median_target
-        and float(apex_env) >= ROCK_NOISE_FACTOR * float(noise)
-    )
-
-
 def load_scene_bundle(scene_dir):
     """Load scene.json, merged scan, reference, and run.json."""
 
@@ -477,6 +624,15 @@ def load_scene_bundle(scene_dir):
     scan = loader.load_gprmax(scene_dir / "scene_merged.h5")
     ref_scan = loader.load_gprmax(scene_dir / "reference.h5")
     return scene, run, scan, ref_scan
+
+
+def _shifted_apex_time(apex_t_s, apex_x, midpoints, dt, picks):
+    """Apex time after the same time-zero picks as the image."""
+
+    midpoints = np.asarray(midpoints, dtype=float)
+    picks = np.asarray(picks, dtype=int)
+    apex_trace = int(np.argmin(np.abs(midpoints - float(apex_x))))
+    return float(apex_t_s) - float(picks[apex_trace]) * float(dt)
 
 
 def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ringing=True):
@@ -491,13 +647,45 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
     )
     midpoints = midpoints_for_scene(scene)
     period_s = 1.0 / float(scene["frequency_hz"])
-    objects = list(scene.get("targets", [])) + list(scene.get("rocks", []))
-    noise = noise_level(envelope, midpoints, objects)
 
-    target_boxes = []
-    target_envs = []
+    # Flank-only pass: gather candidates and predicted curves for the image rule.
+    flank_candidates = []
+    all_pred_curves = []
+    apex_records = []
+
     for target in scene["ground_truth"]["targets"]:
+        hx, ht = shifted_hyperbola(
+            target["hyperbola_x_m"],
+            target["hyperbola_t_s"],
+            target["x"],
+            midpoints,
+            scan.dt,
+            picks,
+            scene["time_window_s"],
+        )
+        curve = {
+            "name": target["name"],
+            "kind": "target",
+            "curve_x_m": [float(v) for v in hx],
+            "curve_t_s": [float(v) for v in ht],
+        }
+        all_pred_curves.append(curve)
+        apex_t = _shifted_apex_time(
+            target["apex_time_s"], target["x"], midpoints, scan.dt, picks
+        )
         if not target.get("visible", False):
+            apex_records.append(
+                {
+                    "name": target["name"],
+                    "kind": "target",
+                    "labelled": False,
+                    "reason": "invisible",
+                    "apex_x_m": float(target["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
+                }
+            )
             continue
         box = box_from_hyperbola(
             target["hyperbola_x_m"],
@@ -511,27 +699,73 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
             scene["time_window_s"],
             period_s=period_s,
             envelope_frac=envelope_frac,
-            extend_ringing=extend_ringing,
+            extend_ringing=False,
         )
         if box is None:
+            apex_records.append(
+                {
+                    "name": target["name"],
+                    "kind": "target",
+                    "labelled": False,
+                    "reason": "no box from hyperbola",
+                    "apex_x_m": float(target["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
+                }
+            )
             continue
         box["name"] = target["name"]
         box["type"] = target["type"]
         box["kind"] = "target"
-        target_boxes.append(box)
-        target_envs.append(box["apex_envelope"])
+        flank_candidates.append(box)
 
-    rock_boxes = []
     rock_rejected = []
     for rock in scene.get("rocks", []):
         row = predict_rock_row(scene, rock)
+        hx, ht = shifted_hyperbola(
+            row["hyperbola_x_m"],
+            row["hyperbola_t_s"],
+            row["x"],
+            midpoints,
+            scan.dt,
+            picks,
+            scene["time_window_s"],
+        )
+        curve = {
+            "name": row["name"],
+            "kind": "rock",
+            "curve_x_m": [float(v) for v in hx],
+            "curve_t_s": [float(v) for v in ht],
+        }
+        all_pred_curves.append(curve)
+        apex_t = _shifted_apex_time(
+            row["apex_time_s"], row["x"], midpoints, scan.dt, picks
+        )
         if not row["visible"]:
             rock_rejected.append(
                 {
                     "seed": scene["seed"],
                     "name": row["name"],
                     "reason": row["visibility_reason"] or "not visible",
-                    "apex_envelope": None,
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
+                    "mean_on": None,
+                    "median_off": None,
+                }
+            )
+            apex_records.append(
+                {
+                    "name": row["name"],
+                    "kind": "rock",
+                    "labelled": False,
+                    "reason": row["visibility_reason"] or "not visible",
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
                 }
             )
             continue
@@ -547,7 +781,7 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
             scene["time_window_s"],
             period_s=period_s,
             envelope_frac=envelope_frac,
-            extend_ringing=extend_ringing,
+            extend_ringing=False,
         )
         if box is None:
             rock_rejected.append(
@@ -555,19 +789,62 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
                     "seed": scene["seed"],
                     "name": row["name"],
                     "reason": "no box from hyperbola",
-                    "apex_envelope": None,
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
+                    "mean_on": None,
+                    "median_off": None,
+                }
+            )
+            apex_records.append(
+                {
+                    "name": row["name"],
+                    "kind": "rock",
+                    "labelled": False,
+                    "reason": "no box from hyperbola",
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
                 }
             )
             continue
-        if not rock_passes_amplitude(box["apex_envelope"], target_envs, noise):
+        ok, stats = rock_visible_on_image(
+            processed,
+            midpoints,
+            scan.dt,
+            box["hyperbola_x_m"],
+            box["hyperbola_t_s"],
+            box["apex_x_m"],
+            box["flank_halfwidth_m"],
+            all_pred_curves,
+        )
+        if not ok:
             rock_rejected.append(
                 {
                     "seed": scene["seed"],
                     "name": row["name"],
-                    "reason": "amplitude gate",
-                    "apex_envelope": box["apex_envelope"],
-                    "median_target_env": float(np.median(target_envs)) if target_envs else 0.0,
-                    "noise": noise,
+                    "reason": stats.get("reason") or "image amplitude",
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
+                    "mean_on": stats.get("mean_on"),
+                    "median_off": stats.get("median_off"),
+                    "ratio": stats.get("ratio"),
+                }
+            )
+            apex_records.append(
+                {
+                    "name": row["name"],
+                    "kind": "rock",
+                    "labelled": False,
+                    "reason": stats.get("reason") or "image amplitude",
+                    "apex_x_m": float(row["x"]),
+                    "apex_t_s": apex_t,
+                    "curve_x_m": curve["curve_x_m"],
+                    "curve_t_s": curve["curve_t_s"],
                 }
             )
             continue
@@ -575,20 +852,96 @@ def physical_boxes_for_scene(scene_dir, envelope_frac=ENVELOPE_FRAC, extend_ring
         box["type"] = "rock"
         box["kind"] = "rock"
         box["eps_r"] = row.get("eps_r")
-        rock_boxes.append(box)
+        box["image_mean_on"] = stats["mean_on"]
+        box["image_median_off"] = stats["median_off"]
+        box["image_ratio"] = stats["ratio"]
+        flank_candidates.append(box)
 
-    boxes = target_boxes + rock_boxes
+    # Second pass: apply capped ringing using other labelled curves.
+    boxes = []
+    for candidate in flank_candidates:
+        others = [
+            {
+                "curve_x_m": other["curve_x_m"],
+                "curve_t_s": other["curve_t_s"],
+            }
+            for other in flank_candidates
+            if other["name"] != candidate["name"]
+        ]
+        if candidate["kind"] == "target":
+            src = next(
+                t for t in scene["ground_truth"]["targets"] if t["name"] == candidate["name"]
+            )
+            x_m, t_s = src["hyperbola_x_m"], src["hyperbola_t_s"]
+            apex_x, apex_t = src["x"], src["apex_time_s"]
+            box_type = src["type"]
+            eps_r = None
+            image_stats = {}
+        else:
+            rock = next(r for r in scene.get("rocks", []) if r["name"] == candidate["name"])
+            row = predict_rock_row(scene, rock)
+            x_m, t_s = row["hyperbola_x_m"], row["hyperbola_t_s"]
+            apex_x, apex_t = row["x"], row["apex_time_s"]
+            box_type = "rock"
+            eps_r = row.get("eps_r")
+            image_stats = {
+                "image_mean_on": candidate.get("image_mean_on"),
+                "image_median_off": candidate.get("image_median_off"),
+                "image_ratio": candidate.get("image_ratio"),
+            }
+        box = box_from_hyperbola(
+            x_m,
+            t_s,
+            apex_x,
+            apex_t,
+            midpoints,
+            scan.dt,
+            picks,
+            envelope,
+            scene["time_window_s"],
+            period_s=period_s,
+            envelope_frac=envelope_frac,
+            extend_ringing=extend_ringing,
+            other_curves=others if extend_ringing else None,
+        )
+        if box is None:
+            continue
+        box["name"] = candidate["name"]
+        box["type"] = box_type
+        box["kind"] = candidate["kind"]
+        if eps_r is not None:
+            box["eps_r"] = eps_r
+        box.update(image_stats)
+        boxes.append(box)
+        apex_records.append(
+            {
+                "name": box["name"],
+                "kind": box["kind"],
+                "labelled": True,
+                "reason": None,
+                "apex_x_m": box["apex_x_m"],
+                "apex_t_s": box["apex_t_s"],
+                "curve_x_m": box["curve_x_m"],
+                "curve_t_s": box["curve_t_s"],
+            }
+        )
+
+    target_boxes = [b for b in boxes if b["kind"] == "target"]
+    rock_boxes = [b for b in boxes if b["kind"] == "rock"]
+    n_capped = sum(1 for b in boxes if b.get("cap_applied"))
     payload = {
         "seed": scene["seed"],
         "preset": scene["preset"],
         "windows": windows,
         "envelope_frac": envelope_frac,
         "extend_ringing": bool(extend_ringing),
-        "noise_level": noise,
         "boxes": boxes,
         "n_target_boxes": len(target_boxes),
         "n_rock_boxes": len(rock_boxes),
         "rocks_rejected": rock_rejected,
+        "apexes": apex_records,
+        "n_cap_applied": int(n_capped),
+        "n_boxes": len(boxes),
     }
     return payload, processed, picks, scan, scene, run, midpoints
 
@@ -792,6 +1145,33 @@ def physical_to_indices(box, midpoints, dt):
     return x0, y0, x1, y1
 
 
+def apex_in_crop(apex_x_m, apex_t_s, midpoints, dt, crop):
+    """True if the apex sample falls inside the crop window."""
+
+    midpoints = np.asarray(midpoints, dtype=float)
+    x = float(np.interp(float(apex_x_m), midpoints, np.arange(midpoints.size)))
+    y = float(apex_t_s) / float(dt)
+    x0, y0, x1, y1 = crop
+    return (x0 <= x < x1) and (y0 <= y < y1)
+
+
+def crop_has_unlabelled_apex(crop, midpoints, dt, boxes, apexes):
+    """True if the crop contains an apex that is not labelled in this crop."""
+
+    labelled_kept = set()
+    for box in boxes:
+        px = physical_to_indices(box, midpoints, dt)
+        decision, _clipped = clip_box_to_crop(px, crop, min_area_frac=0.5)
+        if decision != "reject":
+            labelled_kept.add(box["name"])
+    for apex in apexes:
+        if not apex_in_crop(apex["apex_x_m"], apex["apex_t_s"], midpoints, dt, crop):
+            continue
+        if apex["name"] not in labelled_kept:
+            return True
+    return False
+
+
 def draw_crop(
     processed,
     midpoints,
@@ -801,6 +1181,7 @@ def draw_crop(
     rng,
     want_negative,
     usable_mask=None,
+    apexes=None,
 ):
     """Draw one crop window. Returns dict or None after MAX_CROP_DRAWS."""
 
@@ -809,13 +1190,15 @@ def draw_crop(
         usable_mask = np.ones(n_traces, dtype=bool)
     usable = np.flatnonzero(usable_mask)
     if usable.size < 8:
-        return None
+        return None, 0
     trace_lo = int(usable.min())
     trace_hi = int(usable.max()) + 1
     usable_width = trace_hi - trace_lo
+    apexes = list(apexes or [])
 
     widths = np.asarray(stats["pooled"]["widths"], dtype=float)
     heights = np.asarray(stats["pooled"]["heights"], dtype=float)
+    n_unlabelled_rejects = 0
     for _attempt in range(MAX_CROP_DRAWS):
         if want_negative or not boxes:
             w_frac = float(rng.choice(widths))
@@ -839,18 +1222,26 @@ def draw_crop(
                     break
             if not ok:
                 continue
+            if crop_has_unlabelled_apex(crop, midpoints, dt, boxes=[], apexes=apexes):
+                n_unlabelled_rejects += 1
+                continue
             return {
                 "crop": crop,
                 "boxes_px": [],
                 "box_kinds": [],
+                "box_names": [],
                 "negative": True,
                 "w_frac_draw": w_frac,
                 "h_frac_draw": h_frac,
-            }
+            }, n_unlabelled_rejects
 
         target = boxes[int(rng.integers(0, len(boxes)))]
+        # Later attempts: tighter crops (higher frac) to dodge nearby unlabelled apexes.
+        tighten = 0.15 + 0.75 * (_attempt / max(MAX_CROP_DRAWS - 1, 1))
         w_frac = float(np.clip(rng.choice(widths), 0.15, 0.95))
         h_frac = float(np.clip(rng.choice(heights), 0.15, 0.95))
+        w_frac = float(np.clip(w_frac + tighten * (0.92 - w_frac), 0.15, 0.95))
+        h_frac = float(np.clip(h_frac + tighten * (0.92 - h_frac), 0.15, 0.95))
         tx0, ty0, tx1, ty1 = physical_to_indices(target, midpoints, dt)
         box_w = max(tx1 - tx0, 1.0)
         box_h = max(ty1 - ty0, 1.0)
@@ -860,45 +1251,61 @@ def draw_crop(
         slack_y = crop_h - box_h
         if slack_x < 0 or slack_y < 0:
             continue
-        x0 = int(round(tx0 - float(rng.uniform(0, max(slack_x, 1e-6)))))
-        y0 = int(round(ty0 - float(rng.uniform(0, max(slack_y, 1e-6)))))
-        x0 = int(np.clip(x0, trace_lo, trace_hi - crop_w))
-        y0 = int(np.clip(y0, 0, n_samples - crop_h))
-        crop = (x0, y0, x0 + crop_w, y0 + crop_h)
-        if not np.all(usable_mask[x0 : x0 + crop_w]):
-            continue
-
-        kept = []
-        kinds = []
-        rejected = False
-        for box in boxes:
-            px = physical_to_indices(box, midpoints, dt)
-            decision, clipped = clip_box_to_crop(px, crop, min_area_frac=0.5)
-            if decision == "reject":
-                bx0, by0, bx1, by1 = px
-                cx0, cy0, cx1, cy1 = crop
-                inter = max(0.0, min(bx1, cx1) - max(bx0, cx0)) * max(
-                    0.0, min(by1, cy1) - max(by0, cy0)
-                )
-                area = max(0.0, bx1 - bx0) * max(0.0, by1 - by0)
-                if area > 0 and 0 < inter / area < 0.5:
-                    rejected = True
-                    break
+        # Try several placements within the slack so foreign apexes can fall out.
+        n_place = 8 if slack_x > 1 or slack_y > 1 else 1
+        placed = None
+        apex_blocked = False
+        for _place in range(n_place):
+            x0 = int(round(tx0 - float(rng.uniform(0, max(slack_x, 1e-6)))))
+            y0 = int(round(ty0 - float(rng.uniform(0, max(slack_y, 1e-6)))))
+            x0 = int(np.clip(x0, trace_lo, trace_hi - crop_w))
+            y0 = int(np.clip(y0, 0, n_samples - crop_h))
+            crop = (x0, y0, x0 + crop_w, y0 + crop_h)
+            if not np.all(usable_mask[x0 : x0 + crop_w]):
                 continue
-            ix0, iy0, ix1, iy1 = clipped
-            kept.append((ix0 - x0, iy0 - y0, ix1 - x0, iy1 - y0))
-            kinds.append(box.get("kind", "target"))
-        if rejected or not kept:
-            continue
-        return {
-            "crop": crop,
-            "boxes_px": kept,
-            "box_kinds": kinds,
-            "negative": False,
-            "w_frac_draw": w_frac,
-            "h_frac_draw": h_frac,
-        }
-    return None
+
+            kept = []
+            kinds = []
+            names = []
+            rejected = False
+            for box in boxes:
+                px = physical_to_indices(box, midpoints, dt)
+                decision, clipped = clip_box_to_crop(px, crop, min_area_frac=0.5)
+                if decision == "reject":
+                    bx0, by0, bx1, by1 = px
+                    cx0, cy0, cx1, cy1 = crop
+                    inter = max(0.0, min(bx1, cx1) - max(bx0, cx0)) * max(
+                        0.0, min(by1, cy1) - max(by0, cy0)
+                    )
+                    area = max(0.0, bx1 - bx0) * max(0.0, by1 - by0)
+                    if area > 0 and 0 < inter / area < 0.5:
+                        rejected = True
+                        break
+                    continue
+                ix0, iy0, ix1, iy1 = clipped
+                kept.append((ix0 - x0, iy0 - y0, ix1 - x0, iy1 - y0))
+                kinds.append(box.get("kind", "target"))
+                names.append(box["name"])
+            if rejected or not kept:
+                continue
+            if crop_has_unlabelled_apex(crop, midpoints, dt, boxes, apexes):
+                apex_blocked = True
+                continue
+            placed = {
+                "crop": crop,
+                "boxes_px": kept,
+                "box_kinds": kinds,
+                "box_names": names,
+                "negative": False,
+                "w_frac_draw": w_frac,
+                "h_frac_draw": h_frac,
+            }
+            break
+        if placed is not None:
+            return placed, n_unlabelled_rejects
+        if apex_blocked:
+            n_unlabelled_rejects += 1
+    return None, n_unlabelled_rejects
 
 
 def render_crop_image(processed, crop, boxes_px, rng, real_pool):
@@ -1017,8 +1424,12 @@ def render_dataset(
     rocks_rejected = []
     heights_before = []
     heights_after = []
+    widths_after = []
     n_target_boxes_total = 0
     n_rock_boxes_total = 0
+    n_cap_applied = 0
+    n_boxes_physical = 0
+    n_unlabelled_apex_rejects = 0
 
     for seed in range(int(seed0), int(seed0) + int(n_scenes)):
         scene_dir = Path(scenes_root) / f"seed{seed}"
@@ -1026,7 +1437,6 @@ def render_dataset(
             print(f"skip missing scene {scene_dir}")
             continue
 
-        # Height median before ringing (targets+rocks with same amplitude rule).
         payload_before, processed, picks, scan, scene, run, midpoints = physical_boxes_for_scene(
             scene_dir, extend_ringing=False
         )
@@ -1039,10 +1449,15 @@ def render_dataset(
             scene_dir, extend_ringing=True
         )
         write_boxes_physical(scene_dir, payload)
+        span = float(midpoints[-1] - midpoints[0]) if midpoints.size > 1 else 1.0
         for box in payload["boxes"]:
             heights_after.append(
                 _box_height_frac_on_record(box, processed.shape[0], scan.dt)
             )
+            widths_after.append((box["xmax_m"] - box["xmin_m"]) / span)
+            n_boxes_physical += 1
+            if box.get("cap_applied"):
+                n_cap_applied += 1
             if box.get("kind") == "rock":
                 rocks_labelled.append({"seed": seed, "name": box["name"], "box": box})
                 n_rock_boxes_total += 1
@@ -1052,13 +1467,14 @@ def render_dataset(
             rocks_rejected.append(row)
 
         boxes = payload["boxes"]
+        apexes = payload.get("apexes", [])
         usable = usable_trace_mask(processed)
         split_name = scene_split(seed)
         n_neg = int(round(n_crops * NEGATIVE_FRAC))
         for crop_index in range(n_crops):
             rng = np.random.default_rng(10007 * int(seed) + 17 * crop_index + 3)
             want_negative = crop_index < n_neg
-            drawn = draw_crop(
+            drawn, n_rej = draw_crop(
                 processed,
                 midpoints,
                 scan.dt,
@@ -1067,7 +1483,9 @@ def render_dataset(
                 rng,
                 want_negative,
                 usable_mask=usable,
+                apexes=apexes,
             )
+            n_unlabelled_apex_rejects += int(n_rej)
             crop_id = f"seed{seed}_crop{crop_index:02d}"
             if drawn is None:
                 failed_crops.append(crop_id)
@@ -1076,6 +1494,9 @@ def render_dataset(
             # Guard: crop must not contain unusable columns.
             x0, y0, x1, y1 = drawn["crop"]
             assert np.all(usable[x0:x1]), crop_id
+            assert not crop_has_unlabelled_apex(
+                drawn["crop"], midpoints, scan.dt, boxes, apexes
+            ), crop_id
             arr, yolo_boxes, meta, before_m, after_m = render_crop_image(
                 processed, drawn["crop"], drawn["boxes_px"], rng, real_pool
             )
@@ -1145,6 +1566,7 @@ def render_dataset(
 
     before_app = appearance_stats(before_match_images[:200])
     after_app = appearance_stats(after_match_images[:200])
+    cap_share = (n_cap_applied / n_boxes_physical) if n_boxes_physical else 0.0
     summary = {
         "stats": stats,
         "manifest": manifest,
@@ -1155,8 +1577,13 @@ def render_dataset(
         "rocks_rejected": rocks_rejected,
         "n_target_boxes_physical": n_target_boxes_total,
         "n_rock_boxes_physical": n_rock_boxes_total,
+        "n_cap_applied": n_cap_applied,
+        "n_boxes_physical": n_boxes_physical,
+        "cap_share": float(cap_share),
+        "n_unlabelled_apex_rejects": int(n_unlabelled_apex_rejects),
         "height_median_before_ringing": float(np.median(heights_before)) if heights_before else None,
         "height_median_after_ringing": float(np.median(heights_after)) if heights_after else None,
+        "width_median_physical": float(np.median(widths_after)) if widths_after else None,
         "appearance_real": real_app,
         "appearance_synth_before_match": before_app,
         "appearance_synth_after_match": after_app,
@@ -1165,6 +1592,11 @@ def render_dataset(
         f"rocks labelled={len(rocks_labelled)} rejected={len(rocks_rejected)}; "
         f"height med before={summary['height_median_before_ringing']:.4f} "
         f"after={summary['height_median_after_ringing']:.4f}"
+    )
+    print(
+        f"cap applied={n_cap_applied}/{n_boxes_physical} "
+        f"share={cap_share:.4f}; "
+        f"unlabelled-apex crop rejects={n_unlabelled_apex_rejects}"
     )
     print("appearance real", real_app)
     print("appearance synth before hist-match", before_app)
@@ -1289,10 +1721,12 @@ def plot_rocks_check(
     figure_path=DEFAULT_ROCKS,
     n_scenes=200,
 ):
-    """Six labelled rocks and six rejected rocks."""
+    """Six labelled rocks and six rejected rocks, with predicted curves."""
 
     labelled = []
     rejected = []
+    # Prefer seed 129 rock_0 among rejected if present (clear arch example).
+    prefer_rejected = []
     for seed in range(int(n_scenes)):
         scene_dir = Path(scenes_root) / f"seed{seed}"
         if not (scene_dir / "scene_merged.h5").is_file():
@@ -1304,9 +1738,14 @@ def plot_rocks_check(
             if box.get("kind") == "rock":
                 labelled.append((seed, box, processed, midpoints, scan.dt))
         for row in payload.get("rocks_rejected", []):
-            rejected.append((seed, row, processed, midpoints, scan.dt, scene))
-        if len(labelled) >= 6 and len(rejected) >= 6:
+            item = (seed, row, processed, midpoints, scan.dt)
+            if seed == 129 and row.get("name") == "rock_0":
+                prefer_rejected.append(item)
+            else:
+                rejected.append(item)
+        if len(labelled) >= 6 and len(rejected) + len(prefer_rejected) >= 6:
             break
+    rejected = prefer_rejected + rejected
 
     fig, axes = plt.subplots(2, 6, figsize=(18, 6))
     for index in range(6):
@@ -1322,6 +1761,12 @@ def plot_rocks_check(
                 cmap="gray",
                 vmin=-limit,
                 vmax=limit,
+            )
+            ax.plot(
+                box.get("hyperbola_x_m", box["curve_x_m"]),
+                np.asarray(box.get("hyperbola_t_s", box["curve_t_s"])) * 1e9,
+                color="#33aaff",
+                lw=1.0,
             )
             ax.add_patch(
                 plt.Rectangle(
@@ -1339,7 +1784,7 @@ def plot_rocks_check(
     for index in range(6):
         ax = axes[1, index]
         if index < len(rejected):
-            seed, row, processed, midpoints, dt, scene = rejected[index]
+            seed, row, processed, midpoints, dt = rejected[index]
             time_ns = np.arange(processed.shape[0]) * dt * 1e9
             limit = np.percentile(np.abs(processed), 99) or 1.0
             ax.imshow(
@@ -1350,10 +1795,20 @@ def plot_rocks_check(
                 vmin=-limit,
                 vmax=limit,
             )
+            if row.get("curve_x_m") and row.get("curve_t_s"):
+                ax.plot(
+                    row["curve_x_m"],
+                    np.asarray(row["curve_t_s"]) * 1e9,
+                    color="#ff9900",
+                    lw=1.0,
+                )
             ax.set_title(f"rej s{seed} {row['name']}", fontsize=8)
         ax.set_xticks([])
         ax.set_yticks([])
-    fig.suptitle("Rocks: labelled (top) vs rejected (bottom)", fontsize=12)
+    fig.suptitle(
+        "Rocks: labelled (top, blue curve+box) vs rejected (bottom, orange curve)",
+        fontsize=12,
+    )
     fig.tight_layout()
     figure_path = Path(figure_path)
     figure_path.parent.mkdir(parents=True, exist_ok=True)
