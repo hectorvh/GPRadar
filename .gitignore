@@ -3,5 +3,7 @@ __pycache__/
 .pytest_cache/
 data/raw/
 data/sim/
+data/synth/*/images/
+data/synth/*/labels/
 installation.md
 *.zip

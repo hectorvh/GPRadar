@@ -33,6 +33,10 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `data/splits/mendeley_originals.csv` | Split table for the 285 originals (no image bytes). |
 | `configs/mendeley_test_lock.txt` | SHA-256 lock of the sorted test ids. |
 | `data/labels/mendeley_originals/` | YOLO labels for the cavity and utility originals (after import). |
+| `src/05a_render_synthetic.py` | Renders field_400mhz scenes to 224×224 YOLO greyscale crops. |
+| `test/05a_test_render_synthetic.py` | Checks kink fix, crop clipping, YOLO export, scene split, test-id guard. |
+| `data/synth/real_train_box_stats.json` | Train-only real box width/height fractions. |
+| `data/synth/field_400mhz/` | Synthetic YOLO set (images/labels gitignored; manifest tracked). |
 | `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
 | `environment-gprpy.yml` | Conda environment for the GPRPy reference script. |
 | `data/sim/` | Cylinder A-scan, the pipe-study B-scans, and field-scale scenes. |
@@ -133,6 +137,21 @@ python src/01c_scene_generator.py --preset field_400mhz --seed 0 --n 1 --out dat
 ```
 
 The figure is the raw B-scan beside the processed one, with the predicted hyperbolas drawn on both. Processing is time zero, dewow, background removal, a band-pass around the centre frequency, then AGC. Dewow and AGC use three periods of the centre frequency, the same multiple as the 2 ns window on the 1.5 GHz pipe: 37.5 ns at 80 MHz and 7.5 ns at 400 MHz. The apex check uses the reference-subtracted traces and takes the envelope maximum within half a period of the prediction.
+
+Apex check: 403 of 424 visible targets within a quarter period (0.63 ns); the other 21 are picker failures at the search-window edge or second echoes of air-filled targets, with at most 1.25 ns error.
+
+## Synthetic training images
+
+`src/05a_render_synthetic.py` turns the 200 `field_400mhz` scenes into 224×224 greyscale YOLO crops. Processing is time zero, dewow (7.5 ns), mean-trace removal, band-pass around 400 MHz, then AGC (7.5 ns). The reference trace is not subtracted on the image (real data has none); it is used only to fit boxes on the envelope.
+
+Box rule: for each visible target, keep the continuous predicted hyperbola through the apex (drop the outer straight-ray kink), shift it by the same time-zero picks as the image, set the top to the apex minus half a period, and follow the flanks until the reference-subtracted band-passed envelope falls below 20% of its apex value. Add half a period below and two traces on each side. Crops draw width and height fractions from the real train box distribution, then resize anisotropically to 224×224. About 20% of crops are negatives. Seeds 0-179 are train, 180-199 are val (by scene, not by crop). Test-split Mendeley ids are never read.
+
+```bash
+conda activate gprMax-v4
+python src/05a_render_synthetic.py
+```
+
+Outputs: `data/synth/field_400mhz/{images,labels}/{train,val}/`, `dataset.yaml`, `manifest.csv`, `data/synth/real_train_box_stats.json`, `figures/synthetic_boxes_check.png`, and `figures/synthetic_vs_real.png`.
 
 ## Reading a gprMax file
 

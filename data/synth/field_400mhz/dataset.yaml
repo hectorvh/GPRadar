@@ -1,0 +1,5 @@
+path: C:/Users/hecto/Documents/GitHub/GPRadar/data/synth/field_400mhz
+train: images/train
+val: images/val
+names:
+  0: target
