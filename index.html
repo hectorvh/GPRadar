@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sim-to-Real GPR Hyperbola Detection</title>
+<style>
+  /* ---------- Page & print (A4, one column) ---------- */
+  @page { size: A4; margin: 22mm 20mm 22mm 20mm; }
+  :root {
+    --text: #111; --muted: #555; --rule: #222; --light-rule: #bbb;
+    --placeholder: #f2f2f2;
+  }
+  html { background: #e9e9e9; }
+  body {
+    font-family: "Times New Roman", "Nimbus Roman", "Liberation Serif", Times, serif;
+    font-size: 11pt; line-height: 1.38; color: var(--text);
+    max-width: 170mm; margin: 24px auto; padding: 22mm 20mm;
+    background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    text-align: justify; hyphens: auto;
+  }
+  @media print {
+    html { background: none; }
+    body { margin: 0; padding: 0; max-width: none; box-shadow: none; }
+    .page-break { break-before: page; }
+  }
+  @media (max-width: 700px) {
+    body { padding: 16px; margin: 0; font-size: 10.5pt; }
+  }
+
+  /* ---------- Title block ---------- */
+  header { text-align: center; margin-bottom: 1.2em; }
+  h1 { font-size: 17pt; font-weight: bold; line-height: 1.2; margin: 0 0 .5em; }
+  .authors { font-size: 11pt; margin: 0; }
+  .affil { font-size: 9.5pt; font-style: italic; color: var(--muted); margin: .2em 0 0; }
+  .date { font-size: 9.5pt; color: var(--muted); margin-top: .3em; }
+
+  .abstract { margin: 1.2em 6mm; font-size: 10pt; }
+  .abstract h2 { text-align: center; font-size: 10.5pt; margin: 0 0 .3em; counter-increment: none; }
+  .abstract h2::before { content: none; }
+  .keywords { font-size: 9.5pt; margin: .5em 6mm 1.2em; }
+
+  /* ---------- Section numbering ---------- */
+  body { counter-reset: sec fig tab eq; }
+  h2 { font-size: 12pt; margin: 1.3em 0 .45em; counter-increment: sec; counter-reset: sub; }
+  h2::before { content: counter(sec) ".\00a0\00a0"; }
+  h3 { font-size: 11pt; font-style: italic; font-weight: normal; margin: .9em 0 .3em; counter-increment: sub; }
+  h3::before { content: counter(sec) "." counter(sub) "\00a0\00a0"; font-style: normal; }
+  h2.unnumbered { counter-increment: none; }
+  h2.unnumbered::before { content: none; }
+  p { margin: 0 0 .55em; }
+  ul, ol { margin: .2em 0 .6em 1.2em; padding-left: 1em; }
+  li { margin-bottom: .15em; }
+
+  /* ---------- Figures ---------- */
+  figure { margin: 1em 0; text-align: center; break-inside: avoid; counter-increment: fig; }
+  figure img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+  figure.half img { max-width: 75%; }
+  .row { display: flex; gap: 4mm; justify-content: center; }
+  .row > div { flex: 1; }
+  .row img { width: 100%; }
+  .sub { font-size: 9pt; margin-top: .2em; }
+  figcaption { font-size: 9.5pt; text-align: justify; margin-top: .45em; }
+  figure > figcaption::before { content: "Figure " counter(fig) ". "; font-weight: bold; }
+  .img-missing {
+    background: var(--placeholder); border: 1px dashed #999; color: #666;
+    font-size: 9pt; padding: 18mm 4mm; text-align: center;
+  }
+
+  /* ---------- Tables (booktabs style) ---------- */
+  .tbl { margin: 1em 0; break-inside: avoid; counter-increment: tab; }
+  .tbl .caption { font-size: 9.5pt; margin-bottom: .35em; text-align: left; }
+  .tbl .caption::before { content: "Table " counter(tab) ". "; font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+  thead tr:first-child th { border-top: 1.5px solid var(--rule); }
+  thead th { border-bottom: .8px solid var(--rule); padding: 3px 6px; font-weight: bold; }
+  tbody td { padding: 2.5px 6px; }
+  tbody tr:last-child td { border-bottom: 1.5px solid var(--rule); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td:first-child, th:first-child { text-align: left; }
+  tr.midrule td { border-top: .6px solid var(--light-rule); }
+  .best { font-weight: bold; }
+
+  /* ---------- Equations ---------- */
+  .eq { display: flex; align-items: center; margin: .6em 0; counter-increment: eq; }
+  .eq .math { flex: 1; text-align: center; font-style: italic; }
+  .eq::after { content: "(" counter(eq) ")"; }
+  .frac { display: inline-block; vertical-align: middle; text-align: center; }
+  .frac > span { display: block; padding: 0 2px; }
+  .frac > span:first-child { border-bottom: 1px solid currentColor; }
+  .sqrt { border-top: 1px solid currentColor; padding-left: 2px; }
+
+  /* ---------- Misc ---------- */
+  code { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 9pt; }
+  a { color: inherit; }
+
+  /* ---------- References ---------- */
+  .refs { font-size: 9.5pt; padding-left: 1.6em; }
+  .refs li { margin-bottom: .3em; text-align: left; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Does Physics-Simulated Training Data Help?<br>Sim-to-Real Hyperbola Detection in GPR B-scans</h1>
+  <p class="authors">Hector Valdes</p>
+  <p class="affil">Institute for Geoinformatics, University of Münster, Germany</p>
+  <p class="date">Technical note · November 2026 · Code: <a href="https://github.com/hectorvh/GPRadar">github.com/hectorvh/GPRadar</a></p>
+</header>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p>Ground-penetrating radar (GPR) is widely used to locate buried utilities, but deep-learning detectors for GPR data are limited by the small number of labelled field scans. This note tests whether B-scans simulated with gprMax, which carry labels derived from their known geometry, improve the detection of hyperbolic reflections on real B-scans. A YOLO11n detector is trained under three regimes (real data only, synthetic data only, and synthetic pre-training followed by real fine-tuning) at 25 and 100&nbsp;% of the available real labels, and evaluated on a locked held-out set of 83 real B-scans from an open utilities-and-voids dataset. Synthetic pre-training did not improve over real-only training: at 25&nbsp;% of real labels, mAP@0.5 was 0.687 (A) versus 0.661 (C); at 100&nbsp;% it was 0.756 versus 0.732. The best locked-test model is regime A at 100&nbsp;% real labels, seed 2 (mAP@0.5 = 0.786).</p>
+</section>
+<p class="keywords"><b>Keywords:</b> ground-penetrating radar; gprMax; synthetic data; transfer learning; object detection; buried utilities</p>
+
+<h2>Problem definition</h2>
+<p>GPR sends short electromagnetic pulses into the ground and records the reflections at each antenna position. When the antenna crosses a small buried object such as a pipe, the two-way travel time first decreases and then increases, so the object appears in the B-scan (a profile of traces against position) as a hyperbola. For an object at horizontal position <i>x</i><sub>0</sub> and depth <i>d</i>, in soil with relative permittivity ε<sub>r</sub>, the travel time at antenna position <i>x</i> is</p>
+<div class="eq"><span class="math">t(x) = <span class="frac"><span>2</span><span>v</span></span>&nbsp;<span class="sqrt">&nbsp;d² + (x − x<sub>0</sub>)²&nbsp;</span>, &nbsp;&nbsp; v = <span class="frac"><span>c</span><span><span class="sqrt">ε<sub>r</sub></span></span></span></span></div>
+<p>Finding these hyperbolas is the first step of utility mapping, and it is still often done by eye. Convolutional detectors can automate it, but they need many labelled B-scans, and field data are expensive to collect and slow to label. Most open GPR datasets are small, come as images rather than raw traces, and cover few soil types and antennas. Numerical simulation offers labels for free, because the position and depth of every target are known. The open question is whether simulated scans are realistic enough to help a detector that will be used on real data (the <i>sim-to-real gap</i>).</p>
+
+<h2>Objectives</h2>
+<p>The main objective is to measure how much synthetic pre-training improves hyperbola detection on real B-scans when real labels are scarce. In detail:</p>
+<ol>
+  <li>Build a reproducible pipeline that generates labelled 2D B-scans with gprMax and applies standard GPR preprocessing.</li>
+  <li>Compare three training regimes on the same real test set, at 25 and 100&nbsp;% of real labels.</li>
+  <li>Select a shipping checkpoint from A_f100 versus C_f100 by locked-test mAP@0.5.</li>
+  <li>Describe typical failure cases and the main sources of the sim-to-real gap.</li>
+</ol>
+<p><b>Research question.</b> At 25 and 100&nbsp;% of the available real labels, how does a detector trained on real data only compare with one pre-trained on synthetic data and fine-tuned on real data?</p>
+
+<h2>Methodology</h2>
+<h3>Synthetic data</h3>
+<p>Scenes are 2D gprMax models (Warren et al., 2016) with a 400&nbsp;MHz source. Each scene draws, from a fixed seed, a layered soil, one to three targets (metal pipe, PVC pipe or air-filled void) with random depth and radius, and small rocks as clutter. Labels are computed from the geometry: the apex time follows from Eq.&nbsp;(1) with <i>x</i> = <i>x</i><sub>0</sub>, and the box from the kink-fixed hyperbola plus a capped ringing extension. Rocks are labelled when their reflection coefficient against the host band is at least 0.03. Realism augmentation (noise, gain, jitter, histogram matching) is applied before JPEG. From 200 scenes, 1166 crops of 224×224 were written (1051 train / 115 val by scene).</p>
+
+<h3>Real data</h3>
+<p>Real B-scans come from the open Mendeley dataset of subsurface utilities and voids (Mojahid et al., 2025). The working set is the 285 originals (void, utility, intact). Hyperbolas were labelled by hand (YOLO class 0); intact images have no boxes. Near-duplicates share a group_id. The locked split is train 202 / test 83; from the train split, 20&nbsp;% of groups form validation (46 images) and the rest is the train pool (156 images, 177 boxes). The test set was fixed before any training and is never used for training or model selection.</p>
+
+<h3>Preprocessing</h3>
+<p>Simulated traces go through time-zero correction, dewow, background removal (mean-trace subtraction), band-pass filtering and gain, implemented in NumPy/SciPy and checked against GPRPy on the same profiles. The real data are only available as images, so they receive only resizing and intensity normalisation; this asymmetry is itself part of the sim-to-real gap.</p>
+
+<h3>Experiment and evaluation</h3>
+<p>One detector family (YOLO11n, Ultralytics 8.4.204) is trained under three regimes: <b>A</b>, real data only from the COCO checkpoint; <b>B</b>, synthetic data only (stage&nbsp;1); <b>C</b>, synthetic pre-training then fine-tuning on real data. Regimes A and C use 25 and 100&nbsp;% of the real train pool; B is the three stage-1 seeds. Image size 224, batch 16, three seeds (0, 1, 2). Metrics on the locked real test set are mAP@0.5, precision, recall and false positives per image (confidence 0.25, IoU ≥ 0.5). The shipping candidate is chosen from A_f100 versus C_f100 by locked-test mAP@0.5, then the best seed within that setup.</p>
+
+<!-- ======================== RESULTS ======================== -->
+<div class="page-break"></div>
+<h2>Results</h2>
+
+<h3>Synthetic B-scans and preprocessing</h3>
+<p>Figure 1 shows how the hyperbola responds to the model parameters. Deeper targets give later and flatter hyperbolas; higher permittivity slows the wave, which delays the apex and narrows the arms; conductivity attenuates the signal, so the arms fade with offset. These patterns agree with Eq. (1) and confirm that the simulations behave as expected before they are used for training.</p>
+<figure>
+  <img src="figures/pipe_bscan_variants.png" alt="Eight simulated B-scans of a buried metal pipe"
+       onerror="this.outerHTML='<div class=img-missing>figures/pipe_bscan_variants.png</div>'">
+  <figcaption>Simulated B-scans of a buried metal pipe (E<sub>z</sub>, mean trace removed) for eight combinations of centre frequency, soil permittivity, conductivity and pipe depth.</figcaption>
+</figure>
+
+<figure>
+  <img src="figures/preprocessing_steps_sim.png" alt="Raw to processed B-scan"
+       onerror="this.outerHTML='<div class=img-missing>figures/preprocessing_steps_sim.png</div>'">
+  <figcaption>Preprocessing chain on one simulated scan: time zero, dewow, mean-trace removal, band-pass and AGC. The same steps were checked against GPRPy on Dinner Point Avenue profiles.</figcaption>
+</figure>
+
+<figure>
+  <img src="figures/synthetic_boxes_check.png" alt="Grid of labelled synthetic scans"
+       onerror="this.outerHTML='<div class=img-missing>figures/synthetic_boxes_check.png</div>'">
+  <figcaption>Synthetic scenes with geometry-derived boxes. Red: flagged apex targets; green: other targets; blue: rocks that pass the reflection-coefficient gate.</figcaption>
+</figure>
+
+<figure>
+  <img src="figures/synthetic_vs_real.png" alt="Synthetic versus real train thumbnails"
+       onerror="this.outerHTML='<div class=img-missing>figures/synthetic_vs_real.png</div>'">
+  <figcaption>Box-size histograms and 224×224 thumbnails: synthetic crops after histogram matching (top) against real train originals (bottom), with YOLO boxes drawn.</figcaption>
+</figure>
+
+<div class="tbl">
+  <div class="caption">Datasets used in the experiment.</div>
+  <table>
+    <thead><tr><th>Split</th><th>Source</th><th class="num">Images</th><th class="num">Boxes</th><th>Labels</th></tr></thead>
+    <tbody>
+      <tr><td>Synthetic train / val</td><td>gprMax, 400 MHz</td><td class="num">1051 / 115</td><td class="num">2688 / 260</td><td>From geometry</td></tr>
+      <tr><td>Real train pool / val</td><td>Mendeley originals</td><td class="num">156 / 46</td><td class="num">177 / 45</td><td>Manual</td></tr>
+      <tr><td>Real test (locked)</td><td>Mendeley originals</td><td class="num">83</td><td class="num">93</td><td>Manual</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Detection on real B-scans</h3>
+<p>Table 2 and Figure 5 give the main result. Regime A (real only) was ahead of regime C at both label fractions: at 25&nbsp;% of the train pool, mAP@0.5 was 0.687 ± 0.047 (A) versus 0.661 ± 0.064 (C); at 100&nbsp;% it was 0.756 ± 0.042 versus 0.732 ± 0.024. The mean C − A difference was −0.026 at 25&nbsp;% (95&nbsp;% bootstrap interval over test images [−0.090, 0.056]) and −0.024 at 100&nbsp;% ([−0.055, 0.042]). Regime B (synthetic only) reached only 0.161 ± 0.051, which shows the size of the sim-to-real gap. Among A_f100 and C_f100 on the locked test set, <b>A_f100_seed2</b> is the best weight (mAP@0.5 = 0.786, mAP@0.5:0.95 = 0.438).</p>
+
+<div class="tbl">
+  <div class="caption">Detection on the locked real test set (mean ± s.d. over 3 seeds). A: real only; B: synthetic only; C: synthetic pre-training + real fine-tuning. FP/img: false positives per image at confidence 0.25. Best mAP@0.5 per label fraction in bold.</div>
+  <table>
+    <thead><tr><th>Regime</th><th class="num">Real labels</th><th class="num">mAP@0.5</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">FP / img</th></tr></thead>
+    <tbody>
+      <tr><td>B</td><td class="num">0 %</td><td class="num">0.161 ± 0.051</td><td class="num">0.321</td><td class="num">0.251</td><td class="num">0.59</td></tr>
+      <tr class="midrule"><td>A</td><td class="num">25 %</td><td class="num best">0.687 ± 0.047</td><td class="num">0.436</td><td class="num">0.717</td><td class="num">1.73</td></tr>
+      <tr><td>C</td><td class="num">25 %</td><td class="num">0.661 ± 0.064</td><td class="num">0.478</td><td class="num">0.685</td><td class="num">0.90</td></tr>
+      <tr class="midrule"><td>A</td><td class="num">100 %</td><td class="num best">0.756 ± 0.042</td><td class="num">0.601</td><td class="num">0.720</td><td class="num">0.55</td></tr>
+      <tr><td>C</td><td class="num">100 %</td><td class="num">0.732 ± 0.024</td><td class="num">0.562</td><td class="num">0.713</td><td class="num">0.63</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<figure class="half">
+  <img src="figures/detection_results.png" alt="mAP versus fraction of real labels"
+       onerror="this.outerHTML='<div class=img-missing>figures/detection_results.png</div>'">
+  <figcaption>mAP@0.5 on the locked real test set against the fraction of real training labels for regimes A and C (dots: seeds; error bars: ± 1 s.d.). The dashed line marks regime B (synthetic only).</figcaption>
+</figure>
+
+<figure>
+  <img src="figures/detection_examples.png" alt="GT and predictions for A and C"
+       onerror="this.outerHTML='<div class=img-missing>figures/detection_examples.png</div>'">
+  <figcaption>Ground truth (green), regime A (red) and regime C (blue) on the same real test B-scans at 25&nbsp;% real labels, seed 0.</figcaption>
+</figure>
+
+<h3>Shipping candidate</h3>
+<p>Comparing A_f100 and C_f100 on the locked test set, regime A is better on mean mAP@0.5 (0.756 vs 0.732). Within A_f100, seed&nbsp;2 is best (mAP@0.5 = 0.786, mAP@0.5:0.95 = 0.438; precision 0.644, recall 0.720, 0.45 FP/image). That weight is <code>runs/detect/A_f100_seed2/weights/best.pt</code>. For reference, best <i>validation</i> mAP50-95 among the same six runs (from each run's <code>results.csv</code>) was A_f100_seed0; the locked test set prefers seed&nbsp;2, which is what we ship.</p>
+
+<h3>Failure cases</h3>
+<figure>
+  <img src="figures/detection_examples.png" alt="Failure and success cases on real test images"
+       onerror="this.outerHTML='<div class=img-missing>figures/detection_examples.png</div>'">
+  <figcaption>Typical behaviour at 25&nbsp;% labels: regime A often places many overlapping boxes on one arch (high recall, more false positives); regime C is cleaner but can miss secondary hyperbolas. Overlapping utilities and crowded arches remain hard for both.</figcaption>
+</figure>
+
+<h2>Interpretation</h2>
+<p>In this setup, synthetic pre-training did not beat real-only training at either 25 or 100&nbsp;% of the real train pool. The C − A intervals both cover zero, so the small negative mean differences are not a clear win for C. Regime B alone is far behind, so the synthetic distribution still helps as a pre-train signal in absolute terms (C ≫ B) but does not beat starting from COCO and fine-tuning on real labels (A).</p>
+<p>Three differences between the two data streams likely limit the transfer. First, the simulations are 2D, so they lack out-of-plane energy and the 3D shape of real pipes and voids. Second, the real data are processed images from an unknown chain, while the synthetic data come from raw traces processed by our own code; contrast, gain and grey histogram therefore differ even after matching. Third, real soils contain roots, moisture gradients and rubble that the random rocks only roughly imitate, and synthetic crops are more crowded (median about three boxes) than real images (about one to two).</p>
+<p><b>Limitations.</b> One open dataset from one region; images instead of raw traces, so migration and consistent preprocessing could not be applied to real data; a single detector family (YOLO11n) at 224&nbsp;px; manual labels from one annotator; a small real test set (83 images), so differences of a few mAP points may not be significant; only 25 and 100&nbsp;% label fractions were run.</p>
+
+<h2>Future work</h2>
+<ul>
+  <li><b>Narrow the domain gap.</b> Translate synthetic images towards the real style with CycleGAN or similar, and compare with plain pre-training.</li>
+  <li><b>Raw multi-channel data.</b> Repeat the experiment on raw traces from an antenna array, so that real and synthetic data share one preprocessing chain and 3D simulations can be tested.</li>
+  <li><b>From boxes to geometry.</b> Detect hyperbola keypoints instead of boxes, fit depth and velocity on real data, and link detections across adjacent profiles into 3D pipe paths.</li>
+  <li><b>Georeferencing.</b> Convert detections to map coordinates with RTK positions and measure how positioning noise adds to localisation error.</li>
+  <li><b>Deployment.</b> Serve the best model behind a small web interface where a user uploads a B-scan and receives the detections.</li>
+</ul>
+
+<h2 class="unnumbered">References</h2>
+<ol class="refs">
+  <li>Jol, H. M. (Ed.) (2009). <i>Ground Penetrating Radar: Theory and Applications</i>. Elsevier.</li>
+  <li>Warren, C., Giannopoulos, A., &amp; Giannakis, I. (2016). gprMax: Open source software to simulate electromagnetic wave propagation for Ground Penetrating Radar. <i>Computer Physics Communications</i>, 209, 163–170.</li>
+  <li>Pham, M.-T., &amp; Lefèvre, S. (2018). Buried object detection from B-scan ground penetrating radar data using Faster-RCNN. <i>IGARSS 2018</i>.</li>
+  <li>Mojahid et al. (2025). Intelligent recognition of subsurface utilities and voids using ground-penetrating radar and deep learning techniques: Data of GPR profiles images. <i>Data in Brief</i> / Mendeley Data. DOI <a href="https://doi.org/10.17632/ww7fd9t325.1">10.17632/ww7fd9t325.1</a>.</li>
+  <li>Plattner, A. M. (2020). GPRPy: Open-source ground-penetrating radar processing and visualization software. <i>The Leading Edge</i>, 39(5).</li>
+  <li>Ultralytics (2024–2026). YOLO11 / Ultralytics 8.4.204. AGPL-3.0. <a href="https://github.com/ultralytics/ultralytics">github.com/ultralytics/ultralytics</a>.</li>
+</ol>
+
+</body>
+</html>

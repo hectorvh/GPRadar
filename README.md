@@ -35,12 +35,20 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `data/labels/mendeley_originals/` | YOLO labels for the cavity and utility originals (after import). |
 | `src/05a_render_synthetic.py` | Renders field_400mhz scenes to 224×224 YOLO greyscale crops. |
 | `test/05a_test_render_synthetic.py` | Checks kink fix, crop clipping, YOLO export, scene split, test-id guard. |
+| `src/06a_prepare_real_yolo.py` | Real YOLO folders, val split, nested 25/100% subsets, locked test export. |
+| `src/06b_train_detectors.py` | YOLO11n train for regimes A/C (and stage-1 for C); smoke and full grid. |
+| `src/06c_evaluate_detectors.py` | Locked-test evaluation, summary CSVs, and detection figures. |
+| `src/06d_compare_runs.py` | Rank runs by val mAP and pick the locked-test ship candidate. |
+| `src/06e_upload_model.py` | Upload the shipped `best.pt` to Hugging Face. |
+| `test/06_test_detection.py` | Group/fraction split guards and IoU matching toy checks. |
 | `data/synth/real_train_box_stats.json` | Train-only real box width/height fractions. |
 | `data/synth/field_400mhz/` | Synthetic YOLO set (images/labels gitignored; manifest tracked). |
 | `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
 | `environment-gprpy.yml` | Conda environment for the GPRPy reference script. |
+| `environment-det.yml` | Conda environment for YOLO detection (`gprdet`). |
+| `results/` | Detection CSVs and training logs (`detection_results.csv`, `detection_summary.csv`). |
 | `data/sim/` | Cylinder A-scan, the pipe-study B-scans, and field-scale scenes. |
-| `figures/` | Plots, plus `gprpy_comparison.csv` and `gprpy_comparison.png`. |
+| `figures/` | Plots, including detection result and example grids. |
 
 ## Environments
 
@@ -332,19 +340,21 @@ conda activate gprdet
 python src/06c_evaluate_detectors.py --dry-run
 ```
 
-Results placeholders (fill after the real `06c` run):
+Compare runs and confirm the ship candidate (A_f100 vs C_f100):
 
-| Regime | Fraction | mAP@0.5 mean (std) | Notes |
-| --- | ---: | --- | --- |
-| A | 0.25 | TBD | |
-| C | 0.25 | TBD | |
-| A | 1.0 | TBD | |
-| C | 1.0 | TBD | |
-| B | - | TBD | synth only |
+```bash
+conda activate gprdet
+python src/06d_compare_runs.py
+```
 
-C minus A (mAP@0.5), mean over seeds with 95% bootstrap CI over test images: 25% TBD; 100% TBD. Figures: `figures/detection_results.png`, `figures/detection_examples.png`.
+Upload the shipped weights (`A_f100_seed2` by default):
 
-Limitations: one model size (YOLO11n), 224 px inputs, small real test set (83 images), synthetic scenes more crowded than real images (median about 3 boxes per crop vs 1 to 2), 2D simulation at 400 MHz while the real antenna frequency is unknown, real voids are often clusters while synthetic voids are single cylinders.
+```bash
+conda activate gprdet
+python src/06e_upload_model.py
+```
+
+Figures: `figures/detection_results.png`, `figures/detection_examples.png`. Locked-test numbers are below.
 
 ## Results (locked test set: 83 real images, 3 seeds per setting)
 
@@ -361,6 +371,8 @@ Recall and false positives at confidence 0.25 and IoU 0.5.
 C minus A in mAP@0.5 (paired bootstrap over test images, 2000 resamples): 25%: -0.026 (95% CI -0.090 to +0.056); 100%: -0.024 (95% CI -0.055 to +0.042).
 
 **Finding:** synthetic pre-training did not measurably improve detection at either amount of real labels; both intervals include zero. More real labels helped more (+0.07 mAP for A from 25% to 100%).
+
+**Ship candidate:** among A_f100 and C_f100 on the locked test set, `A_f100_seed2` is best (mAP@0.5 = 0.786, mAP@0.5:0.95 = 0.438). Best validation mAP50-95 among those six runs was A_f100_seed0; the locked test prefers seed 2, which is what `06e` uploads.
 
 **Why:** the synthetic-only model reaches 0.16 mAP on real images, so little of what it learns transfers. The gap is much smaller for utilities (recall 0.36 without any real data) than for voids (0.12): synthetic targets are single hyperbolas, while real voids are clusters of arches. Voids are the hard class in every regime (recall about 0.5). At 25% labels, C produced fewer false positives (0.90 vs 1.73 per image), but one A seed dominates that difference and it was not tested, so it is an observation, not a result.
 
