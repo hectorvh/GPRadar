@@ -13,8 +13,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 load_gprmax = importlib.import_module("02a_gprmax_loader").load_gprmax
 
 ROOT = Path(__file__).resolve().parents[1]
-ASCAN = ROOT / "data" / "sim" / "cylinder_Ascan_2D.h5"
-BSCAN = ROOT / "data" / "sim" / "pipe_study" / "f1.5_e6_s0_d9" / "pipe_merged.h5"
+
+
+def _sim_file(relative):
+    """data/sim/<relative>, or the identical copy in data/sample/sim/ (committed)."""
+
+    full = ROOT / "data" / "sim" / relative
+    return full if full.is_file() else ROOT / "data" / "sample" / "sim" / relative
+
+
+ASCAN = _sim_file("cylinder_Ascan_2D.h5")
+BSCAN = _sim_file("pipe_study/f1.5_e6_s0_d9/pipe_merged.h5")
 
 
 def _write_trace(path, values, position, frequency=1.5e9):

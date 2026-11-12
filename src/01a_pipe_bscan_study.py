@@ -15,7 +15,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from gprMax.toolboxes.Utilities.outputfiles_merge import get_output_data
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = Path(__file__).resolve().parent / "pipe.in"
@@ -203,6 +202,10 @@ def run_case(case, template, geometry):
 
 
 def load_bscan(path):
+    # Imported here so the model and ground-truth helpers (and their tests)
+    # work without gprMax installed.
+    from gprMax.toolboxes.Utilities.outputfiles_merge import get_output_data
+
     data, dt = get_output_data(path, 1, "Ez")
     data = np.asarray(data, dtype=float)
     background = data.mean(axis=1, keepdims=True)

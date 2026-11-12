@@ -1,0 +1,34 @@
+GPRadar sample data (data/sample/)
+==================================
+
+Built by src/00_make_sample_data.py from the full datasets. Small subsets,
+for tests and the demo only.
+
+mendeley/  Mendeley GPR images (CC BY 4.0)
+  Mojahid, K. et al. (2025). Intelligent recognition of subsurface utilities
+  and voids using ground-penetrating radar and deep learning techniques: Data
+  of GPR profiles images. Mendeley Data, V1. DOI 10.17632/ww7fd9t325.1
+  Licence: Creative Commons Attribution 4.0 (CC BY 4.0). The images are copied
+  unchanged. The YOLO box labels are this project's own hand labels (one class,
+  "target"); intact images are negatives with empty label files. All 7 images
+  are from the train split of data/splits/mendeley_originals.csv; no image from
+  the locked test split is included.
+
+usgs/  Dinner Point Avenue, traces 0 to 299 (U.S. Geological Survey)
+  Fiore, A.R. (2018). Raw ground-penetrating radar data, Edwin B. Forsythe
+  National Wildlife Refuge, New Jersey, 2014-15. U.S. Geological Survey data
+  release. https://doi.org/10.5066/F7JH3KBD
+  Related report: Fiore, A.R., Voronin, L.M. and Wieben, C.M. (2018), USGS
+  Scientific Investigations Report 2017-5135, https://doi.org/10.3133/sir20175135
+  Redistribution: the release metadata lists no access or use constraints
+  (accconst and useconst are "none"), and data produced by the USGS are in
+  the U.S. public domain. USGS asks that the data be cited as above. The
+  window is the raw int16 samples of DinnerPointAve.rd3 with no processing;
+  "header" in the .npz is the original .rad text.
+
+sim/  gprMax simulations (this project)
+  Produced by this project with gprMax 4.0.1. Please cite:
+  Warren, C., Giannopoulos, A. and Giannakis, I. (2016). gprMax: Open source
+  software to simulate electromagnetic wave propagation for Ground Penetrating
+  Radar. Computer Physics Communications 209, 163-170.
+  https://doi.org/10.1016/j.cpc.2016.08.020

@@ -4,10 +4,55 @@ Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds t
 
 Programs and notebooks are numbered in the order to run them. The same number is one stage. A letter means those files do not wait on each other. Where a script and a notebook do the same job, the notebook plots in the page and the script writes a figure file.
 
+## Reproduce
+
+Each step is one `make` target. Every target runs its script in the right conda environment through `conda run`, so nothing needs to be activated first. `make help` lists the targets in this order. The three environments are `gprMax-v4` (simulation, loading, processing, figures, tests), `gprpy` (the GPRPy reference only) and `gprdet` (YOLO); create them from `environment-gprmax.yml`, `environment-gprpy.yml` and `environment-det.yml`. Other names can be passed, e.g. `make test GPRMAX_ENV=myenv`. On Windows, GNU make can come from conda-forge (`conda create -n gpradar-tools -c conda-forge make`) and runs under Git Bash.
+
+Without downloading anything, a reviewer can run the tests and a demo on the small committed sample in `data/sample/` (3 MB):
+
+```bash
+make test    # 58 tests; without the full data, 55 pass on data/sample/ and 3 are skipped
+make demo    # figures/demo/*.png in about 15 s
+```
+
+| Step | Target | Environment | Inputs | Outputs | Approximate time |
+| --- | --- | --- | --- | --- | --- |
+| Tests | `test` | gprMax-v4 | `data/sample/` (full data used when present) | test report | 6 s |
+| Demo | `demo` | gprMax-v4, gprdet if present | `data/sample/`, `best.onnx` if present | `figures/demo/*.png` | 15 s |
+| Pipe study and sim figure | `figures-sim` | gprMax-v4 (needs gprMax installed) | `src/pipe.in` | `data/sim/pipe_study/`, `figures/pipe_bscan_variants.png`, `figures/preprocessing_*_sim.png` | about 32 s per pipe B-scan, 8 B-scans |
+| Field profile figure | `figure-real` | gprMax-v4 | `data/raw/usgs_forsythe/` | `figures/preprocessing_*_real.png` | seconds |
+| GPRPy reference | `gprpy-reference` | gprpy | `data/raw/usgs_forsythe/` | `DinnerPointAve_gprpy_steps.npz` | not timed |
+| GPRPy comparison | `gprpy-compare` | gprMax-v4 | the GPRPy `.npz` | `figures/gprpy_comparison.*` | seconds |
+| Mendeley inventory | `inventory` | gprMax-v4 | `data/raw/mendeley_gpr/` | `figures/mendeley_inventory/` | not timed |
+| Split check | `split` | gprMax-v4 | `data/raw/mendeley_gpr/`, the lock | must equal `data/splits/mendeley_originals.csv` | not timed |
+| Field scenes | `scenes` (needs `CONFIRM=1`) | gprMax-v4 (needs gprMax installed) | `configs/scenes.yaml` | `data/sim/scenes/field_400mhz/` | about 10 min per 400 MHz scene on 8 threads: about 33 h for 200 |
+| Synthetic images | `synth` | gprMax-v4 | scenes, real train labels | `data/synth/field_400mhz/`, check figures | not timed |
+| Real YOLO folders | `real-yolo` | gprdet | `data/raw/mendeley_gpr/`, labels, split | `data/real_yolo/` | seconds |
+| Training smoke test | `train-smoke` | gprdet | synthetic and real YOLO sets | `runs/smoke/` | a few minutes (74 s per synthetic epoch, 12 s per real epoch on a Quadro P1000) |
+| Full training | `train` (needs `CONFIRM=1`) | gprdet | as above | `runs/detect/`, `results/training_log.csv` | about 19 h without early stopping |
+| Evaluation | `evaluate` (needs `CONFIRM=1`) | gprdet | 15 trained weights, locked test set | `results/detection_*.csv`, `figures/detection_*.png` | not timed |
+| Ship candidate | `compare` | gprdet | `runs/detect/`, results | printed table | seconds |
+| ONNX export | `export-onnx` | gprdet | shipped `best.pt` | `best.onnx`, parity table | under a minute |
+| Web demo samples | `demo-samples` | gprMax-v4, then gprdet | raw images, scenes, `best.onnx` | `exports/demo_samples/` | seconds |
+| Sample data | `sample-data` | gprMax-v4 | the full data | `data/sample/` | 6 s |
+
+Notes:
+
+- `split` never changes the committed split. It refuses to run without `configs/mendeley_test_lock.txt`, writes the rebuilt split to a temporary file, and fails unless it is identical to the committed one.
+- `evaluate` reads the locked test set. The reported results already used it once; run it again only to reproduce them. `python src/06c_evaluate_detectors.py --dry-run` checks the code on the validation set instead.
+- No target deletes anything under `data/raw/`.
+- gprMax itself is built from source (see `environment-gprmax.yml`); without it, `figures-sim` and `scenes` cannot run, but everything else can.
+
+`data/sample/` (built by `make sample-data`, committed) holds the cylinder A-scan and one pipe B-scan the loader tests use, one 400 MHz val scene as `.npz`, 5 Mendeley train images with boxes and 2 intact train images, and traces 0 to 299 of Dinner Point Avenue. Sources and licences are in `data/sample/CITATION.txt`: the Mendeley images are CC BY 4.0, and the USGS data is public domain (the release lists no use constraints) and is cited as Fiore (2018), https://doi.org/10.5066/F7JH3KBD. No image from the locked test split is included; `test/00_test_sample_data.py` checks that.
+
 ## Layout
 
 | Path | Contents |
 | --- | --- |
+| `Makefile` | One target per pipeline step; `make help` lists them. |
+| `src/00_make_sample_data.py` | Builds the small committed sample in `data/sample/` from the full data. |
+| `test/00_test_sample_data.py` | Checks the sample: train ids only, unchanged image bytes, labels, citation, size. |
+| `data/sample/` | Committed 3 MB sample for tests and the demo, with `CITATION.txt`. |
 | `src/pipe.in` | Buried metal pipe. 2D model, 2 mm cells, 1.5 GHz Ricker, 60-trace B-scan. |
 | `notebooks/01a_download_usgs_raw.ipynb` | Downloads Dinner Point Avenue and removes the other lines. |
 | `src/01a_pipe_bscan_study.py` | Eight variants of `pipe.in`, then one comparison figure. |
@@ -19,10 +64,12 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `src/02a_gprmax_loader.py` | Reads a gprMax HDF5 output into one scan. |
 | `notebooks/02a_gprmax_loader.ipynb` | The same read, then the Dinner Point Avenue comparison. |
 | `test/02a_test_gprmax_loader.py` | Checks the loader against the cylinder and a pipe B-scan. |
+| `src/02d_mala_reader.py` | Reads a MALA `.rd3` / `.rad` field profile into the same scan object as 02a. |
+| `test/02d_test_mala_reader.py` | Checks the MALA reader on a tiny synthetic file pair and on Dinner Point Avenue. |
 | `src/02b_preprocessing.py` | Time zero, dewow, background removal, band-pass and gain. |
 | `test/02b_test_preprocessing.py` | Checks those processing steps. |
 | `src/02c_gprpy_reference.py` | Runs GPRPy dewow and AGC and saves the reference arrays. |
-| `src/03a_plot_preprocessing.py` | Figures of the processing steps and of the amplitude spectrum. |
+| `src/03a_plot_preprocessing.py` | Figures of the processing steps and of the amplitude spectrum, for the simulated pipe or (`--profile dinnerpoint`) the field line. |
 | `notebooks/03a_scipy_gpr_simulated.ipynb` | Loads one pipe B-scan and shows each processing step. |
 | `src/03b_compare_gprpy.py` | Compares dewow and AGC with that GPRPy reference. |
 | `test/03b_test_gprpy_comparison.py` | Checks the interior correlation with GPRPy. |
@@ -39,8 +86,13 @@ Programs and notebooks are numbered in the order to run them. The same number is
 | `src/06b_train_detectors.py` | YOLO11n train for regimes A/C (and stage-1 for C); smoke and full grid. |
 | `src/06c_evaluate_detectors.py` | Locked-test evaluation, summary CSVs, and detection figures. |
 | `src/06d_compare_runs.py` | Rank runs by val mAP and pick the locked-test ship candidate. |
-| `src/06e_upload_model.py` | Upload the shipped `best.pt` to Hugging Face. |
+| `src/06e_upload_model.py` | Upload the shipped `best.pt`, `best.onnx` and `MODEL_CARD.md` to Hugging Face. |
+| `src/06f_export_onnx.py` | Export the shipped model to ONNX; NumPy + OpenCV inference and a parity check. |
 | `test/06_test_detection.py` | Group/fraction split guards and IoU matching toy checks. |
+| `test/06f_test_onnx_parity.py` | Letterbox and NMS unit tests; ONNX vs Ultralytics parity on 20 train images. |
+| `src/07a_export_demo_samples.py` | Pick and export the web demo samples (2 Mendeley train images, 1 val scene), manifest and golden detections. |
+| `test/07a_test_demo_samples.py` | Checks test-id refusal, manifest fields and the scene `.npz` round trip. |
+| `src/08a_demo.py` | Quick demo on `data/sample/` only: processed scans and (with gprdet) detections in `figures/demo/`. |
 | `data/synth/real_train_box_stats.json` | Train-only real box width/height fractions. |
 | `data/synth/field_400mhz/` | Synthetic YOLO set (images/labels gitignored; manifest tracked). |
 | `environment-gprmax.yml` | Conda environment for gprMax output, processing, and tests. |
@@ -216,6 +268,26 @@ jupyter notebook notebooks/03a_scipy_gpr_simulated.ipynb
 
 On this 12 cm profile the hyperbola covers most traces, so mean-trace removal leaves artefacts near the apex. Longer profiles, or subtracting a no-target simulation, avoid this.
 
+### The same steps on the field profile
+
+The same functions run on Dinner Point Avenue (MALA, 80 MHz antenna, 4188 traces, 0.152 m apart, 0.78125 ns per sample). The windows follow the same rule as for the pipe, three periods of the centre frequency: dewow 37.5 ns, band-pass 40 to 160 MHz, AGC 37.5 ns. Time zero is again the first sample at 5% of each trace's peak.
+
+```bash
+conda activate gprMax-v4
+MPLBACKEND=Agg python src/03a_plot_preprocessing.py --profile dinnerpoint
+```
+
+![Processing steps on Dinner Point Avenue](figures/preprocessing_steps_real.png)
+
+All 4188 traces are plotted; matplotlib resamples the image to fit each panel. The direct wave is so much stronger than the reflections that a colour limit over the whole panel hides everything else, so each panel's limit is the 99th percentile of |amplitude| after 100 ns, and the direct wave saturates.
+
+- **Raw**: the direct wave arrives at about 30 to 60 ns. A slow tail follows it, seen as the red band under the direct wave beyond 470 m.
+- **Time zero**: moves the first break (about 31 ns) to the top of each trace. The bottom 30 ns or so is then zero.
+- **Dewow**: removes the slow tail without moving the reflections.
+- **Background removal**: removes the flat bands that are the same on every trace. The ringing from 470 m to the end is stronger than the profile average, so it is only partly removed and stays as horizontal stripes.
+- **Band-pass**: keeps 40 to 160 MHz. In `figures/preprocessing_spectrum_real.png` the spectrum peaks near 95 MHz, and the filter removes a shoulder at 170 to 250 MHz.
+- **AGC**: evens out the amplitude down the trace. Dipping reflectors show to about 350 ns over the first 470 m; below that AGC mostly amplifies noise. The bright band at the bottom is the zero-filled tail from the time-zero shift.
+
 ## Real data: Mendeley GPR dataset
 
 Detection tests use Mojahid et al. (2025), *Intelligent recognition of subsurface utilities and voids using ground-penetrating radar and deep learning techniques: Data of GPR profiles images*, Data in Brief / Mendeley Data, DOI [10.17632/ww7fd9t325.1](https://doi.org/10.17632/ww7fd9t325.1). Unzip the download into `data/raw/mendeley_gpr/` (gitignored). Do not commit those images.
@@ -267,6 +339,10 @@ Dinner Point Avenue is the only line this repository keeps from the USGS Forsyth
 conda activate gprMax-v4
 jupyter notebook notebooks/01a_download_usgs_raw.ipynb
 ```
+
+### Reading the field profile
+
+`src/02d_mala_reader.py` reads the profile: `load_mala("data/raw/usgs_forsythe/DinnerPointAve.rd3")` returns the same scan object as the gprMax loader (`data` as samples x traces, `dt`, `trace_spacing`, `frequency`). The `.rd3` file is int16 samples, one trace after another; the `.rad` file is the text header. Two header fields are easy to confuse: `FREQUENCY` (1280 MHz) is the sampling rate, so dt is 0.78125 ns, while the antenna frequency (80 MHz) is in `ANTENNAS`. The reader stops if the file size is not a whole number of traces, and warns and uses 1 m if `DISTANCE INTERVAL` is 0. For this line: 1017 samples x 4188 traces, 0.152 m between traces. `notebooks/02a_gprmax_loader.ipynb` uses the same reader.
 
 ## Cross-check against GPRPy
 
@@ -347,7 +423,14 @@ conda activate gprdet
 python src/06d_compare_runs.py
 ```
 
-Upload the shipped weights (`A_f100_seed2` by default):
+Export the shipped model to ONNX for a CPU-only service (opset 12, fixed 224 x 224 input, output 1 x 5 x 1029, no NMS in the graph). The script writes `best.onnx` next to `best.pt` and prints the input and output shapes. It also includes a small inference path that uses only NumPy, OpenCV and onnxruntime: letterbox, NMS and `detect`. `--check 20` compares that path with Ultralytics on 20 train-split images (never test images). With the same square input (`rect=False`), boxes and scores are identical. Note: Ultralytics `predict` and `val` on `best.pt` default to `rect=True` and pad only to a multiple of 32. The ONNX model always sees the full square, so scores can differ by up to about 0.01, and a box near the 0.25 threshold can appear or disappear (1 of 20 images). The locked-test numbers were measured with `rect=True`.
+
+```bash
+conda activate gprdet
+python src/06f_export_onnx.py --check 20
+```
+
+Upload the shipped weights, the ONNX file and `MODEL_CARD.md` as the Hub README (`A_f100_seed2` by default):
 
 ```bash
 conda activate gprdet
@@ -381,3 +464,22 @@ C minus A in mAP@0.5 (paired bootstrap over test images, 2000 resamples): 25%: -
 **Limitations:** one model size (YOLO11n) at 224 px; 83 test images; all fine-tunes ran the full 150 epochs; 2D simulation at 400 MHz while the real frequency (200 or 400 MHz) is unknown; synthetic scenes more crowded than real images (median 3 boxes per crop vs 1 to 2); synthetic voids are single cylinders.
 
 **Future work (exploratory, judged on validation only, since the test set has been used):** simulate void clusters, add a 200 MHz preset, train longer.
+
+## Web demo samples
+
+`src/07a_export_demo_samples.py` picks three small samples for the GPRadar-API web service and writes them to `exports/demo_samples/` (gitignored), with `manifest.json` (id, name, kind, file, default mode, citation, description). The Mendeley images come from the train split only; the script checks the test lock and refuses test ids.
+
+- Mendeley: the utility and the void train image with 1 to 2 boxes whose largest box covers the most of the image (now `utility_0028` and `void_0045`), copied byte for byte with their YOLO labels. Override with `--utility-id` and `--void-id`.
+- gprMax: a val scene (seeds 180 to 199) with 1 to 2 visible targets, no flagged apex check, and every apex at least 1 m from the profile ends; then the fewest labelled rock boxes and the lowest seed (now seed 182, an air void). Saved as a compressed `.npz` (about 1 MB): `data` (float32), `dt`, `trace_spacing`, `frequency`, `scene_json`, and `processed_u8_224`, the full record after the 05a processing, scaled to 8-bit and resized to 224 x 224. Override with `--seed`.
+- `golden.json`: the ONNX detections (confidence 0.25 or more, IoU 0.5) on each sample, for the API's golden test. The scene is run on `processed_u8_224`.
+
+Export runs in `gprMax-v4` (it reads HDF5 and uses SciPy); the golden file needs onnxruntime, so it runs in `gprdet`:
+
+```bash
+conda activate gprMax-v4
+python src/07a_export_demo_samples.py export
+conda activate gprdet
+python src/07a_export_demo_samples.py golden
+```
+
+Licence: the Mendeley images are CC BY 4.0, so they may be redistributed with credit: Mojahid et al. (2025), Mendeley Data, DOI 10.17632/ww7fd9t325.1. The manifest carries this citation for each image. The scene is our own simulation, credited as "Simulated with gprMax (Warren et al. 2016)".

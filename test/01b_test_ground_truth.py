@@ -22,7 +22,9 @@ def test_pipe_template_records_centre_and_permittivity():
 
 
 def test_each_saved_model_has_a_ground_truth_file():
+    # The full pipe study is gitignored; data/sample/ keeps one case as committed copies.
     models = list((ROOT / "data" / "sim" / "pipe_study").glob("*/pipe.in"))
+    models = models or list((ROOT / "data" / "sample" / "sim" / "pipe_study").glob("*/pipe.in"))
     assert models
     for model in models:
         truth = ground_truth_from_model(model.read_text())
