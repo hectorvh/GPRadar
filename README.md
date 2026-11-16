@@ -483,3 +483,13 @@ python src/07a_export_demo_samples.py golden
 ```
 
 Licence: the Mendeley images are CC BY 4.0, so they may be redistributed with credit: Mojahid et al. (2025), Mendeley Data, DOI 10.17632/ww7fd9t325.1. The manifest carries this citation for each image. The scene is our own simulation, credited as "Simulated with gprMax (Warren et al. 2016)".
+
+## Licence
+
+- **Code:** GNU AGPL-3.0, see [LICENSE](LICENSE). Ultralytics, used for training, is also AGPL-3.0.
+- **Model weights:** AGPL-3.0, published at [huggingface.co/hectorvh/gpradar-hyperbola-yolo](https://huggingface.co/hectorvh/gpradar-hyperbola-yolo).
+- **Data:** data in this repository keeps its own licence, not the code licence. Full citations are in `data/sample/CITATION.txt`.
+  - Mendeley images (in `data/sample/mendeley/`): CC BY 4.0, Mojahid et al. (2025), Mendeley Data, DOI 10.17632/ww7fd9t325.1.
+  - Hand labels in `data/labels/mendeley_originals/` (and their copies in `data/sample/mendeley/labels/`): my own work, also released under CC BY 4.0.
+  - Dinner Point Avenue window (in `data/sample/usgs/`): from the U.S. Geological Survey. The release metadata lists no access or use constraints, and data produced by the USGS are in the U.S. public domain. USGS asks that the data be cited as Fiore, A.R. (2018), https://doi.org/10.5066/F7JH3KBD.
+  - gprMax simulations (in `data/sample/sim/`): my own, under the repository licence (AGPL-3.0). Please also cite gprMax (Warren et al. 2016).
