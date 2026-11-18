@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+doi: 10.5281/zenodo.24339787
+title: "GPRadar: GPR processing and hyperbola detection prototype"
+abstract: >-
+  Research code for simulating (gprMax), preprocessing and detecting hyperbolas in ground-penetrating radar B-scans with a YOLO11n detector, compared with and without synthetic pre-training, and checked against GPRPy.
+authors:
+  - given-names: Hector
+    family-names: Valdes
+    affiliation: "University of Münster, Institute for Geoinformatics"
+    orcid: "https://orcid.org/0009-0008-0761-0350"
+repository-code: "https://github.com/hectorvh/GPRadar"
+url: "https://gpradar.hectorvh.com"
+license: AGPL-3.0-only
+keywords:
+  - "ground-penetrating radar"
+  - "GPR"
+  - "gprMax"
+  - "hyperbola detection"
+  - "YOLO"
+  - "object detection"
+  - "synthetic data"
+  - "remote sensing"

@@ -1,5 +1,14 @@
 # GPRadar
 
+[![License](https://img.shields.io/github/license/hectorvh/GPRadar)](https://github.com/hectorvh/GPRadar/blob/main/LICENSE)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![gprMax](https://img.shields.io/badge/simulation-gprMax-1f6feb)](https://www.gprmax.com/)
+[![YOLO11n](https://img.shields.io/badge/detector-YOLO11n-111F68)](https://docs.ultralytics.com/models/yolo11/)
+[![Model on Hugging Face](https://img.shields.io/badge/model-Hugging%20Face-FFD21E?logo=huggingface&logoColor=black)](https://huggingface.co/hectorvh/gpradar-hyperbola-yolo)
+[![Live demo](https://img.shields.io/website?url=https%3A%2F%2Fgpradar.hectorvh.com&label=live%20demo&up_message=online&down_message=offline)](https://gpradar.hectorvh.com)
+[![Last commit](https://img.shields.io/github/last-commit/hectorvh/GPRadar)](https://github.com/hectorvh/GPRadar/commits/main)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24339787.svg)](https://doi.org/10.5281/zenodo.24339787)
+
 Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds the synthetic B-scans. GPRPy is available for field profiles. Short notes on travel time and hyperbolas are in [gpr_basics.md](gpr_basics.md). Signal processing is in [gpr_signal_processing.md](gpr_signal_processing.md). Detection with YOLO is in [gpr_yolo.md](gpr_yolo.md).
 
 Programs and notebooks are numbered in the order to run them. The same number is one stage. A letter means those files do not wait on each other. Where a script and a notebook do the same job, the notebook plots in the page and the script writes a figure file.
