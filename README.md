@@ -11,6 +11,8 @@
 
 Simulated and processed ground-penetrating radar (GPR) profiles. gprMax builds the synthetic B-scans. GPRPy is available for field profiles. Short notes on travel time and hyperbolas are in [gpr_basics.md](gpr_basics.md). Signal processing is in [gpr_signal_processing.md](gpr_signal_processing.md). Detection with YOLO is in [gpr_yolo.md](gpr_yolo.md).
 
+**Try it online: <https://gpradar.hectorvh.com>.** The trained detector runs behind a small web interface ([GPRadar-UI](https://github.com/hectorvh/GPRadar-UI)) and service ([GPRadar-API](https://github.com/hectorvh/GPRadar-API)); the model is on Hugging Face as [hectorvh/gpradar-hyperbola-yolo](https://huggingface.co/hectorvh/gpradar-hyperbola-yolo). Upload a B-scan or a gprMax output, or run one of the bundled samples (`src/07a_export_demo_samples.py`).
+
 Programs and notebooks are numbered in the order to run them. The same number is one stage. A letter means those files do not wait on each other. Where a script and a notebook do the same job, the notebook plots in the page and the script writes a figure file.
 
 ## Reproduce

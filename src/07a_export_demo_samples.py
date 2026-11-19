@@ -331,7 +331,7 @@ def _image_entry(row, boxes, raw_root, labels_dir, out_dir, class_word):
         f"Real {class_word} B-scan image ({size[0]} x {size[1]} px) from the Mendeley "
         f"GPR dataset, train split, with {n} hand-labelled target box{'es' if n > 1 else ''}."
     )
-    return manifest_entry(sample_id, f"Mendeley {class_word} ({row['id']})", "image", image_name, description)
+    return manifest_entry(sample_id, f"{class_word.capitalize()} (Mendeley)", "image", image_name, description)
 
 
 def run_export(args):
@@ -375,7 +375,7 @@ def run_export(args):
     entries.append(
         manifest_entry(
             scene_id,
-            f"gprMax 400 MHz scene (seed {seed})",
+            "400 MHz (gprMax)",
             "gprmax",
             npz_name,
             f"Simulated 400 MHz B-scan over a 5 m profile with {n_vis} visible buried "
